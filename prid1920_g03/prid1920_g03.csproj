@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>prid1920_tuto</RootNamespace>
+    <RootNamespace>prid1920_g03</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@ namespace prid1920_g03.Models {
     public class User : IValidatableObject {
 
         [Key]
-        public int Id;
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
@@ -29,7 +29,7 @@ namespace prid1920_g03.Models {
 
         [Required(ErrorMessage = "Required")]
         [RegularExpression("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         public DateTime? BirthDate { get; set; }
 

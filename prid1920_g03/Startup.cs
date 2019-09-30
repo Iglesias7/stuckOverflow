@@ -11,9 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Prid1920_tuto.Models;
+using prid1920_g03.Models;
 
-namespace prid1920_tuto
+namespace prid1920_g03
 {
     public class Startup
     {
@@ -27,7 +27,7 @@ namespace prid1920_tuto
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MemberContext>(opt => opt.UseInMemoryDatabase("msn"));
+            services.AddDbContext<MemberContext>(opt => opt.UseInMemoryDatabase("prid1920_g03"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

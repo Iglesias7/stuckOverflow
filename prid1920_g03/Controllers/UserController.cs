@@ -13,9 +13,9 @@ namespace prid1920_g03.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly prid1920_g03Context _context;
+        private readonly prid1920_g03 _context;
 
-        public UserController(prid1920_g03Context context)
+        public UserController(prid1920_g03 context)
         {
             _context = context;
 
@@ -23,18 +23,18 @@ namespace prid1920_g03.Controllers
             {
                 // Create a new TodoItem if collection is empty,
                 // which means you can't delete all TodoItems.
-                _context.Members.Add(new User { Pseudo = "Iglesias", Password = "Tamo", FullName = "Palmiste" });
-                _context.Members.Add(new User { Pseudo = "ben", Password = "ben", FullName = "Benoît Penelle" });
-                _context.Members.Add(new User { Pseudo = "bruno", Password = "bruno", FullName = "Bruno Lacroix" });
+                _context.Users.Add(new User { Pseudo = "Iglesias", Password = "Tamo", FirstName = "Palmiste" });
+                _context.Users.Add(new User { Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle" });
+                _context.Users.Add(new User { Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix" });
                 _context.SaveChanges();
             }
         }
 
          //DELETE: api/Todo/5
-         [HttpDelete("{pseudo}")]
-         public async Task<IActionResult> DeleteUser(string pseudo)
+         [HttpDelete("{id}")]
+         public async Task<IActionResult> DeleteUser(int id)
          {
-             var user = await _context.Users.FindAsync(pseudo);
+             var user = await _context.Users.FindAsync(id);
 
              if (user == null)
              {
@@ -53,10 +53,10 @@ namespace prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("{pseudo}")]
-        public async Task<ActionResult<UserDTO>> GetOne(string pseudo)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
-            var user = await _context.Users.FindAsync(pseudo);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return NotFound();
             return user.ToDTO();
@@ -65,35 +65,38 @@ namespace prid1920_g03.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO data)
         {
-            var user = await _context.Users.FindAsync(data.Pseudo);
+            var user = await _context.Users.FindAsync(data.Id);
             if (user != null)
             {
-                var err = new ValidationErrors().Add("Pseudo already in use", nameof(user.Pseudo));
+                var err = new ValidationErrors().Add("Pseudo already in use", nameof(user.Id));
                 return BadRequest(err);
             }
             var newUser = new User()
             {
                 Pseudo = data.Pseudo,
                 Password = data.Password,
-                FullName = data.FullName,
+                FirstName = data.FirstName,
+                LastName = data.LastName,
+                Email = data.Email,
                 BirthDate = data.BirthDate,
+                Reputation = data.Reputation,
             };
             _context.Users.Add(newUser);
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
-            return CreatedAtAction(nameof(GetOne), new { pseudo = newUser.Pseudo }, newUser.ToDTO());
+            return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO());
         }
 
-        [HttpPut("{pseudo}")]
-        public async Task<IActionResult> PutUser(string pseudo, UserDTO userDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
         {
-            if (pseudo != userDTO.Pseudo)
+            if (id != userDTO.Id)
                 return BadRequest();
-            var user = await _context.Members.FindAsync(pseudo);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return NotFound();
-            user.FullName = userDTO.FullName;
+            user.FirstName = userDTO.FirstName;
             user.BirthDate = userDTO.BirthDate;
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)

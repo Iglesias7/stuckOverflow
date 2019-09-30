@@ -7,28 +7,34 @@ namespace prid1920_g03.Models {
     public class User : IValidatableObject {
 
         [Key]
+        public int Id;
+
+        [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
+        [MaxLength(10, ErrorMessage = "Maximum 10 characters")]
         public string Pseudo { get; set; }
 
         [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
+        [MaxLength(10, ErrorMessage = "Maximum 10 characters")]
         public string Password { get; set; }
         
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
-        public string FullName { get; set; }
+        [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
+        public string LastName { get; set; }
+
+        [MinLength(3, ErrorMessage = "Minimum 3 characters")]
+        [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Required")]
+        [RegularExpression("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")]
+        public string email { get; set; }
 
         public DateTime? BirthDate { get; set; }
-        public int? Age {
-            get {
-                if (!BirthDate.HasValue)
-                    return null;
-                var today = DateTime.Today;
-                var age = today.Year - BirthDate.Value.Year;
-                if (BirthDate.Value.Date > today.AddYears(-age)) 
-                    age--;
-                return age;
-            }
-        }
+
+        [Required(ErrorMessage = "Required")]
+        public int Reputation { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             var currContext = validationContext.GetService(typeof(DbContext));

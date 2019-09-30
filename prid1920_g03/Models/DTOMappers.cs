@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 namespace prid1920_g03.Models {
     public static class DTOMappers {
-        public static MemberDTO ToDTO(this Member member) {
-            return new MemberDTO {
-                Pseudo = member.Pseudo,
+        public static UserDTO ToDTO(this User user) {
+            return new UserDTO {
+                Pseudo = user.Pseudo,
                 // we don't put the password in the DTO for security reasons
-                FullName = member.FullName,
-                BirthDate = member.BirthDate,
+                FullName = user.FullName,
+                BirthDate = user.BirthDate,
             };
         }
-        public static List<MemberDTO> ToDTO(this IEnumerable<Member> members) {
-            return members.Select(m => m.ToDTO()).ToList();
+        public static List<UserDTO> ToDTO(this IEnumerable<User> users) {
+            return users.Select(m => m.ToDTO()).ToList();
         }
     }
 }

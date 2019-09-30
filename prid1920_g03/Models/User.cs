@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 namespace prid1920_g03.Models {
-    public class Member : IValidatableObject {
+    public class User : IValidatableObject {
 
         [Key]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]

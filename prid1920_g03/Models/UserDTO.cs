@@ -1,6 +1,6 @@
 using System;
 namespace prid1920_g03.Models {
-    public class MemberDTO {
+    public class UserDTO {
         public string Pseudo { get; set; }
         public string FullName { get; set; }
         public string Password { get; set; }

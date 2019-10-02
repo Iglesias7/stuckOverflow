@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using prid1920_g03.Models;
+using Microsoft.EntityFrameworkCore;
+using Prid1920_g03.Models;
 
-namespace prid1920_g03
+namespace Prid1920_g03
 {
     public class Startup
     {
@@ -27,7 +27,8 @@ namespace prid1920_g03
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<MemberContext>(opt => opt.UseInMemoryDatabase("prid1920_g03"));
+            services.AddDbContext<Prid1920_g03Context>(opt =>
+                opt.UseInMemoryDatabase("Prid1920-g03"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace prid1920_tuto.Controllers
+namespace Prid1920_g03.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

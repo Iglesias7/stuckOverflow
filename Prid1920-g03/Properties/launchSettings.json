@@ -4,8 +4,8 @@
     "windowsAuthentication": false, 
     "anonymousAuthentication": true, 
     "iisExpress": {
-      "applicationUrl": "http://localhost:65007",
-      "sslPort": 44305
+      "applicationUrl": "http://localhost:1177",
+      "sslPort": 44383
     }
   },
   "profiles": {
@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "prid1920_tuto": {
+    "Prid1920_g03": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

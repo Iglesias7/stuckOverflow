@@ -61,6 +61,8 @@ namespace Prid1920_g03.Models
                 yield return new ValidationResult("Can't be born in the future in this reality", new[] { nameof(BirthDate) });
             else if (Age.HasValue && Age < 18)
                 yield return new ValidationResult("Must be 18 years old", new[] { nameof(BirthDate) });
+            else if (FirstName == null && LastName == null )
+                yield return new ValidationResult("FirstName and LastName is not null", new[] { nameof(FirstName) });
         
         }
     }

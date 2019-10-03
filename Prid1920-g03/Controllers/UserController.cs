@@ -20,15 +20,12 @@ namespace Prid1920_g03.Controllers
         {
             _context = context;
             
-            if (_context.Users.Count() == 0)
-            {
-                // Create users for test
-                _context.Users.Add(new User { Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle" });
-                _context.Users.Add(new User { Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix" });
+            // The system must always have an admin
+
+            if(_context.Users.Count() == 0){
+                _context.Users.Add(new User{ Pseudo = "admin", Password = "admin", Email = "administrator@gmail.com"});
                 _context.SaveChanges();
             }
-
-
 
         }
 

@@ -22,8 +22,7 @@ namespace Prid1920_g03.Controllers
             
             if (_context.Users.Count() == 0)
             {
-                // Create a new TodoItem if collection is empty,
-                // which means you can't delete all TodoItems.
+                // Create users for test
                 _context.Users.Add(new User { Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle" });
                 _context.Users.Add(new User { Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix" });
                 _context.SaveChanges();
@@ -39,10 +38,10 @@ namespace Prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetOne(int id)
+        [HttpGet("{pseudo}")]
+        public async Task<ActionResult<UserDTO>> GetOne(string pseudo)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(pseudo);
             if (user == null)
                 return NotFound();
             return user.ToDTO();
@@ -74,12 +73,12 @@ namespace Prid1920_g03.Controllers
             return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO());
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
+        [HttpPut("{pseudo}")]
+        public async Task<IActionResult> PutUser(string pseudo, UserDTO userDTO)
         {
-            if (id != userDTO.Id)
+            if (pseudo != userDTO.Pseudo)
                 return BadRequest();
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(pseudo);
             if (user == null)
                 return NotFound();
             user.FirstName = userDTO.FirstName;
@@ -91,10 +90,10 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        [HttpDelete("{pseudo}")]
+        public async Task<IActionResult> DeleteUser(string pseudo)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(pseudo);
 
             if (user == null)
             {

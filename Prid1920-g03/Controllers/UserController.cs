@@ -40,24 +40,24 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDTO>> GetOne(int UserId)
+        public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
-            var member = await _context.Users.FindAsync(UserId);
-            if (member == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
                 return NotFound();
-            return member.ToDTO();
+            return user.ToDTO();
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDTO>> PostMember(UserDTO data)
+        public async Task<ActionResult<UserDTO>> PostUser(UserDTO data)
         {
-            var member = await _context.Users.FindAsync(data.Pseudo);
-            if (member != null)
+            var user = await _context.Users.FindAsync(data.Id);
+            if (user != null)
             {
-                var err = new ValidationErrors().Add("Pseudo already in use", nameof(member.Pseudo));
+                var err = new ValidationErrors().Add("Pseudo already in use", nameof(user.Id));
                 return BadRequest(err);
             }
-            var newMember = new User()
+            var newUser = new User()
             {
                 Pseudo = data.Pseudo,
                 Password = data.Password,
@@ -67,24 +67,24 @@ namespace Prid1920_g03.Controllers
                 Email = data.Email,
                 Reputation = data.Reputation,
             };
-            _context.Users.Add(newMember);
+            _context.Users.Add(newUser);
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
-            return CreatedAtAction(nameof(GetOne), new { pseudo = newMember.Pseudo }, newMember.ToDTO());
+            return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO());
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMember(string pseudo, UserDTO memberDTO)
+        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
         {
-            if (pseudo != memberDTO.Pseudo)
+            if (id != userDTO.Id)
                 return BadRequest();
-            var member = await _context.Users.FindAsync(pseudo);
-            if (member == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
                 return NotFound();
-            member.FirstName = memberDTO.FirstName;
-            member.LastName = memberDTO.LastName;
-            member.BirthDate = memberDTO.BirthDate;
+            user.FirstName = userDTO.FirstName;
+            user.LastName = userDTO.LastName;
+            user.BirthDate = userDTO.BirthDate;
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
@@ -92,16 +92,16 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(int UserId)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var member = await _context.Users.FindAsync(UserId);
+            var user = await _context.Users.FindAsync(id);
 
-            if (member == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(member);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();

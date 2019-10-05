@@ -67,7 +67,7 @@ namespace Prid1920_g03.Controllers
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
-            return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO());
+            return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO() );
         }
 
         [HttpPut("{pseudo}")]

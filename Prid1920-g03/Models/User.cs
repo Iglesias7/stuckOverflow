@@ -65,7 +65,8 @@ namespace Prid1920_g03.Models
                 yield return new ValidationResult("The FirstName cannot be null, if the LastName isn't", new[] {nameof(FirstName) });
             else if(LastName == null && FirstName != null)
                  yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] {nameof(LastName) });
-        
+            else if(Reputation < 0)
+                 yield return new ValidationResult("The Reputation must be >= 0 ", new[] {nameof(Reputation) });
         }
     }
 }

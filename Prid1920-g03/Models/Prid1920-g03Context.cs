@@ -14,12 +14,15 @@ namespace Prid1920_g03.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            //Autogenerate Id
+            //Properties configurations
+
             modelBuilder.Entity<User>()
             .Property(u => u.Id)
              .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<User>().HasIndex(u => u.Pseudo)
             .IsUnique(true);
+            
             modelBuilder.Entity<User>().HasIndex(u => u.Email)
             .IsUnique(true);
         }

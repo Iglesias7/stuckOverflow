@@ -15,6 +15,7 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
         [MaxLength(10, ErrorMessage = "Maximum 10 characters")]
+        [RegularExpression(@"^[A-Za-z][A-Za-z0-9](_)")]
         public string Pseudo {get; set;}
 
         [Required(ErrorMessage = "Required")]

@@ -55,17 +55,15 @@ namespace Prid1920_g03.Models
         {
             var currContext = validationContext.GetService(typeof(DbContext));
             Debug.Assert(currContext != null);
-            if (Password == "abc")
-                yield return new ValidationResult("The password may not be equal to 'abc'", new[] { nameof(Password) });
             if (BirthDate.HasValue && BirthDate.Value.Date > DateTime.Today)
                 yield return new ValidationResult("Can't be born in the future in this reality", new[] { nameof(BirthDate) });
             else if (Age.HasValue && Age < 18)
                 yield return new ValidationResult("Must be 18 years old", new[] { nameof(BirthDate) });
-            else if(FirstName == null && LastName != null)
+            if(FirstName == null && LastName != null)
                 yield return new ValidationResult("The FirstName cannot be null, if the LastName isn't", new[] {nameof(FirstName) });
-            else if(LastName == null && FirstName != null)
+            if(LastName == null && FirstName != null)
                  yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] {nameof(LastName) });
-            else if(Reputation < 0)
+            if(Reputation < 0)
                  yield return new ValidationResult("The Reputation must be >= 0 ", new[] {nameof(Reputation) });
         }
     }

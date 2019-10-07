@@ -13,6 +13,7 @@ namespace Prid1920_g03.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
             //Properties configurations
 

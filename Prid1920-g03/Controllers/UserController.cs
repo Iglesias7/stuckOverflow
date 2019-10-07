@@ -9,7 +9,7 @@ using Prid1920_g03.Models;
 
 namespace Prid1920_g03.Controllers
 {
-    [Route("api/user")]
+    [Route("api/users")]
     [ApiController]
 
     public class UserController : ControllerBase
@@ -35,10 +35,10 @@ namespace Prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("{pseudo}")]
-        public async Task<ActionResult<UserDTO>> GetOne(string pseudo)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
-            var user = await _context.Users.FindAsync(pseudo);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return NotFound();
             return user.ToDTO();
@@ -70,12 +70,12 @@ namespace Prid1920_g03.Controllers
             return CreatedAtAction(nameof(GetOne), new { id = newUser.Id }, newUser.ToDTO() );
         }
 
-        [HttpPut("{pseudo}")]
-        public async Task<IActionResult> PutUser(string pseudo, UserDTO userDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
         {
-            if (pseudo != userDTO.Pseudo)
+            if (id != userDTO.Id)
                 return BadRequest();
-            var user = await _context.Users.FindAsync(pseudo);
+            var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return NotFound();
             user.FirstName = userDTO.FirstName;
@@ -87,10 +87,10 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{pseudo}")]
-        public async Task<IActionResult> DeleteUser(string pseudo)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(pseudo);
+            var user = await _context.Users.FindAsync(id);
 
             if (user == null)
             {

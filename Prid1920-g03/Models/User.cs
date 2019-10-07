@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Prid1920_g03.Models
 {
+     
     public class User : IValidatableObject
     {
         [Key]
@@ -15,7 +17,7 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
         [MaxLength(10, ErrorMessage = "Maximum 10 characters")]
-        [RegularExpression(@"^[A-Za-z][A-Za-z0-9](_)")]
+        [RegularExpression("^[A-Za-z][A-Za-z0-9_]{2,9}$")]
         public string Pseudo {get; set;}
 
         [Required(ErrorMessage = "Required")]
@@ -54,7 +56,9 @@ namespace Prid1920_g03.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            var currContext = validationContext.GetService(typeof(DbContext));
+            var currContext = validationContext.GetService(typeof(DbContext)) as Prid1920_g03Context;
+            var user_pseudo = (from p in currContext.Users where p.Pseudo == Pseudo select  p).FirstOrDefault() ;
+            var user_email =  (from e in currContext.Users where e.Email == Email select e).FirstOrDefault() ;
             Debug.Assert(currContext != null);
             if (BirthDate.HasValue && BirthDate.Value.Date > DateTime.Today)
                 yield return new ValidationResult("Can't be born in the future in this reality", new[] { nameof(BirthDate) });
@@ -63,9 +67,13 @@ namespace Prid1920_g03.Models
             if(FirstName == null && LastName != null)
                 yield return new ValidationResult("The FirstName cannot be null, if the LastName isn't", new[] {nameof(FirstName) });
             if(LastName == null && FirstName != null)
-                 yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] {nameof(LastName) });
+                yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] {nameof(LastName) });
             if(Reputation < 0)
-                 yield return new ValidationResult("The Reputation must be >= 0 ", new[] {nameof(Reputation) });
+                yield return new ValidationResult("The Reputation must be >= 0 ", new[] {nameof(Reputation) });
+            if(user_pseudo != null )
+                yield return new ValidationResult("This pseudo is already used ", new[] {nameof(Pseudo) });
+            else if(user_email != null)
+                yield return new ValidationResult("this email is already used ", new[]{nameof(Email)} );
         }
     }
 }

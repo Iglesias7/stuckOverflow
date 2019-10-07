@@ -15,12 +15,6 @@ namespace Prid1920_g03.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            //Properties configurations
-
-            modelBuilder.Entity<User>()
-            .Property(u => u.Id)
-             .ValueGeneratedOnAdd();
-
             modelBuilder.Entity<User>().HasIndex(u => u.Pseudo)
             .IsUnique(true);
             

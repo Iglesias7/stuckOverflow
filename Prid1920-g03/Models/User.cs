@@ -57,6 +57,11 @@ namespace Prid1920_g03.Models
                         }
         }
 
+        public Role Role {get; set;} = Role.Member;
+
+        [NotMapped]
+        public string Token {get; set;}
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var currContext = validationContext.GetService(typeof(DbContext)) as Prid1920_g03Context;

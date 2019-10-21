@@ -1,15 +1,15 @@
-export class User {
-    pseudo: string;
-    password: string;
-    fullName: string;
-    birthDate: string;
-    constructor(data: any) {
-      if (data) {
-        this.pseudo = data.pseudo;
-        this.password = data.password;
-        this.fullName = data.fullName;
-        this.birthDate = data.birthDate &&
-          data.birthDate.length > 10 ? data.birthDate.substring(0, 10) : data.birthDate;
-      }
-    }
-  }
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from '../components/home/home.component';
+import { CounterComponent } from '../components/counter/counter.component';
+import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
+import { UserListComponent } from '../components/userlist/userlist.component';
+
+const appRoutes: Routes = [
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'counter', component: CounterComponent },
+  { path: 'fetch-data', component: FetchDataComponent },
+  { path: 'user', component: UserListComponent },
+  { path: '**', redirectTo: '' }
+];
+
+export const AppRoutes = RouterModule.forRoot(appRoutes);

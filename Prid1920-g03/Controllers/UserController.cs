@@ -9,7 +9,7 @@ using Prid1920_g03.Models;
 
 namespace Prid1920_g03.Controllers
 {
-    [Route("api/users")]
+    [Route("api/[controller]")]
     [ApiController]
 
     public class UserController : ControllerBase

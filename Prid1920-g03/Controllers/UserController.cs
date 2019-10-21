@@ -18,7 +18,7 @@ using Prid1920_g03.Helpers;
 namespace Prid1920_g03.Controllers
 {
     [Authorize]
-    [Route("api/[Controller]")]
+    [Route("api/users")]
     [ApiController]
 
     public class UserController : ControllerBase

@@ -43,6 +43,8 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<int>("Reputation");
 
+                    b.Property<int>("Role");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -61,34 +63,38 @@ namespace Prid1920_g03.Migrations
                             FirstName = "Benoît Penelle",
                             Password = "ben",
                             Pseudo = "ben",
-                            Reputation = 0
+                            Reputation = 0,
+                            Role = 2
                         },
                         new
                         {
                             Id = 2,
-                            Email = "ben@test.com",
+                            Email = "bruno@test.com",
                             FirstName = "Bruno Lacroix",
                             Password = "bruno",
                             Pseudo = "bruno",
-                            Reputation = 0
+                            Reputation = 0,
+                            Role = 0
                         },
                         new
                         {
                             Id = 3,
-                            Email = "ben@test.com",
+                            Email = "iglesias@test.com",
                             FirstName = "iglesias Chendjou",
                             Password = "iglesias",
                             Pseudo = "iglesias",
-                            Reputation = 0
+                            Reputation = 0,
+                            Role = 0
                         },
                         new
                         {
                             Id = 4,
-                            Email = "ben@test.com",
+                            Email = "merveil@test.com",
                             FirstName = "merveil Nzitusu",
                             Password = "bruno",
                             Pseudo = "merveil",
-                            Reputation = 0
+                            Reputation = 0,
+                            Role = 0
                         });
                 });
 #pragma warning restore 612, 618

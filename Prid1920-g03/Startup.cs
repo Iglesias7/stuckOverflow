@@ -16,6 +16,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Prid1920_g03.Models;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 namespace Prid1920_g03
 {
     public class Startup
@@ -45,7 +49,6 @@ namespace Prid1920_g03
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
 
             //------------------------------
             // configure jwt authentication
@@ -116,7 +119,7 @@ namespace Prid1920_g03
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

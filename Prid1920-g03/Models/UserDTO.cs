@@ -11,6 +11,7 @@ namespace Prid1920_g03.Models {
         public string FirstName {get; set;}
         public DateTime? BirthDate {get; set;}
         public int Reputation {get; set;}
-        public Role Role {get; set;}
+        public Role Role { get; set; }
+
     }
 }

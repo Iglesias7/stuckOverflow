@@ -15,8 +15,7 @@ namespace Prid1920_g03.Models
                 LastName = user.LastName,
                 BirthDate = user.BirthDate,
                 Reputation = user.Reputation,
-                Role = user.Role,
-
+                Role = user.Role
             };
         }
         public static List<UserDTO> ToDTO(this IEnumerable<User> users) {

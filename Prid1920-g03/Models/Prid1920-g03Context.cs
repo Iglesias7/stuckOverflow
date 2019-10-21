@@ -22,12 +22,13 @@ namespace Prid1920_g03.Models
             .IsUnique(true);
 
             modelBuilder.Entity<User>().HasData(
-                new User() { Id=4, Pseudo = "merveil", Password = "merveil", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
+                new User() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
                 new User() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },
                 new User() { Id=1, Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle", Email="ben@test.com", Role = Role.Manager },
                 new User() { Id=2, Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix", Email="bruno@test.com", Role = Role.Member }
                 
                 
+
             );
 
         }

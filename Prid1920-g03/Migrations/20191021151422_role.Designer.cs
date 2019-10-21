@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prid1920_g03.Models;
 
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    partial class Prid1920_g03ContextModelSnapshot : ModelSnapshot
+    [Migration("20191021151422_role")]
+    partial class role
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,25 +60,6 @@ namespace Prid1920_g03.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-                            Id = 1,
-                            Email = "ben@test.com",
-                            FirstName = "Benoît Penelle",
-                            Password = "ben",
-                            Pseudo = "ben",
-                            Reputation = 0,
-                            Role = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "bruno@test.com",
-                            FirstName = "Bruno Lacroix",
-                            Password = "bruno",
-                            Pseudo = "bruno",
-                            Reputation = 0,
-                            Role = 0
-=======
                             Id = 4,
                             Email = "merveil@test.com",
                             FirstName = "merveil Nzitusu",
@@ -84,7 +67,6 @@ namespace Prid1920_g03.Migrations
                             Pseudo = "merveil",
                             Reputation = 0,
                             Role = 2
->>>>>>> 3d5a796dd40e06f59042346cf69a95a90e877286
                         },
                         new
                         {
@@ -94,17 +76,6 @@ namespace Prid1920_g03.Migrations
                             Password = "iglesias",
                             Pseudo = "iglesias",
                             Reputation = 0,
-<<<<<<< HEAD
-                            Role = 0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Email = "merveil@test.com",
-                            FirstName = "merveil Nzitusu",
-                            Password = "bruno",
-                            Pseudo = "merveil",
-=======
                             Role = 2
                         },
                         new
@@ -124,7 +95,6 @@ namespace Prid1920_g03.Migrations
                             FirstName = "Bruno Lacroix",
                             Password = "bruno",
                             Pseudo = "bruno",
->>>>>>> 3d5a796dd40e06f59042346cf69a95a90e877286
                             Reputation = 0,
                             Role = 0
                         });

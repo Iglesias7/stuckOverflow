@@ -7,6 +7,7 @@ export class User {
     reputation: number;
     birthDate: string;
 
+
     constructor(data: any) {
       if (data) {
         this.pseudo = data.pseudo;

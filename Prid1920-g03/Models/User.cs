@@ -9,10 +9,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Prid1920_g03.Models
 {
 
+
     public enum Role
     {
         Admin = 2, Manager = 1, Member = 0
     }
+
     public class User : IValidatableObject
     {
         [Key]
@@ -65,6 +67,7 @@ namespace Prid1920_g03.Models
                 return age;
             }
         }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

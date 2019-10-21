@@ -7,7 +7,8 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
-  { path: 'users', component: UserListComponent },
+  { path: 'user', component: UserListComponent },
   { path: '**', redirectTo: '' }
 ];
+
 export const AppRoutes = RouterModule.forRoot(appRoutes);

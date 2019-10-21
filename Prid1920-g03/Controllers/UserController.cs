@@ -9,7 +9,7 @@ using Prid1920_g03.Models;
 
 namespace Prid1920_g03.Controllers
 {
-    [Route("api/users")]
+    [Route("api/[controller]")]
     [ApiController]
 
     public class UserController : ControllerBase
@@ -19,14 +19,6 @@ namespace Prid1920_g03.Controllers
         public UserController(Prid1920_g03Context context)
         {
             _context = context;
-            
-            // The system must always have an admin
-
-            if(_context.Users.Count() == 0){
-                _context.Users.Add(new User{ Pseudo = "admin", Password = "admin", Email = "administrator@gmail.com"});
-                _context.SaveChanges();
-            }
-
         }
 
         [HttpGet]

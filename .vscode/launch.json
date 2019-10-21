@@ -29,7 +29,7 @@
             "request": "launch",
             "name": "Launch Chrome",
             "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/prid1920-tuto/ClientApp"
+            "webRoot": "${workspaceFolder}/prid1920-g03/ClientApp"
         },
         {
             "name": ".NET Core Attach",

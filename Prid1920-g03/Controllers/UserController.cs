@@ -19,14 +19,6 @@ namespace Prid1920_g03.Controllers
         public UserController(Prid1920_g03Context context)
         {
             _context = context;
-            
-            // The system must always have an admin
-
-            if(_context.Users.Count() == 0){
-                _context.Users.Add(new User{ Pseudo = "admin", Password = "admin", Email = "administrator@gmail.com"});
-                _context.SaveChanges();
-            }
-
         }
 
         [HttpGet]

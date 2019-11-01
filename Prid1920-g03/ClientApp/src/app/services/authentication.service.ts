@@ -12,7 +12,7 @@ export class AuthenticationService {
     this.currentUser = data ? new User(data) : null;
   }
   login(pseudo: string, password: string) {
-    return this.http.post<User>(`${this.baseUrl}api/users/authenticate`, { pseudo, password })
+    return this.http.post<User>(`${this.baseUrl}api/user/authenticate`, { pseudo, password })
       .pipe(map(user => {
         user = new User(user);
         // login successful if there's a jwt token in the response

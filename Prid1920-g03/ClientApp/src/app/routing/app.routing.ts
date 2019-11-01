@@ -8,20 +8,13 @@ import { RestrictedComponent } from '../components/restricted/restricted.compone
 import { UnknownComponent } from '../components/unknown/unknown.component';
 import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
+
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
-  {
-    path: 'users',
-    component: UserListComponent,
-    canActivate: [AuthGuard],
-    data: { roles: [Role.Admin] }
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
+  {path: 'users', component: UserListComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
+  {path: 'login', component: LoginComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
 

@@ -9,8 +9,8 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191021151422_role")]
-    partial class role
+    [Migration("20191101123036_roles")]
+    partial class roles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

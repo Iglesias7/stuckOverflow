@@ -3,6 +3,7 @@ export enum Role {
   Manager = 1,
   Admin = 2
 }
+
 export class User {
     pseudo: string;
     password: string;

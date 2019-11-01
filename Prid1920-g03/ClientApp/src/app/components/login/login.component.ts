@@ -2,14 +2,18 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
+
 @Component({ templateUrl: 'login.component.html' })
+
 export class LoginComponent implements OnInit, AfterViewInit {
+
     loginForm: FormGroup;
     loading = false;    // utilisé en HTML pour désactiver le bouton pendant la requête de login
     submitted = false;  // retient si le formulaire a été soumis ; utilisé pour n'afficher les 
-                        // erreurs que dans ce cas-là (voir template)
+    // erreurs que dans ce cas-là (voir template)
     returnUrl: string;
     error = '';
+
     /**
      * Le décorateur ViewChild permet de récupérer une référence vers un objet de type ElementRef
      * qui encapsule l'élément DOM correspondant. On peut ainsi accéder au DOM et le manipuler grâce
@@ -21,6 +25,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
      * sur ce champ quand la page s'affiche. Pour cela, il faut passer par le DOM.
      */
     @ViewChild('pseudo', { static: true }) pseudo: ElementRef;
+
     constructor(
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
@@ -32,6 +37,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             this.router.navigate(['/']);
         }
     }
+
     ngOnInit() {
         /**
          * Ici on construit le formulaire réactif. On crée un 'group' dans lequel on place deux
@@ -46,9 +52,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
             pseudo: ['', Validators.required],
             password: ['', Validators.required]
         });
+
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
+
     /**
      * Event standard d'angular qui nous donne la main juste après l'affichage du composant.
      * C'est le bon endroit pour mettre le focus dans le champ 'pseudo'.
@@ -62,6 +70,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     }
     // On définit ici un getter qui permet de simplifier les accès aux champs du formulaire dans le HTML
     get f() { return this.loginForm.controls; }
+
+
     /**
      * Cette méthode est bindée sur l'événement onsubmit du formulaire. On va y faire le
      * login en faisant appel à AuthenticationService.
@@ -80,8 +90,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 // en cas d'erreurs, on reste sur la page et on les affiche
                 error => {
                     console.log(error);
-                    this.error = error.error.errors.Pseudo || error.error.errors.Password;
+                    this.error = error.error.errors.pseudo || error.error.errors.Password;
                     this.loading = false;
-                });
+                }
+            );
     }
 }

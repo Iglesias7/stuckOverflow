@@ -6,9 +6,11 @@ import { map } from 'rxjs/operators';
 @Injectable({ providedIn: 'root' })
 
 export class UserService {
+
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
+  
   getAll() {
-    return this.http.get<User[]>(`${this.baseUrl}api/users`)
+    return this.http.get<User[]>(`${this.baseUrl}api/user`)
       .pipe(map(res => res.map(u => new User(u))));
   }
 }

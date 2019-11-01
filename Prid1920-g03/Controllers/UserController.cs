@@ -18,7 +18,7 @@ using Prid1920_g03.Helpers;
 namespace Prid1920_g03.Controllers
 {
     [Authorize]
-    [Route("api/users")]
+    [Route("api/[controller]")]
     [ApiController]
 
     public class UserController : ControllerBase
@@ -148,6 +148,7 @@ namespace Prid1920_g03.Controllers
             }
             // remove password before returning
             user.Password = null;
+            Console.WriteLine(user);
             return user;
         }
     }

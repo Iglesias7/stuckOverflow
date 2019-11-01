@@ -1,12 +1,11 @@
-<div class="container" style="text-align: center; padding: 20px;">
-    <h2 style="color: darkolivegreen;">Connexion</h2><br>
+<div class="container" style="text-align: center; padding: 20px; width: 300px;">
+    <h2 style="color: rgb(141, 47, 4);">Connexion</h2><br>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <input type="text" 
                    formControlName="pseudo" 
                    placeholder="Nom d'utilisateur" 
                    class="form-control"
-                   style="width: 250px;  margin-left: 32%;"
                    [ngClass]="{ 'is-invalid': submitted && f.pseudo.errors }" />
 
             <div *ngIf="submitted && f.pseudo.errors" 
@@ -21,7 +20,6 @@
                    formControlName="password" 
                    placeholder="Mot de passe" 
                    class="form-control" 
-                   style="width: 250px; margin-left: 32%;"
                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
 
             <div *ngIf="submitted && f.password.errors" 

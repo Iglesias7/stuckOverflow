@@ -9,6 +9,7 @@ import { JwtInterceptor } from '../interceptors/jwt.interceptor';
 import { NavMenuComponent } from '../components/nav-menu/nav-menu.component';
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/login/login.component';
+import { SignupComponent } from '../components/signup/signup.component';
 import { CounterComponent } from '../components/counter/counter.component';
 import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
 import { UserListComponent } from '../components/userlist/userlist.component';
@@ -24,7 +25,8 @@ import { RestrictedComponent } from '../components/restricted/restricted.compone
     LoginComponent,
     UserListComponent,
     UnknownComponent,
-    RestrictedComponent
+    RestrictedComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -4,6 +4,7 @@ import { CounterComponent } from '../components/counter/counter.component';
 import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
 import { UserListComponent } from '../components/userlist/userlist.component';
 import { LoginComponent } from '../components/login/login.component';
+import { SignupComponent } from '../components/signup/signup.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
 import { AuthGuard } from '../services/auth.guard';
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
   { path: 'fetch-data', component: FetchDataComponent },
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
   {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
 

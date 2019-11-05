@@ -3,5 +3,16 @@
     .body-content {
       padding-top: 50px;
     }
-  }
+}
+
+.container{
+  background-color: rgba(222, 184, 135, 0.7); 
+  margin-top: 10%;
+  margin-bottom: 80px;
+  padding: 0%;
+}
+
+.bg{
+  padding: 30px;
+}
   

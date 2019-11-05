@@ -7,12 +7,37 @@ a.navbar-brand {
 html {
   font-size: 14px;
 }
+
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.nav-text{
+  color: white;
+  text-decoration: none;
+  padding: 17px;
+  position: relative;
+}
+
+.nav-text:hover{
+  background-color: rgb(54, 15, 15);
+}
+
+.text-pseudo{
+  color: darkgreen;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: bolder;
+}
+
+.text-acceuil{
+  color: rgb(54, 15, 15);
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.bg-color{
+  background-color: darkcyan;
 }

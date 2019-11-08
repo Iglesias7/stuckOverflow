@@ -4,7 +4,6 @@ import * as _ from 'lodash';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 
-// import { EditMemberComponent } from '../edit-member/edit-member.component';
 import { StateService } from 'src/app/services/state.service';
 import { MatTableState } from 'src/app/helpers/mattable.state';
 import { EditUserComponent } from '../edit-user/edit-user.component';
@@ -19,7 +18,7 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
     
     // users: User[] = [];
 
-    displayedColumns: string[] = ['pseudo', 'firstName', 'lastName', 'email', 'birthDate', 'réputation', 'role', 'actions'];
+    displayedColumns: string[] = ['pseudo', 'firstName', 'lastName', 'email', 'birthDate', 'reputation', 'role', 'actions'];
     dataSource: MatTableDataSource<User> = new MatTableDataSource();
     filter: string;
     state: MatTableState;
@@ -33,11 +32,6 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
                 public snackBar: MatSnackBar
         ) {
                 this.state = this.stateService.userListState;
-                // userService.getAll().subscribe(
-                //     users => {
-                //         this.users = users;
-                //     }
-                // )
             }
 
     ngAfterViewInit(): void {
@@ -47,7 +41,7 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
 
         // définit le predicat qui doit être utilisé pour filtrer les membres
         this.dataSource.filterPredicate = (data: User, filter: string) => {
-            const str = data.pseudo + ' ' + data.lastName + ' ' + data.birthDate + ' ' + data.roleAsString;
+            const str = data.pseudo + ' ' + data.firstName + " " + data.lastName + ' ' + data.birthDate + ' ' + data.roleAsString;
             return str.toLowerCase().includes(filter);
         };
 

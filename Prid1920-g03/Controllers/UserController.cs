@@ -66,6 +66,7 @@ namespace Prid1920_g03.Controllers
                 BirthDate = data.BirthDate,
                 Email = data.Email,
                 Reputation = data.Reputation,
+                Role = data.Role
             };
             _context.Users.Add(newUser);
             var res = await _context.SaveChangesAsyncWithValidation();
@@ -86,9 +87,13 @@ namespace Prid1920_g03.Controllers
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.BirthDate = userDTO.BirthDate;
+            
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
+
+           if (userDTO.Password != null)
+                user.Password = userDTO.Password;
             return NoContent();
         }
 

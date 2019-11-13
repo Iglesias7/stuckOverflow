@@ -157,6 +157,43 @@ namespace Prid1920_g03.Controllers
             user.Password = null;
             return user;
         }
+
+        [AllowAnonymous]
+        [HttpPost("validatepseudonottaken")]
+        public async Task<ActionResult<User>> ValidatePseudoNotTaken(UserDTO data){
+
+            var user = await ValidatePseudoNotTaken(data.Pseudo);
+            if(user!= null && user.Pseudo == data.Pseudo)
+                return BadRequest(new ValidationErrors().Add("This pseudo is already used", "Pseudo")); 
+            return Ok(user);
+        }
+        private async Task<User> ValidatePseudoNotTaken(string pseudo){
+           var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
+
+           if(user == null)
+                return null;
+            else
+                return user;
+
+        }
+        [AllowAnonymous]
+        [HttpPost("validatemailnottaken")]
+        public async Task<ActionResult<User>> ValidateEmailNotTaken (UserDTO data){
+            var user = await ValidateEmailNotTaken(data.Email);
+            if(user!= null && user.Email == data.Email)
+                return BadRequest(new ValidationErrors().Add("This email address is already used", "Email")); 
+            return Ok(user);
+        }
+        private async Task<User> ValidateEmailNotTaken(string email){
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+           if(user == null)
+                return null;
+            else
+                return user;
+        }
+
+        
     }
 
 }

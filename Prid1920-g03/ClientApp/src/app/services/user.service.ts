@@ -14,15 +14,15 @@ export class UserService {
     );
   }
 
-  getById(pseudo: string) {
-    return this.http.get<User>(`${this.baseUrl}api/user/${pseudo}`).pipe(
+  getById(id: number) {
+    return this.http.get<User>(`${this.baseUrl}api/user/${id}`).pipe(
       map(m => !m ? null : new User(m)),
       catchError(err => of(null))
     );
   }
 
   public update(m: User): Observable<boolean> {
-    return this.http.put<User>(`${this.baseUrl}api/user/${m.pseudo}`, m).pipe(
+    return this.http.put<User>(`${this.baseUrl}api/user/${m.id}`, m).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);
@@ -32,7 +32,7 @@ export class UserService {
   }
 
   public delete(m: User): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}api/user/${m.pseudo}`).pipe(
+    return this.http.delete<boolean>(`${this.baseUrl}api/user/${m.id}`).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);

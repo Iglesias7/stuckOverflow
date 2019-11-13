@@ -155,7 +155,6 @@ namespace Prid1920_g03.Controllers
             }
             // remove password before returning
             user.Password = null;
-            Console.WriteLine(user);
             return user;
         }
     }

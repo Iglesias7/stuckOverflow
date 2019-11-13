@@ -1,13 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '../components/home/home.component';
-import { CounterComponent } from '../components/counter/counter.component';
+import { CounterComponent } from '../components/count/counter/counter.component';
 import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
-import { UserListComponent } from '../components/userlist/userlist.component';
-import { LoginComponent } from '../components/login/login.component';
-import { SignupComponent } from '../components/signup/signup.component';
+import { UserListComponent } from '../components/user/userlist/userlist.component';
+import { LoginComponent } from '../components/auth/login/login.component';
+import { SignupComponent } from '../components/auth/signup/signup.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
-import { CounterParentComponent } from '../components/counter-stateless/counter-parent.component';
+import { CounterParentComponent } from '../components/count/counter-stateless/counter-parent.component';
 import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
 

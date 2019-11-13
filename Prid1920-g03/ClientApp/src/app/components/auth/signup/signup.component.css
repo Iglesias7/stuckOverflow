@@ -1,0 +1,30 @@
+form {
+    width: 60%;
+    display: grid;
+    grid-row-gap: 26px;
+    text-align: center;
+}
+
+mat-form-field{
+    font-size: 20px;
+    color: black;
+}
+
+input{
+    padding: 8px;
+}
+
+mat-error{
+    font-size: 16px;
+}
+
+button{
+    background-color: darkcyan;
+    color: white;
+}
+
+.bg-signup {
+    padding: 15px;
+    margin-left: 25px;
+}
+

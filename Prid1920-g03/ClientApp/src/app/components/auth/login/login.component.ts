@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 
 @Component({
@@ -76,6 +76,7 @@ export class LoginComponent implements OnInit {
                         this.loginForm.get(field.toLowerCase()).setErrors({ custom: errors[field] })
                     }
                     this.loading = false;
-                });
+                }
+            );
     }
 }

@@ -5,6 +5,7 @@ export enum Role {
 }
 
 export class User {
+    id: number;
     pseudo: string;
     password: string;
     firstName: string;
@@ -18,6 +19,7 @@ export class User {
 
     constructor(data: any) {
       if (data) {
+        this.id = data.id;
         this.pseudo = data.pseudo;
         this.password = data.password;
         this.email = data.email;

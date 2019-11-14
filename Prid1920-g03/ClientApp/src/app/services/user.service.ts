@@ -21,6 +21,20 @@ export class UserService {
     );
   }
 
+  getByPseudo(pseudo: string){
+    return this.http.get<User>(`${this.baseUrl}api/user/${pseudo}`).pipe(
+      map(m => !m ? null : new User(m)),
+      catchError(err => of (null))
+    );
+  }
+
+  getByEmail(email: string){
+    return this.http.get<User>(`${this.baseUrl}api/user/${email}`).pipe(
+      map(m => !m ? null : new User(m)),
+      catchError(err => of(null))
+    );
+  }
+
   public update(m: User): Observable<boolean> {
     return this.http.put<User>(`${this.baseUrl}api/user/${m.id}`, m).pipe(
       map(res => true),

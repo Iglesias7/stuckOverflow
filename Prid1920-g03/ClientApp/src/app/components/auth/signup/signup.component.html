@@ -2,42 +2,42 @@
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="row">
         <h1>Sign Up</h1>
         <mat-form-field>
-            <input #pseudo matInput placeholder="Pseudo" [formControl]="ctlPseudo" required appSetFocus>
+            <input matInput type="text" placeholder="Pseudo*" [formControl]="ctlPseudo" >
             <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}</mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required>
+            <input matInput type="password" placeholder="Password*" [formControl]="ctlPassword" >
             <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="confirm_password" placeholder="Confirm your password" [formControl]="ctlConfirmPassword" required>
+            <input matInput type="password" placeholder="Confirm your password*" [formControl]="ctlConfirmPassword" >
             <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('custom')">{{ctlConfirmPassword.errors.custom}}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="email" placeholder="email" [formControl]="ctlEmail" required>
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('custom')">{{ctlEmail.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="firstName" placeholder="firstName" [formControl]="ctlFirstName" required>
+            <input matInput type="text" placeholder="Firstname" [formControl]="ctlFirstName" >
             <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlFirstName.hasError('custom')">{{ctlFirstName.errors.custom}}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="lastName" placeholder="lastName" [formControl]="ctlLastName" required>
+            <input matInput type="text" placeholder="Lastname" [formControl]="ctlLastName" >
             <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlLastName.hasError('custom')">{{ctlLastName.errors.custom}}
             </mat-error>
         </mat-form-field>
         <mat-form-field>
-            <input matInput type="birthDate" placeholder="birthDate" [formControl]="ctlBirthDate" required>
+            <input matInput type="email" placeholder="email*" [formControl]="ctlEmail" >
+            <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
+            <mat-error class="field-error" *ngIf="ctlEmail.hasError('custom')">{{ctlEmail.errors.custom}}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate" >
             <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('required')">Required</mat-error>
             <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('custom')">{{ctlBirthDate.errors.custom}}
             </mat-error>

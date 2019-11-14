@@ -161,9 +161,7 @@ namespace Prid1920_g03.Controllers
         [AllowAnonymous]
         [HttpGet("pseudo")]
         public async Task<ActionResult<UserDTO>> GetByPseudo(string pseudo){
-
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
-
             if(user == null)
                 return NotFound(); 
             return user.ToDTO();

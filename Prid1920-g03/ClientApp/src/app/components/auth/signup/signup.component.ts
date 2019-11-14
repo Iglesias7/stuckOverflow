@@ -154,4 +154,24 @@ export class SignupComponent implements OnInit {
             });
         };
     }
+
+
+    emailUsed(): any {
+        let timeout: NodeJS.Timer;
+        return (ctl: FormControl) => {
+            clearTimeout(timeout);
+            const email = ctl.value;
+            return new Promise(resolve =>{
+                timeout = setTimeout(() => {
+                    if(ctl.pristine){
+                        resolve(null);
+                    } else {
+                        this.userService.getByEmail(email).subscribe(member => {
+                            resolve(member ? {emailUsed: true } : null);
+                        });
+                    }
+                }, 300);
+            });
+        };
+    }
 }

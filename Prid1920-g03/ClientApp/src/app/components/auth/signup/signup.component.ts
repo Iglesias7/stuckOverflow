@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
+import { SignupService } from 'src/app/services/signup.service';
 
 @Component({
     selector: 'app-signup',
@@ -20,10 +21,10 @@ export class SignupComponent implements OnInit {
     returnUrl: string;
     ctlPseudo: FormControl;
     ctlPassword: FormControl;
-    ctlTwoPassword: FormControl;
-    ctlEmail: FormControl;
+    ctlConfirmPassword: FormControl;
     ctlFirstName: FormControl;
     ctlLastName: FormControl;
+    ctlEmail: FormControl;
     ctlBirthDate: FormControl;
 
     @ViewChild('pseudo', { static: true }) pseudo: ElementRef;
@@ -33,6 +34,7 @@ export class SignupComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
+        private signupService: SignupService,
         private userService: UserService
     ) {
         // redirect to home if already logged in
@@ -42,19 +44,19 @@ export class SignupComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.ctlPseudo = this.formBuilder.control('', Validators.required);
-        this.ctlPassword = this.formBuilder.control('', Validators.required);
-        this.ctlTwoPassword = this.formBuilder.control('', Validators.required);
-        this.ctlEmail = this.formBuilder.control('', Validators.required);
-        this.ctlFirstName = this.formBuilder.control('', Validators.required);
-        this.ctlLastName = this.formBuilder.control('', Validators.required);
-        this.ctlBirthDate = this.formBuilder.control('', Validators.required);
+        this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), 
+            Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$"),this.ValidatePseudoNotTaken.bind(this)]);
+        this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlConfirmPassword = this.formBuilder.control('', Validators.required);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email]);
 
 
         this.signupForm = this.formBuilder.group({
             pseudo: this.ctlPseudo,
             password: this.ctlPassword,
-            twoPassword: this.ctlTwoPassword,
+            confirm_password: this.ctlConfirmPassword,
             email: this.ctlEmail,
             firstName: this.ctlFirstName,
             lastName: this.ctlLastName,
@@ -63,6 +65,14 @@ export class SignupComponent implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/counter';
     }
+    //validator asynchrone
+    ValidatePseudoNotTaken(control: AbstractControl){
+        return this.signupService.checkPseudoNotTaken(control.value)
+        .subscribe(res => {
+            return res ? null : {emailTaken: true};
+        });  
+    }
+
 
     // On définit ici un getter qui permet de simplifier les accès aux champs du formulaire dans le HTML
     get f() { return this.signupForm.controls; }

@@ -30,19 +30,19 @@
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
             <a class="nav-text" [routerLink]='["/login"]'>
               <span class="material-icons">exit_to_app</span>
-              <span> Connexion </span>
+              <span> LogIn </span>
             </a>
           </li>
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
             <a class="nav-text" [routerLink]='["/signup"]'>
               <span class="material-icons">exit_to_app</span>
-              <span> Inscription </span>
+              <span> SignUp </span>
             </a>
           </li>
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
             <a class="nav-text" [routerLink]='' (click)='logout()'>
               <span class="material-icons">power_settings_new</span>
-              <span> Logout </span>
+              <span> LogOut </span>
               <span class="text-pseudo">({{authenticationService.currentUser.pseudo}})</span>
             </a>
           </li>

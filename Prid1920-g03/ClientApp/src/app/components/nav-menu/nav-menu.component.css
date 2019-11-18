@@ -17,12 +17,7 @@ html {
 .nav-text{
   color: white;
   text-decoration: none;
-  padding: 17px;
   position: relative;
-}
-
-.nav-text:hover{
-  background-color: rgb(54, 15, 15);
 }
 
 .text-pseudo{

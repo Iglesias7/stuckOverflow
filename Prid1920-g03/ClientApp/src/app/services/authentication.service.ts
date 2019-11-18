@@ -35,12 +35,12 @@ export class AuthenticationService {
         );
     }
 
-    getByPseudo(pseudo: string){
-      return this.http.get<User>(`${this.baseUrl}api/user/${pseudo}`);
+    getByPseudo(pseudo: string): Observable<boolean> {
+      return this.http.get<boolean>(`${this.baseUrl}api/user/availablePseudo/${pseudo}`);
     }
   
-    getByEmail(email: string){
-      return this.http.get<User>(`${this.baseUrl}api/user/availableEmail/${email}`);     
+    getByEmail(email: string): Observable<boolean> {
+      return this.http.get<boolean>(`${this.baseUrl}api/user/availableEmail/${email}`);     
     }
 
     

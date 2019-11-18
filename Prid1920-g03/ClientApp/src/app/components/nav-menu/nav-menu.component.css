@@ -39,9 +39,14 @@ html {
 }
 
 .bg-color{
-  background-color: darkcyan;
+  background-color: darkgreen;
+
 }
 
 .nav-link * {
   vertical-align: middle;
+}
+
+.text-dar{
+  color: white;
 }

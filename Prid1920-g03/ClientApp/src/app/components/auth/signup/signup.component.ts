@@ -67,12 +67,12 @@ export class SignupComponent implements OnInit {
      * Cette méthode est bindée sur l'événement onsubmit du formulaire. On va y faire le
      * login en faisant appel à AuthenticationService.
      */
-    onSubmit() {
-        this.submitted = true;
-        // on s'arrête si le formulaire n'est pas valide
-        if (this.signupForm.invalid) return;
-        this.loading = true;
-    }
+    // onSubmit() {
+    //     this.submitted = true;
+    //     // on s'arrête si le formulaire n'est pas valide
+    //     if (this.signupForm.invalid) return;
+    //     this.loading = true;
+    // }
 
     validateBirthDate(): any {
         return (ctl: FormControl) => {

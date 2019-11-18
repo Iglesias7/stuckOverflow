@@ -1,51 +1,60 @@
-<div class="bg-signup row">
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="row">
-        <h1>Sign Up</h1>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Pseudo*" [formControl]="ctlPseudo" >
-            <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="password" placeholder="Password*" [formControl]="ctlPassword" >
-            <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="password" placeholder="Confirm your password*" [formControl]="ctlConfirmPassword" >
-            <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('custom')">{{ctlConfirmPassword.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Firstname" [formControl]="ctlFirstName" >
-            <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlFirstName.hasError('custom')">{{ctlFirstName.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="text" placeholder="Lastname" [formControl]="ctlLastName" >
-            <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlLastName.hasError('custom')">{{ctlLastName.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="email" placeholder="email*" [formControl]="ctlEmail" >
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('custom')">{{ctlEmail.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate" >
-            <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('custom')">{{ctlBirthDate.errors.custom}}
-            </mat-error>
-        </mat-form-field>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" >
+        <h1 class="header">Signup</h1>
+        <div class="form">
+                <mat-form-field>
+                        <input matInput type="text" placeholder="Pseudo*" [formControl]="ctlPseudo" required >
+                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Password*" [formControl]="ctlPassword" autocomplete="new-password" >
+                        <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPassword.hasError('minlength'">Minimum length is {{ctlPassword.errors['minlength'].requiredLength}}</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}</mat-error>
+                        
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Confirm your password*" [formControl]="ctlConfirmPassword" >
+                        <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('validatePasswords'">The two passwors must be identical</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('custom')">{{ctlConfirmPassword.errors.custom}}</mat-error>
+
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Firstname" [formControl]="ctlFirstName" >
+                        <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlFirstName.hasError('custom')">{{ctlFirstName.errors.custom}}</mat-error>
+           
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Lastname" [formControl]="ctlLastName" >
+                        <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctllas7.hasError('custom')">{{ctlLastName.errors.custom}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="email" placeholder="email*" [formControl]="ctlEmail" >
+                        <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error> 
+                        <mat-error class="field-error" *ngIf="ctlEmail.hasError('custom')">{{ctlEmail.errors.custom}}</mat-error>         
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate" >
+                        <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('required')">Required</mat-error>
+                        <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('custom')">{{ctlBirthDate.errors.custom}}</mat-error>
+                    </mat-form-field>
+        </div>  
         <div>
-            <button [disabled]="loading" mat-stroked-button>Sign In</button>
-            <img *ngIf="loading"
-                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        </div>
+             <button [disabled]="loading" mat-stroked-button>Signin</button>
+                
+        </div>     
     </form>
-</div>
+    <!-- <pre>
+{{frm.value | json }}
+{{frm.invalid | json }}
+{{frm.pristine | json }}
+{{frm.pending | json }}
+</pre> -->
+

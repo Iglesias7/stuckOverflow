@@ -126,6 +126,29 @@ namespace Prid1920_g03.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
+        [HttpPost("signup")]
+        public async Task<ActionResult<User>> Signup(UserDTO data) {
+             var newUser = new User()
+            {
+                Pseudo = data.Pseudo,
+                Password = data.Password,
+                LastName = data.LastName,
+                FirstName = data.FirstName,
+                BirthDate = data.BirthDate,
+                Email = data.Email,
+                Reputation = data.Reputation,
+                Role = data.Role
+            };
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsyncWithValidation();
+
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == data.Pseudo);
+            if(user != null)
+                return Ok(this.Authenticate(user.Pseudo, user.Password));
+            return null;
+        }
+
         private async Task<User> Authenticate(string pseudo, string password)
         {
 

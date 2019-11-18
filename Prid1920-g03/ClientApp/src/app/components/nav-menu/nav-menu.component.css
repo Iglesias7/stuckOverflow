@@ -41,3 +41,7 @@ html {
 .bg-color{
   background-color: darkcyan;
 }
+
+.nav-link * {
+  vertical-align: middle;
+}

@@ -46,10 +46,10 @@ export class SignupComponent implements OnInit {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), 
             Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$"), this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlConfirmPassword = this.formBuilder.control('', Validators.required);
+        this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, this.validatePasswords()]);
         this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email]);
+        this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, this.emailUsed()]);
 
 
         this.signupForm = this.formBuilder.group({
@@ -82,7 +82,7 @@ export class SignupComponent implements OnInit {
         this.create();
     }
 
-    // appelée quand on clique sur le bouton "new member"
+   
     create() {
         
         const user = new User({});
@@ -174,4 +174,17 @@ export class SignupComponent implements OnInit {
             });
         };
     }
+
+   validatePasswords() : any {
+        let notNull = false;
+        let pw = this.ctlPassword.value;
+        let cfpw = this.ctlConfirmPassword.value;       
+        if((pw != "") && (cfpw != ""))
+            notNull = true;
+        if(notNull)
+            return (pw == cfpw);
+        else
+            return null;
+   }
+
 }

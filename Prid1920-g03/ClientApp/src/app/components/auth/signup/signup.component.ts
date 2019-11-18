@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, AsyncValidator, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
@@ -31,22 +31,17 @@ export class SignupComponent implements OnInit {
 
     constructor(
         private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
-        private userService: UserService
     ) {
-        // redirect to home if already logged in
-        if (this.authenticationService.currentUser) {
-            this.router.navigate(['/counter']);
-        }
+       
     }
 
     ngOnInit() {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), 
             Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$"), this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, this.validatePasswords()]);
+        this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required]);
         this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, this.emailUsed()]);
@@ -60,9 +55,8 @@ export class SignupComponent implements OnInit {
             firstName: this.ctlFirstName,
             lastName: this.ctlLastName,
             birthDate: this.ctlBirthDate,
-        });
+        }, { validator: this.validatePasswords});
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/counter';
     }
    
 
@@ -78,48 +72,6 @@ export class SignupComponent implements OnInit {
         // on s'arrête si le formulaire n'est pas valide
         if (this.signupForm.invalid) return;
         this.loading = true;
-
-        this.create();
-    }
-
-   
-    create() {
-        
-        const user = new User({});
-        user.pseudo = this.f.pseudo.value;
-        user.email = this.f.email.value;
-        user.firstName = this.f.firstName.value;
-        user.lastName = this.f.lastName.value;
-        user.password = this.f.password.value;
-        user.birthDate = this.f.birthDate.value;
-        
-        this.userService.add(user).subscribe(
-            data => {
-                this.authenticationService.login(this.f.pseudo.value, this.f.password.value)
-                .subscribe(
-                    // si login est ok, on navigue vers la page demandée
-                    data => {
-                        this.router.navigate([this.returnUrl]);
-                    },
-                    // en cas d'erreurs, on reste sur la page et on les affiche
-                    error => {
-                        const errors = error.error.errors;
-                        for (let field in errors) {
-                            this.signupForm.get(field.toLowerCase()).setErrors({ custom: errors[field] })
-                        }
-                        this.loading = false;
-                    }
-                );
-            },
-            // en cas d'erreurs, on reste sur la page et on les affiche
-            error => {
-                const errors = error.error.errors;
-                for (let field in errors) {
-                    this.signupForm.get(field.toLowerCase()).setErrors({ custom: errors[field] })
-                }
-                this.loading = false;
-            }
-        );            
     }
 
     validateBirthDate(): any {
@@ -136,7 +88,7 @@ export class SignupComponent implements OnInit {
     }
 
     // Validateur asynchrone qui vérifie si le pseudo n'est pas déjà utilisé par un autre membre
-    pseudoUsed(): any {
+    pseudoUsed(): AsyncValidatorFn {
         let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
             clearTimeout(timeout);
@@ -146,8 +98,8 @@ export class SignupComponent implements OnInit {
                     if (ctl.pristine) {
                         resolve(null);
                     } else {
-                        this.userService.getByPseudo(pseudo).subscribe(member => {
-                            resolve(member ? { pseudoUsed: true } : null);
+                        this.authenticationService.getByPseudo(pseudo).subscribe(user => {
+                            resolve(user ? null : { pseudoUsed: true } );
                         });
                     }
                 }, 300);
@@ -156,7 +108,7 @@ export class SignupComponent implements OnInit {
     }
 
 
-    emailUsed(): any {
+    emailUsed(): AsyncValidatorFn {
         let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
             clearTimeout(timeout);
@@ -166,8 +118,8 @@ export class SignupComponent implements OnInit {
                     if(ctl.pristine){
                         resolve(null);
                     } else {
-                        this.userService.getByEmail(email).subscribe(member => {
-                            resolve(member ? {emailUsed: true } : null);
+                        this.authenticationService.getByEmail(email).subscribe(user => {
+                            resolve(user ? null : {emailUsed: true } );
                         });
                     }
                 }, 300);
@@ -175,16 +127,19 @@ export class SignupComponent implements OnInit {
         };
     }
 
-   validatePasswords() : any {
-        let notNull = false;
-        let pw = this.ctlPassword.value;
-        let cfpw = this.ctlConfirmPassword.value;       
-        if((pw != "") && (cfpw != ""))
-            notNull = true;
-        if(notNull)
-            return (pw == cfpw);
-        else
-            return null;
+   validatePasswords(group: FormGroup) : ValidationErrors {
+        if(!group.value) {return null;}
+        return group.value.password === group.value.confirm_password ? null : {passwordNotConfirmed: true};
    }
+
+   signup() {
+    this.authenticationService.signup(this.ctlPseudo.value, this.ctlPassword.value, this.ctlFirstName.value, this.ctlLastName.value, this.ctlEmail.value, this.ctlBirthDate.value).subscribe(() => {
+        this.loading = true;
+        if (this.authenticationService.currentUser) {
+            // Redirect the user
+            this.router.navigate(['/']);
+        }
+    });
+}
 
 }

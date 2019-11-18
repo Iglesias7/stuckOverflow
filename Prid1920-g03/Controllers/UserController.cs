@@ -160,45 +160,25 @@ namespace Prid1920_g03.Controllers
 
         [AllowAnonymous]
         [HttpPost("signup")]
-        public async Task<ActionResult<User>> Signup(UserDTO data) {
-             var newUser = new User()
-            {
-                Pseudo = data.Pseudo,
-                Password = data.Password,
-                LastName = data.LastName,
-                FirstName = data.FirstName,
-                BirthDate = data.BirthDate,
-                Email = data.Email,
-                Reputation = data.Reputation,
-                Role = data.Role
-            };
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsyncWithValidation();
-
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == data.Pseudo);
-            if(user != null)
-                return Ok(this.Authenticate(user.Pseudo, user.Password));
-            return null;
+        public async Task<ActionResult<UserDTO>> Signup(UserDTO data) {
+            
+            return this.PostUser(data);
         }
 
         
 
         [AllowAnonymous]
-        [HttpGet("pseudo")]
-        public async Task<ActionResult<UserDTO>> GetByPseudo(string pseudo){
+        [HttpGet("availablePseudo/{pseudo}")]
+        public async Task<ActionResult<bool>> GetByPseudo(string pseudo){
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
-            if(user == null)
-                return NotFound(); 
-            return user.ToDTO();
+            return user == null;
         }
         
         [AllowAnonymous]
-        [HttpGet("email")]
-        public async Task<ActionResult<UserDTO>> GetByEmail (string email ){
+        [HttpGet("availableEmail/{email}")]
+        public async Task<ActionResult<bool>> GetByEmail (string email ){
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
-            if(user == null )
-                return NotFound(); 
-            return user.ToDTO();
+            return user == null;
         }
        
 

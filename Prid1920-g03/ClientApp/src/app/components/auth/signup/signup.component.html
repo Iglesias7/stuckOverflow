@@ -1,49 +1,46 @@
-<!-- 
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" >
+
+    <form [formGroup]="signupForm" novalidate>
         <h1 class="header">Signup</h1>
         <div class="form">
                 <mat-form-field>
-                        <input matInput type="text" placeholder="Pseudo*" [formControl]="ctlPseudo" required >
+                        <input matInput type="text" placeholder="Pseudo*" [formControl]="ctlPseudo" required appSetFocus>
                         <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
                         <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
                         <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}</mat-error>
+
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="password" placeholder="Password*" [formControl]="ctlPassword" autocomplete="new-password" >
                         <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
                         <mat-error class="field-error" *ngIf="ctlPassword.hasError('minlength'">Minimum length is {{ctlPassword.errors['minlength'].requiredLength}}</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}</mat-error>
+
                         
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="password" placeholder="Confirm your password*" [formControl]="ctlConfirmPassword" >
                         <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use</mat-error>
                         <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('validatePasswords'">The two passwors must be identical</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('custom')">{{ctlConfirmPassword.errors.custom}}</mat-error>
+
 
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="text" placeholder="Firstname" [formControl]="ctlFirstName" >
                         <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlFirstName.hasError('custom')">{{ctlFirstName.errors.custom}}</mat-error>
            
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="text" placeholder="Lastname" [formControl]="ctlLastName" >
                         <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
-                        <mat-error class="field-error" *ngIf="ctllas7.hasError('custom')">{{ctlLastName.errors.custom}}</mat-error>
+
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="email" placeholder="email*" [formControl]="ctlEmail" >
                         <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error> 
-                        <mat-error class="field-error" *ngIf="ctlEmail.hasError('custom')">{{ctlEmail.errors.custom}}</mat-error>         
+                        <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed'">This email adress is already used!</mat-error>
                     </mat-form-field>
                     <mat-form-field>
                         <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate" >
                         <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('required')">Required</mat-error>
-                        <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('custom')">{{ctlBirthDate.errors.custom}}</mat-error>
                     </mat-form-field>
         </div>  
         <div>
@@ -57,4 +54,4 @@
 {{frm.pristine | json }}
 {{frm.pending | json }}
 </pre> -->
- -->
+

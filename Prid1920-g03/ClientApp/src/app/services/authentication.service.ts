@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { map, flatMap } from 'rxjs/operators';
 import { User } from '../models/user';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -26,6 +27,20 @@ export class AuthenticationService {
           }
           return user;
         }));
+    }
+
+    public signup(pseudo: string, password: string, firstname: string, lastname: string, email: string, birthdate: Date): Observable<User>{
+        return this.http.post<User>(`${this.baseUrl}api/user/signup`, { pseudo: pseudo, password: password, firstName: firstname, lastName: lastname, email: email, birthDate: birthdate  }).pipe(
+          flatMap(res => this.login(pseudo, password))
+        );
+    }
+
+    getByPseudo(pseudo: string){
+      return this.http.get<User>(`${this.baseUrl}api/user/${pseudo}`);
+    }
+  
+    getByEmail(email: string){
+      return this.http.get<User>(`${this.baseUrl}api/user/availableEmail/${email}`);     
     }
 
     

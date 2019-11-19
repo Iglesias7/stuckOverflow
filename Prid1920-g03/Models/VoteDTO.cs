@@ -6,7 +6,8 @@ namespace Prid1920_g03.Models
 
     public class VoteDTO
     {
-        public int Id { get; set; }
+        public int PostId { get; set; }
+        public int UserId { get; set; }
         public int UpDown { get; set; }
         public DateTime Timestamp { get; set; }
     }

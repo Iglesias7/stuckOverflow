@@ -22,6 +22,8 @@ namespace Prid1920_g03.Models
             modelBuilder.Entity<User>().HasIndex(u => u.Email)
             .IsUnique(true);
 
+            modelBuilder.Entity<Vote>().HasKey(v => new {v.PostId, v.UserId});
+
             modelBuilder.Entity<User>().HasData(
                 new User() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
                 new User() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },

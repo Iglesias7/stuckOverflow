@@ -30,8 +30,8 @@ export class SignupComponent {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
         this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
 
@@ -87,36 +87,6 @@ export class SignupComponent {
         };
     }
 
-    lastName(): AsyncValidatorFn {
-        let timeout: NodeJS.Timer;
-        return (ctl: FormControl) => {
-            clearTimeout(timeout);
-            const pseudo = ctl.value;
-            return new Promise(resolve => {
-                timeout = setTimeout(() => {
-                    if (this.firstName === null) {
-                        resolve( { lastnameRequired: true } );
-                    }
-                }, 300);
-            });
-        };
-    }
-
-    firstName(): AsyncValidatorFn {
-        let timeout: NodeJS.Timer;
-        return (ctl: FormControl) => {
-            clearTimeout(timeout);
-            const pseudo = ctl.value;
-            return new Promise(resolve => {
-                timeout = setTimeout(() => {
-                    if (this.lastName === null) {
-                        resolve( { firstnameRequired: true } );
-                    }
-                }, 300);
-            });
-        };
-    }
-
     emailUsed(): AsyncValidatorFn {
         let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
@@ -138,6 +108,14 @@ export class SignupComponent {
 
     validatePasswords(group: FormGroup) : ValidationErrors {
         if(!group.value) {return null;}
+        let firstname: string = group.value.firstName;
+        let lastname: string = group.value.lastName;
+        if(lastname === "" && firstname !== "")
+            return {lastNameRequired: true};
+
+        if(lastname !== "" && firstname === "")
+            return {firstNameRequired: true};
+
         return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
     }
 

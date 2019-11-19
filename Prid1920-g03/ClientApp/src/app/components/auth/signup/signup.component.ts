@@ -43,7 +43,7 @@ export class SignupComponent {
             firstName: this.ctlFirstName,
             lastName: this.ctlLastName,
             birthDate: this.ctlBirthDate,
-        }, { validator: this.validatePasswords}, {validator: this.validateFirstnameAndLastname});
+        }, { validator: this.validatePasswords});
     }
 
     validateBirthDate(): AsyncValidatorFn {
@@ -87,36 +87,6 @@ export class SignupComponent {
         };
     }
 
-    lastName(): AsyncValidatorFn {
-        let timeout: NodeJS.Timer;
-        return (ctl: FormControl) => {
-            clearTimeout(timeout);
-            const pseudo = ctl.value;
-            return new Promise(resolve => {
-                timeout = setTimeout(() => {
-                    if (this.firstName === null) {
-                        resolve( { lastnameRequired: true } );
-                    }
-                }, 300);
-            });
-        };
-    }
-
-    firstName(): AsyncValidatorFn {
-        let timeout: NodeJS.Timer;
-        return (ctl: FormControl) => {
-            clearTimeout(timeout);
-            const pseudo = ctl.value;
-            return new Promise(resolve => {
-                timeout = setTimeout(() => {
-                    if (this.lastName === null) {
-                        resolve( { firstnameRequired: true } );
-                    }
-                }, 300);
-            });
-        };
-    }
-
     emailUsed(): AsyncValidatorFn {
         let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
@@ -138,17 +108,23 @@ export class SignupComponent {
 
     validatePasswords(group: FormGroup) : ValidationErrors {
         if(!group.value) {return null;}
+        let firstname: string = group.value.firstName;
+        let lastname: string = group.value.lastName;
+        if(lastname === "" && firstname !== "")
+            return {lastNameRequired: true};
+
+        if(lastname !== "" && firstname === "")
+            return {firstNameRequired: true};
+
         return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
     }
 
     validateFirstnameAndLastname(group: FormGroup) : ValidationErrors {
-        if(group.value.firstName !== "" && group.value.lastName === "")
-            return true;
-        else if(group.value.firstName === "" && group.value.lastName !== "")
-            return true;
-        else
-            return null;
+        return group.value.firstName !== "" && group.value.lastName !== "" ? null : {validatefirstname: true };
+
     }
+
+    
 
     signup() {
         this.loading = true;

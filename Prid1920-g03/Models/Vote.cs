@@ -11,9 +11,9 @@ namespace Prid1920_g03.Models
 
     public class Vote
     {
-        [Key]
-        public int Id { get; set; }
-        
+        public int PostId { get; set; }
+        public int UserId { get; set; }
+
         [Required(ErrorMessage = "Required")]
         public int UpDown { get; set; }
 

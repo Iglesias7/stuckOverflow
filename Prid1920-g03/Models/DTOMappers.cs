@@ -63,7 +63,8 @@ namespace Prid1920_g03.Models
 //----------------------------VoteDTO-----------------------------------------------------
         public static VoteDTO ToDTO(this Vote vote) {
             return new VoteDTO {
-                Id = vote.Id,
+                PostId = vote.PostId,
+                UserId = vote.UserId,
                 UpDown = vote.UpDown,
                 Timestamp = vote.Timestamp,
             };

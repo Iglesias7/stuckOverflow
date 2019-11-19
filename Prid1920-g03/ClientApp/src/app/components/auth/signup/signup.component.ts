@@ -142,8 +142,8 @@ export class SignupComponent {
     }
 
     signup() {
+        this.loading = true;
         this.authenticationService.signup(this.ctlPseudo.value, this.ctlPassword.value, this.ctlFirstName.value, this.ctlLastName.value, this.ctlEmail.value, this.ctlBirthDate.value).subscribe(() => {
-            this.loading = true;
             if (this.authenticationService.currentUser) {
                 // Redirect the user
                 this.router.navigate(['/']);

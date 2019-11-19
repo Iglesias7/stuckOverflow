@@ -1,35 +1,30 @@
-.form .form {
+.form  {
     margin-top: 15px;
+    width: 100%;
+    text-align: center;
 }
+
 * {
     box-sizing: border-box;
 }
-.phone-container {
-    margin-top: 15px;
-    display: inline-grid;
-    grid-column-gap: 5px;
-    grid-template-columns: 1fr 1fr auto;
-    align-items: center;
+
+.header{
+    text-align: center;
+    color: navy;
 }
-.add {
-    height: 40px;
+
+.bt-signup{
+    text-align: center;
 }
-.delete {
-    display: grid;
-    justify-items: center;
+
+.bt-signup button{
+    border: none;
+    background-color: navy;
+    color: white;
 }
-.picture-container {
-    display: grid;
-    justify-items: center;
-    align-items: center;
-    grid-template-columns: auto;
-    grid-row-gap: 10px;
-    margin: 10px;
-}
-.footer {
-    display: grid;
-    justify-items: stretch;
-    align-items: center;
-    grid-template-columns: auto auto;
-    margin-top: 30px;
+
+.bt-signup button:hover{
+    background-color: darkgreen;
+    color: white;
+    cursor: pointer;
 }

@@ -1,6 +1,30 @@
-form {
-    width: 30%;
-    display: grid;
-    grid-row-gap: 10px;
+.form  {
+    margin-top: 15px;
+    width: 100%;
+    text-align: center;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+.header{
+    text-align: center;
+    color: navy;
+}
+
+.bg-login{
+    text-align: center;
+}
+
+.bg-login button{
+    border: none;
+    background-color: navy;
+    color: white;
+}
+
+.bg-login button:hover{
+    background-color: darkgreen;
+    color: white;
+    cursor: pointer;
+}

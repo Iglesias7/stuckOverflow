@@ -1,20 +1,25 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <h1>Login</h1>
-        <mat-form-field>
-            <input #pseudo matInput placeholder="Pseudo" [formControl]="ctlPseudo" required appSetFocus>
-            <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required>
-            <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}
-            </mat-error>
-        </mat-form-field>
-        <div>
-            <button [disabled]="loading" mat-stroked-button>Login</button>
-            <img *ngIf="loading"
-                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh
+<div class="row">
+    <div class="col-md-4 col-md-offset-4"></div>
+    <div class="col-md-4 col-md-offset-4">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <h1 class="header">Login</h1>
+            <div class="form">
+                <mat-form-field>
+                    <input #pseudo matInput placeholder="Pseudo" [formControl]="ctlPseudo" required appSetFocus>
+                    <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlPseudo.hasError('custom')">{{ctlPseudo.errors.custom}}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required>
+                    <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}
+                    </mat-error>
+                </mat-form-field>
+            </div><br>
+            <div class="bg-login">
+                <button [disabled]="loading" mat-stroked-button>Login</button>
+                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh
                 /hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwn
                 HQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xj
                 ihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7x
@@ -25,5 +30,8 @@
                 jEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgEN
                 BMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc
                 /jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-        </div>
-    </form>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4 col-md-offset-4"></div>
+</div>

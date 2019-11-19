@@ -169,15 +169,15 @@ namespace Prid1920_g03.Controllers
 
         [AllowAnonymous]
         [HttpGet("availablePseudo/{pseudo}")]
-        public async Task<ActionResult<bool>> GetByPseudo(string pseudo){
-            var user = await _context.Users.FindAsync(pseudo);
+        public async Task<ActionResult<bool>> getByPseudo(string pseudo){
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
             return user == null;
         }
         
         [AllowAnonymous]
         [HttpGet("availableEmail/{email}")]
-        public async Task<ActionResult<bool>> GetByEmail (string email){
-            var user = await _context.Users.FindAsync(email);
+        public async Task<ActionResult<bool>> getByEmail (string email){
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
             return user == null;
         }
        

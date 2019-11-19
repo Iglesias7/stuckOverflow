@@ -8,6 +8,27 @@
                 {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
             <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use</mat-error>
         </mat-form-field>
+        
+        <mat-form-field>
+            <input matInput placeholder="Firstname" [formControl]="ctlFirstName" required>
+            <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Lastname" [formControl]="ctlLastName" required>
+            <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="text" placeholder="Email" [formControl]="ctlEmail" required>
+            <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
+            <mat-error class="field-error" *ngIf="ctlEmail.hasError('email')">Email is not valid</mat-error>
+            <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed')">This email adress is already used!  
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate">
+            <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('tooYoung')">you young</mat-error>
+            <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('futureBorn')">this Birthdate is bad</mat-error>
+        </mat-form-field>
         <mat-form-field>
             <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required
                 autocomplete="new-password">
@@ -18,29 +39,26 @@
         <mat-form-field>
             <input matInput type="password" placeholder="Confirm your password" [formControl]="ctlConfirmPassword" required>
             <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('validatePasswords')">The two passwors must
-                be identical</mat-error>
+            <mat-error class="float-right" *ngIf="ctlConfirmPassword.hasError('minlength')">Minimum length is
+                {{ctlConfirmPassword.errors['minlength'].requiredLength}}</mat-error>
         </mat-form-field>
-        <mat-form-field>
-            <input matInput placeholder="Firstname" [formControl]="ctlFirstName" >
-            <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput placeholder="Lastname" [formControl]="ctlLastName" required>
-            <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="email" placeholder="Email" [formControl]="ctlEmail" required>
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
-            <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed')">This email adress is already used! 
-            </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate">
-            <!-- <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('validateBirthDate')">Required</mat-error> -->
-        </mat-form-field>
-    </div>
+        <div *ngIf="signupForm.errors && ctlConfirmPassword.dirty && ctlConfirmPassword.valid">
+            <mat-error class="float-left" *ngIf="signupForm.hasError('passwordNotConfirmed')">The passwords don't match</mat-error>
+        </div>
+    </div><br>
     <div>
-        <button [disabled]="loading" mat-stroked-button  (click)="signup()" [disabled]="signupForm.invalid">Signin</button>
+        <button  mat-stroked-button  (click)="signup()" [disabled]="signupForm.invalid">Signup</button>
+        <img *ngIf="loading"
+                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh
+                /hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwn
+                HQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xj
+                ihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7x
+                SUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqR
+                oKw0R8DYlJd8z0fMDgsGo
+                /IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCg
+                AAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradyleso
+                jEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgEN
+                BMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc
+                /jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
     </div>
 </form>

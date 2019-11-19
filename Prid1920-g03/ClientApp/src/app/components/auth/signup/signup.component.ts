@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -10,11 +10,9 @@ import { AuthenticationService } from '../../../services/authentication.service'
     styleUrls: ['./signup.component.css']
   })
 
-export class SignupComponent implements OnInit {
+export class SignupComponent {
 
     public signupForm: FormGroup;
-    public loading = false;    
-
     public ctlPseudo: FormControl;
     public ctlPassword: FormControl;
     public ctlConfirmPassword: FormControl;
@@ -22,24 +20,20 @@ export class SignupComponent implements OnInit {
     public ctlLastName: FormControl;
     public ctlEmail: FormControl;
     public ctlBirthDate: FormControl;
-
-    // @ViewChild('pseudo', { static: true }) pseudo: ElementRef;
+    public loading = false;   
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
         private authenticationService: AuthenticationService,
     ) {
-       
-    }
-
-    ngOnInit() {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required]);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
+        this.ctlBirthDate = this.formBuilder.control('', [Validators.required], [this.validateBirthDate()]);
 
         this.signupForm = this.formBuilder.group({
             pseudo: this.ctlPseudo,
@@ -52,18 +46,24 @@ export class SignupComponent implements OnInit {
         }, { validator: this.validatePasswords});
     }
 
-    get f() { return this.signupForm.controls; }
-
-    validateBirthDate(): any {
+    validateBirthDate(): AsyncValidatorFn {
+        let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
+            clearTimeout(timeout);
             const date = new Date(ctl.value);
             const diff = Date.now() - date.getTime();
-            if (diff < 0)
-                return { futureBorn: true } 
             var age = new Date(diff).getUTCFullYear() - 1970;
-            if (age < 18) 
-                return { tooYoung: true };
-            return null;
+            return new Promise(resolve => {
+                timeout = setTimeout(() => {
+                    if (ctl.pristine) {
+                        resolve(null);
+                    } else if(diff < 0) {
+                        resolve (!(diff < 0) ? null : { futureBorn: true } );
+                    }else {
+                        resolve (age >= 18 ? null : { tooYoung: true });
+                    }
+                }, 300);
+            });
         };
     }
 
@@ -81,6 +81,36 @@ export class SignupComponent implements OnInit {
                         this.authenticationService.getByPseudo(pseudo).subscribe(user => {
                             resolve(user ? null : { pseudoUsed: true } );
                         });
+                    }
+                }, 300);
+            });
+        };
+    }
+
+    lastName(): AsyncValidatorFn {
+        let timeout: NodeJS.Timer;
+        return (ctl: FormControl) => {
+            clearTimeout(timeout);
+            const pseudo = ctl.value;
+            return new Promise(resolve => {
+                timeout = setTimeout(() => {
+                    if (this.firstName === null) {
+                        resolve( { lastnameRequired: true } );
+                    }
+                }, 300);
+            });
+        };
+    }
+
+    firstName(): AsyncValidatorFn {
+        let timeout: NodeJS.Timer;
+        return (ctl: FormControl) => {
+            clearTimeout(timeout);
+            const pseudo = ctl.value;
+            return new Promise(resolve => {
+                timeout = setTimeout(() => {
+                    if (this.lastName === null) {
+                        resolve( { firstnameRequired: true } );
                     }
                 }, 300);
             });
@@ -108,7 +138,7 @@ export class SignupComponent implements OnInit {
 
     validatePasswords(group: FormGroup) : ValidationErrors {
         if(!group.value) {return null;}
-        return group.value.password === group.value.confirm_password ? null : {passwordNotConfirmed: true};
+        return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
     }
 
     signup() {

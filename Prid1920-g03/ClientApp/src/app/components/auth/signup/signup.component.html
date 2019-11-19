@@ -7,24 +7,34 @@
                 <mat-form-field>
                     <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required appSetFocus>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pattern')">Pseudo must begin with letters</mat-error><br>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is
                         {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlPseudo.hasError('maxlength')">Maximum length is
+                            {{ctlPseudo.errors['maxlength'].requiredLength}}</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use
                     </mat-error>
                 </mat-form-field>
 
                 <mat-form-field>
-                    <input matInput placeholder="Firstname" [formControl]="ctlFirstName" required>
-                    <mat-error class="field-error" *ngIf="ctlFirstName.hasError('required')">Required</mat-error>
+                    <input matInput placeholder="Firstname" [formControl]="ctlFirstName" >
+                    <mat-error class="field-error" *ngIf="ctlFirstName.hasError('minlength')">Minimum length is
+                        {{ctlFirstName.errors['minlength'].requiredLength}}</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlFirstName.hasError('maxlength')">Maximum length is
+                            {{ctlFirstName.errors['maxlength'].requiredLength}}</mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput placeholder="Lastname" [formControl]="ctlLastName" required>
-                    <mat-error class="field-error" *ngIf="ctlLastName.hasError('required')">Required</mat-error>
+                    <input matInput placeholder="Lastname" [formControl]="ctlLastName" >
+                    <mat-error class="field-error" *ngIf="ctlLastName.hasError('minlength')">Minimum length is
+                        {{ctlLastName.errors['minlength'].requiredLength}}</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlLastName.hasError('maxlength')">Maximum length is
+                        {{ctlLastName.errors['maxlength'].requiredLength}}</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput type="text" placeholder="Email" [formControl]="ctlEmail" required>
                     <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlEmail.hasError('email')">Email is not valid</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlEmail.hasError('pattern')">Email is not valid</mat-error>
                     <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed')">This email adress is already
                         used!
                     </mat-error>

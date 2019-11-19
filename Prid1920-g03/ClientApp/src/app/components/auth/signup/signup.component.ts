@@ -27,12 +27,12 @@ export class SignupComponent {
         private router: Router,
         private authenticationService: AuthenticationService,
     ) {
-        this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
-        this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
+        this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
         this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+        this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")], [this.emailUsed()]);
         this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
 
         this.signupForm = this.formBuilder.group({
@@ -43,7 +43,7 @@ export class SignupComponent {
             firstName: this.ctlFirstName,
             lastName: this.ctlLastName,
             birthDate: this.ctlBirthDate,
-        }, { validator: this.validatePasswords});
+        }, { validator: this.validatePasswords}, {validator: this.validateFirstnameAndLastname});
     }
 
     validateBirthDate(): AsyncValidatorFn {
@@ -139,6 +139,15 @@ export class SignupComponent {
     validatePasswords(group: FormGroup) : ValidationErrors {
         if(!group.value) {return null;}
         return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
+    }
+
+    validateFirstnameAndLastname(group: FormGroup) : ValidationErrors {
+        if(group.value.firstName !== "" && group.value.lastName === "")
+            return true;
+        else if(group.value.firstName === "" && group.value.lastName !== "")
+            return true;
+        else
+            return null;
     }
 
     signup() {

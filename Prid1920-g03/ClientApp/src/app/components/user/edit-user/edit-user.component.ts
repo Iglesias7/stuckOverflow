@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { UserService } from '../../../services/user.service';
@@ -17,7 +17,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 
 
-export class EditUserComponent {
+export class EditUserComponent implements OnDestroy {
     public editForm: FormGroup;
     public ctlPseudo: FormControl;
     public ctlFirstName: FormControl;
@@ -28,6 +28,9 @@ export class EditUserComponent {
     public ctlReputation: FormControl;
     public ctlRole: FormControl;
     public isNew: boolean;
+
+    private tempPicturePath: string;
+    private pictureChanged: boolean;
 
 
     constructor(public dialogRef: MatDialogRef<EditUserComponent>,
@@ -60,17 +63,12 @@ export class EditUserComponent {
 
         this.isNew = data.isNew;
         this.editForm.patchValue(data.user);
+
+        this.tempPicturePath = data.user.picturePath;
+        this.pictureChanged = false;
     }
 
-    // Validateur bidon qui vérifie que la valeur est différente
-    // forbiddenValue(val: string): any {
-    //     return (ctl: FormControl) => {
-    //         if (ctl.value === val) {
-    //             return { forbiddenValue: { currentValue: ctl.value, forbiddenValue: val } };
-    //         }
-    //         return null;
-    //     };
-    // }
+    
 
     validateBirthDate(): any {
         return (ctl: FormControl) => {
@@ -124,15 +122,52 @@ export class EditUserComponent {
         };
     }
 
+
+    update() {
+        const data = this.editForm.value;
+        data.picturePath = this.tempPicturePath;
+        if (this.pictureChanged) {
+            this.userService.confirmPicture(data.pseudo, this.tempPicturePath).subscribe();
+            data.picturePath = 'uploads/' + data.pseudo + '.jpg';
+            this.pictureChanged = false;
+        }
+        this.dialogRef.close(data);
+    }
+
+    cancelTempPicture() {
+        const data = this.editForm.value;
+        if (this.pictureChanged) {
+            this.userService.cancelPicture(this.tempPicturePath).subscribe();
+        }
+    }
+
     onNoClick(): void {
         this.dialogRef.close();
     }
 
-    update() {
-        this.dialogRef.close(this.editForm.value);
-    }
-
     cancel() {
         this.dialogRef.close();
+    }
+
+    fileChange(event) {
+        const fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            const file = fileList[0];
+            this.userService.uploadPicture(this.editForm.value.pseudo || 'empty', file).subscribe(path => {
+                console.log(path);
+                this.cancelTempPicture();
+                this.tempPicturePath = path;
+                this.pictureChanged = true;
+                this.editForm.markAsDirty();
+            });
+        }
+    }
+
+    get picturePath(): string {
+        return this.tempPicturePath && this.tempPicturePath !== '' ? this.tempPicturePath : 'uploads/unknown-user.jpg';
+    }
+
+    ngOnDestroy(): void {
+        this.cancelTempPicture();
     }
 }

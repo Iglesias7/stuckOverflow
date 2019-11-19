@@ -52,6 +52,8 @@ namespace Prid1920_g03.Models
         [NotMapped]
         public string Token { get; set; }
 
+        public string PicturePath { get; set; }
+
         [NotMapped]
         public int? Age
         {

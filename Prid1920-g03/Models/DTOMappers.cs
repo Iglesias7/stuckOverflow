@@ -15,6 +15,7 @@ namespace Prid1920_g03.Models
                 LastName = user.LastName,
                 BirthDate = user.BirthDate,
                 Reputation = user.Reputation,
+                PicturePath = user.PicturePath,
                 Role = user.Role
             };
         }

@@ -13,6 +13,7 @@ export class User {
     email: string;
     reputation: number;
     birthDate: string;
+    picturePath: string;
     role: Role;
     token: string;
 
@@ -28,6 +29,7 @@ export class User {
         this.reputation = data.reputation;
         this.birthDate = data.birthDate &&
           data.birthDate.length > 10 ? data.birthDate.substring(0, 10) : data.birthDate;
+        this.picturePath = data.picturePath;
         this.role = data.role || Role.Member;
         this.token = data.token;
       }

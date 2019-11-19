@@ -66,7 +66,8 @@ namespace Prid1920_g03.Controllers
                 BirthDate = data.BirthDate,
                 Email = data.Email,
                 Reputation = data.Reputation,
-                Role = data.Role
+                Role = data.Role,
+                PicturePath = data.PicturePath
             };
             _context.Users.Add(newUser);
             var res = await _context.SaveChangesAsyncWithValidation();
@@ -82,18 +83,27 @@ namespace Prid1920_g03.Controllers
             if (id != userDTO.Id)
                 return BadRequest();
             var user = await _context.Users.FindAsync(id);
+
             if (user == null)
                 return NotFound();
+
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.BirthDate = userDTO.BirthDate;
-            
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
 
+            if (!string.IsNullOrWhiteSpace(userDTO.PicturePath))
+                // On ajoute un timestamp à la fin de l'url pour générer un URL différent quand on change d'image
+                // car sinon l'image ne se rafraîchit pas parce que l'url ne change pas et le browser la prend dans la cache.
+                user.PicturePath = userDTO.PicturePath + "?" + DateTime.Now.Ticks;
+            else
+                user.PicturePath = null;
+
            if (userDTO.Password != null)
                 user.Password = userDTO.Password;
+
             return NoContent();
         }
 
@@ -181,7 +191,42 @@ namespace Prid1920_g03.Controllers
             return user == null;
         }
        
+        [HttpPost("upload")]
+        public async Task<IActionResult> Upload([FromForm] string pseudo, [FromForm]IFormFile picture) {
+            if (picture != null && picture.Length > 0) {
+                //var fileName = Path.GetFileName(picture.FileName);
+                var fileName = pseudo + "-" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".jpg";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\uploads", fileName);
+                using (var fileSrteam = new FileStream(filePath, FileMode.Create)) {
+                    await picture.CopyToAsync(fileSrteam);
+                }
+                return Ok($"\"uploads/{fileName}\"");
+            }
+            return Ok();
+        }
 
+        [HttpPost("cancel")]
+        public IActionResult Cancel([FromBody] dynamic data) {
+            string picturePath = data.picturePath;
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picturePath);
+            if (System.IO.File.Exists(path))
+                System.IO.File.Delete(path);
+            return Ok();
+        }
+
+        [HttpPost("confirm")]
+        public IActionResult Confirm([FromBody] dynamic data) {
+            string pseudo = data.pseudo;
+            string picturePath = data.picturePath;
+            string newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\uploads", pseudo + ".jpg");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picturePath);
+            if (System.IO.File.Exists(path)) {
+                if (System.IO.File.Exists(newPath))
+                    System.IO.File.Delete(newPath);
+                System.IO.File.Move(path, newPath);
+            }
+            return Ok();
+        }
         
     }
 

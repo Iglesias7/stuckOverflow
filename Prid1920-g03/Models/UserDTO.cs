@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Prid1920_g03.Models {
     
@@ -13,6 +14,12 @@ namespace Prid1920_g03.Models {
         public int Reputation {get; set;}
         public string PicturePath { get; set; }
         public Role Role { get; set; }
+
+        public IList<PostDTO> Posts { get; set; }
+
+        public IList<CommentDTO> Comments { get; set; }
+
+        public IList<VoteDTO> Votes { get; set; }
 
     }
 }

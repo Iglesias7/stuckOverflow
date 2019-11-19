@@ -70,6 +70,12 @@ namespace Prid1920_g03.Models
             }
         }
 
+        public virtual IList<Post> Posts { get; set; } = new List<Post>();
+
+        public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
+
+        public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

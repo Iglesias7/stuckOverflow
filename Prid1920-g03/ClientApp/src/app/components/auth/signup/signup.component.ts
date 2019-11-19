@@ -33,7 +33,7 @@ export class SignupComponent {
         this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
-        this.ctlBirthDate = this.formBuilder.control('', [Validators.required], [this.validateBirthDate()]);
+        this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
 
         this.signupForm = this.formBuilder.group({
             pseudo: this.ctlPseudo,

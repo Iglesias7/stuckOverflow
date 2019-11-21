@@ -70,6 +70,7 @@ namespace Prid1920_g03.Controllers
                 PicturePath = data.PicturePath
             };
             _context.Users.Add(newUser);
+            
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);

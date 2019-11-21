@@ -16,7 +16,7 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
 
 export class UserListComponent implements AfterViewInit, OnDestroy {
     
-    // users: User[] = [];
+     users: User[] = [];
 
     displayedColumns: string[] = ['picturePath', 'pseudo', 'firstName', 'lastName', 'email', 'birthDate', 'reputation', 'role', 'actions'];
     dataSource: MatTableDataSource<User> = new MatTableDataSource();
@@ -57,7 +57,7 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
         this.userService.getAll().subscribe(users => {
             // assigne les données récupérées au datasource
             this.dataSource.data = users;
-
+            this.users = users;
             // restaure l'état du datasource (tri et pagination) à partir du state
             this.state.restoreState(this.dataSource);
 

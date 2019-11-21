@@ -30,15 +30,24 @@ namespace Prid1920_g03
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<Prid1920_g03Context>(opt => opt.UseSqlServer(
-            //     Configuration.GetConnectionString("prid1920_g03"))
-            // );
 
-            services.AddDbContext<Prid1920_g03Context>(opt => opt.UseMySql(
-                Configuration.GetConnectionString("prid1920-g03-mysql"))
-            );
+            services.AddDbContext<Prid1920_g03Context>(opt => {
+                opt.UseLazyLoadingProxies();
+                // opt.UseSqlServer(Configuration.GetConnectionString("prid1920-tuto-mssql"));
+                opt.UseMySql(Configuration.GetConnectionString("prid1920-g03-mysql"));
+            });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddJsonOptions(opt => {
+                    /*  
+                    ReferenceLoopHandling.Ignore: Json.NET will ignore objects in reference loops and not serialize them.
+                    The first time an object is encountered it will be serialized as usual but if the object is 
+                    encountered as a child object of itself the serializer will skip serializing it.
+                    See: https://stackoverflow.com/a/14205542
+                    */
+                    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

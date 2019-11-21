@@ -15,16 +15,17 @@
 
 .bt-signup{
     text-align: center;
+    color: white;
 }
 
-.bt-signup button{
+/* .bt-signup .button{
     border: none;
     background-color: navy;
     color: white;
 }
 
-.bt-signup button:hover{
+.bt-signup .button:hover{
     background-color: darkgreen;
     color: white;
     cursor: pointer;
-}
+} */

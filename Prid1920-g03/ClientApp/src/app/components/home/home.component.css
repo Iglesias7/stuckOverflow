@@ -1,9 +1,7 @@
-.container{
-    width: 300px;
+.bg-a{
+    width: 600px;
 }
 
-.container h1{
-    color: white; 
-    text-align: center; 
-    padding: 20px;
+.bg-a .img{
+    width: 500%;
 }

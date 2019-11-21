@@ -21,6 +21,7 @@ import { SharedModule } from './shared.module';
 import { EditUserComponent } from '../components/user/edit-user/edit-user.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SetFocusDirective } from '../directives/setfocus.directive';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { SetFocusDirective } from '../directives/setfocus.directive';
     ReactiveFormsModule,
     AppRoutes,
     BrowserAnimationsModule,
-    SharedModule
+    SharedModule,
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

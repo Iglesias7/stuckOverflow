@@ -1,51 +1,63 @@
 <header>
-    <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3'>
-      <div class="container">
-        <a class="navbar-brand text-dar" [routerLink]='["/"]'>prid1920_tuto</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Toggle navigation"
-          [attr.aria-expanded]="isExpanded" (click)="toggle()">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex" [ngClass]='{"show": isExpanded}' >
-          <ul class="navbar-nav flex-grow mr-auto">
-            <!-- <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-              <a class="nav-link text-dark" [routerLink]='["/"]' style = "color: white;">Home</a>
-            </li> -->
-            <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dar" [routerLink]='["/counter"]' *ngIf="currentUser" style = "color: white;">Counter</a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dar" [routerLink]='["/counter-stateless"]' *ngIf="currentUser" style = "color: white;">Counter (Stateless)</a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]'>
-              <a class="nav-link text-dar" [routerLink]='["/fetch-data"]' style = "color: white;" *ngIf="currentUser">Fetch data</a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser && isAdmin">
-              <a class="nav-link text-dar" [routerLink]='["/users"]' style = "color: white;">Users</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav">
-            <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser" style = "color: white;">
-              <a class="nav-link text-dar" [routerLink]='["/login"]'>
-                <span class="material-icons" style = "color: white;">exit_to_app</span>
-                <span style = "color: white;"> Login </span>
-              </a>
-            </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser" >
-                <a class="nav-link text-dar" [routerLink]='["/signup"]'>
-                  <span class="material-icons" style = "color: white;">exit_to_app</span>
-                  <span style = "color: white;"> SignUp </span>
-                </a>
-              </li>
-            <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-              <a class="nav-link text-dar" [routerLink]='' (click)='logout()'>
-                <span class="material-icons">power_settings_new</span>
-                <span> Logout </span>
-                <span class="text-info">({{authenticationService.currentUser.pseudo}})</span>
-              </a>
-            </li>
-          </ul>
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3'>
+    <div class="container">
+      <div ngbDropdown class="d-inline-block" style="margin-right: 10px;">
+        <button class="btn btn-outline-success" id="dropdownBasic1" (click)="readonly = !readonly" ngbDropdownToggle>{{ readonly ? " X " : " Menu "}}</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button ngbDropdownItem>Action - 1</button>
+          <button ngbDropdownItem>Another Action</button>
+          <button ngbDropdownItem>Something else is here</button>
         </div>
       </div>
-    </nav>
-  </header>
+      <img style="margin-right: 10px;" src="assets/pictures/logo.PNG" width="30"/>
+      <a class="navbar-brand text-dar" [routerLink]='["/"]'>Stuck <span>overflow</span></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-inline-flex" [ngClass]='{"show": isExpanded}'>
+        <ul class="navbar-nav flex-grow mr-auto">
+          <!-- <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
+              <a class="nav-link text-dark" [routerLink]='["/"]' style = "color: white;">Home</a>
+            </li> -->
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dar" [routerLink]='["/counter"]' *ngIf="currentUser"
+              style="color: white;">Counter</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dar" [routerLink]='["/counter-stateless"]' *ngIf="currentUser"
+              style="color: white;">Counter (Stateless)</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+            <a class="nav-link text-dar" [routerLink]='["/fetch-data"]' style="color: white;" *ngIf="currentUser">Fetch
+              data</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser && isAdmin">
+            <a class="nav-link text-dar" [routerLink]='["/users"]' style="color: white;">Users</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser" style="color: white;">
+            <a class="nav-link text-dar" [routerLink]='["/login"]'>
+              <span class="material-icons" style="color: white;">exit_to_app</span>
+              <span style="color: white;"> Login </span>
+            </a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
+            <a class="nav-link text-dar" [routerLink]='["/signup"]'>
+              <span class="material-icons" style="color: white;">exit_to_app</span>
+              <span style="color: white;"> SignUp </span>
+            </a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
+            <a class="nav-link text-dar" [routerLink]='' (click)='logout()'>
+              <span class="material-icons">power_settings_new</span>
+              <span> Logout </span>
+              <span class="text-info">({{authenticationService.currentUser.pseudo}})</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

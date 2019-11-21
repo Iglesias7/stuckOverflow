@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -30,8 +30,8 @@ export class SignupComponent {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
         this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
-        this.ctlLastName =  this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")], [this.emailUsed()]);
         this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
 
@@ -42,7 +42,7 @@ export class SignupComponent {
             email: this.ctlEmail,
             firstName: this.ctlFirstName,
             lastName: this.ctlLastName,
-            birthDate: this.ctlBirthDate,
+            birthDate: this.ctlBirthDate
         }, { validator: this.validatePasswords});
     }
 
@@ -119,10 +119,10 @@ export class SignupComponent {
         return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
     }
 
-    validateFirstnameAndLastname(group: FormGroup) : ValidationErrors {
-        return group.value.firstName !== "" && group.value.lastName !== "" ? null : {validatefirstname: true };
+    // validateFirstnameAndLastname(group: FormGroup) : ValidationErrors {
+    //     return group.value.firstName !== "" && group.value.lastName !== "" ? null : {validatefirstname: true };
 
-    }
+    // }
 
     
 

@@ -23,6 +23,21 @@ namespace Prid1920_g03.Models
             .IsUnique(true);
 
             modelBuilder.Entity<Vote>().HasKey(v => new {v.PostId, v.UserId});
+            
+
+            modelBuilder.Entity<Follow>().HasKey(f => new { f.FollowerPseudo, f.FolloweePseudo });
+
+            modelBuilder.Entity<Follow>()
+                .HasOne<User>(f => f.Follower)
+                .WithMany(m => m.FolloweesFollows)
+                .HasForeignKey(f => f.FollowerPseudo)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Follow>()
+                .HasOne<User>(f => f.Followee)
+                .WithMany(m => m.FollowersFollows)
+                .HasForeignKey(f => f.FolloweePseudo)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>().HasData(
                 new User() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
@@ -64,6 +79,7 @@ namespace Prid1920_g03.Models
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Vote> Votes { get; set; }
+        public DbSet<Follow> Follows { get; set; }
         // public DbSet<Tag> Tags { get; set; }        
     }
 }

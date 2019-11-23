@@ -22,6 +22,7 @@ import { EditUserComponent } from '../components/user/edit-user/edit-user.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SetFocusDirective } from '../directives/setfocus.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { RelationshipsComponent } from '../components/relationships/relationships.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CounterStatelessComponent,
     CounterParentComponent,
     SetFocusDirective,
-    EditUserComponent
+    EditUserComponent,
+    RelationshipsComponent
   ],
   entryComponents: [EditUserComponent],
   imports: [

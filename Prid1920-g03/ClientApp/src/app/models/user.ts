@@ -17,6 +17,8 @@ export class User {
     role: Role;
     token: string;
 
+    followers: (number | User)[];
+    followees: (number | User)[];
 
     constructor(data: any) {
       if (data) {
@@ -32,10 +34,29 @@ export class User {
         this.picturePath = data.picturePath;
         this.role = data.role || Role.Member;
         this.token = data.token;
+
+        this.followers = data.followers;
+        this.followees = data.followees;
       }
     }
     public get roleAsString(): string {
       return Role[this.role];
     }
   }
+
+  export interface IFriend  {
+    id: number;
+    pseudo: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    reputation: number;
+    birthDate: string;
+    picturePath: string;
+    role: Role;
+    token: string;
+    relationship: string;
+  }
+
 

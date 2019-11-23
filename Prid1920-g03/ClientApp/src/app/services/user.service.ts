@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../models/user';
+import { User, IFriend } from '../models/user';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
@@ -21,7 +21,7 @@ export class UserService {
     );
   }
 
-  
+
 
   public update(m: User): Observable<boolean> {
     return this.http.put<User>(`${this.baseUrl}api/user/${m.id}`, m).pipe(
@@ -83,5 +83,17 @@ export class UserService {
         return of(null);
       })
     );
+  }
+
+  getMembersWithRelationship(pseudo: string) {
+    return this.http.get<IFriend[]>(`${this.baseUrl}api/user/rels/${pseudo}`);
+  }
+
+  follow(follower: string, followee: string) {
+    return this.http.post(`${this.baseUrl}api/user/follow`, { follower, followee });
+  }
+  
+  unfollow(follower: string, followee: string) {
+    return this.http.post(`${this.baseUrl}api/user/unfollow`, { follower, followee });
   }
 }

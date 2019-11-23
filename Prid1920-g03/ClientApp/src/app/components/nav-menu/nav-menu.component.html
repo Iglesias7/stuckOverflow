@@ -35,6 +35,9 @@
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser && isAdmin">
             <a class="nav-link text-dar" [routerLink]='["/users"]' style="color: white;">Users</a>
           </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
+            <a class="nav-link text-dark" [routerLink]='["/friends"]'>Friends</a>
+          </li>
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser" style="color: white;">

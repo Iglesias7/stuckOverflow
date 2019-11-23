@@ -70,7 +70,7 @@ namespace Prid1920_g03.Controllers
                 PicturePath = data.PicturePath
             };
             _context.Users.Add(newUser);
-            
+
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
@@ -102,7 +102,7 @@ namespace Prid1920_g03.Controllers
             else
                 user.PicturePath = null;
 
-           if (userDTO.Password != null)
+            if (userDTO.Password != null)
                 user.Password = userDTO.Password;
 
             return NoContent();
@@ -118,6 +118,13 @@ namespace Prid1920_g03.Controllers
             {
                 return NotFound();
             }
+
+            // Suppression en cascade des relations avec ce membre
+            user.Votes.Clear();
+            user.Posts.Clear();
+            user.Comments.Clear();
+            user.FolloweesFollows.Clear();
+            user.FollowersFollows.Clear();
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
@@ -171,34 +178,40 @@ namespace Prid1920_g03.Controllers
 
         [AllowAnonymous]
         [HttpPost("signup")]
-        public async Task<ActionResult<UserDTO>> Signup(UserDTO data) {
-            
+        public async Task<ActionResult<UserDTO>> Signup(UserDTO data)
+        {
+
             return await this.PostUser(data);
         }
 
-        
+
 
         [AllowAnonymous]
         [HttpGet("availablePseudo/{pseudo}")]
-        public async Task<ActionResult<bool>> getByPseudo(string pseudo){
+        public async Task<ActionResult<bool>> getByPseudo(string pseudo)
+        {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
             return user == null;
         }
-        
+
         [AllowAnonymous]
         [HttpGet("availableEmail/{email}")]
-        public async Task<ActionResult<bool>> getByEmail (string email){
+        public async Task<ActionResult<bool>> getByEmail(string email)
+        {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
             return user == null;
         }
-       
+
         [HttpPost("upload")]
-        public async Task<IActionResult> Upload([FromForm] string pseudo, [FromForm]IFormFile picture) {
-            if (picture != null && picture.Length > 0) {
+        public async Task<IActionResult> Upload([FromForm] string pseudo, [FromForm]IFormFile picture)
+        {
+            if (picture != null && picture.Length > 0)
+            {
                 //var fileName = Path.GetFileName(picture.FileName);
                 var fileName = pseudo + "-" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".jpg";
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\uploads", fileName);
-                using (var fileSrteam = new FileStream(filePath, FileMode.Create)) {
+                using (var fileSrteam = new FileStream(filePath, FileMode.Create))
+                {
                     await picture.CopyToAsync(fileSrteam);
                 }
                 return Ok($"\"uploads/{fileName}\"");
@@ -207,7 +220,8 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPost("cancel")]
-        public IActionResult Cancel([FromBody] dynamic data) {
+        public IActionResult Cancel([FromBody] dynamic data)
+        {
             string picturePath = data.picturePath;
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picturePath);
             if (System.IO.File.Exists(path))
@@ -216,19 +230,83 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPost("confirm")]
-        public IActionResult Confirm([FromBody] dynamic data) {
+        public IActionResult Confirm([FromBody] dynamic data)
+        {
             string pseudo = data.pseudo;
             string picturePath = data.picturePath;
             string newPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\uploads", pseudo + ".jpg");
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", picturePath);
-            if (System.IO.File.Exists(path)) {
+            if (System.IO.File.Exists(path))
+            {
                 if (System.IO.File.Exists(newPath))
                     System.IO.File.Delete(newPath);
                 System.IO.File.Move(path, newPath);
             }
             return Ok();
         }
-        
+
+
+        [HttpGet("rels/{pseudo}")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersWithRelationship(string pseudo)
+        {
+            var friends = await _context.Users.ToListAsync();
+            var friendsDTO = new List<object>();
+            foreach (var friend in friends)
+            {
+                var isFollower = friend.Followees.Where(f => f.Pseudo == pseudo).Count() > 0;
+                var isFollowee = friend.Followers.Where(f => f.Pseudo == pseudo).Count() > 0;
+                var isMutual = isFollower && isFollowee;
+                var rel = "none";
+                if (friend.Pseudo == pseudo)
+                    rel = "self";
+                else if (isMutual)
+                    rel = "mutual";
+                else if (isFollower)
+                    rel = "follower";
+                else if (isFollowee)
+                    rel = "followee";
+
+                friendsDTO.Add(new
+                {
+                    Pseudo = friend.Pseudo,
+                    LastName = friend.LastName,
+                    FirstName = friend.FirstName,
+                    Email = friend.Email,
+                    Reputation = friend.Reputation,
+                    Role = friend.Role,
+                    PicturePath = friend.PicturePath,
+                    Relationship = rel
+                });
+            }
+            return Ok(friendsDTO);
+        }
+
+        [HttpPost("follow")]
+        public async Task<IActionResult> Follow([FromBody] dynamic body) {
+            var follower = (int)body.follower;
+            var followee = (int)body.followee;
+            var rel = await _context.Follows.Where(f => f.Follower.Id == follower && f.Followee.Id == followee).SingleOrDefaultAsync();
+            
+            if (rel == null) {
+                _context.Add(new Follow { FollowerPseudo = follower, FolloweePseudo = followee });
+                await _context.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
+        [HttpPost("unfollow")]
+        public async Task<IActionResult> UnFollow([FromBody] dynamic body) {
+            var follower = (int)body.follower;
+            var followee = (int)body.followee;
+            var rel = await _context.Follows.Where(f => f.Follower.Id == follower && f.Followee.Id == followee).SingleOrDefaultAsync();
+            
+            if (rel != null) {
+                _context.Remove(rel);
+                await _context.SaveChangesAsync();
+            }
+            return Ok();
+        }
+
     }
 
 }

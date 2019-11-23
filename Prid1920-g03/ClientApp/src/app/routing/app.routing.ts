@@ -10,6 +10,7 @@ import { UnknownComponent } from '../components/unknown/unknown.component';
 import { CounterParentComponent } from '../components/count/counter-stateless/counter-parent.component';
 import { AuthGuard } from '../services/auth.guard';
 import { Role } from '../models/user';
+import { RelationshipsComponent } from '../components/relationships/relationships.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
   { path: 'counter-stateless', component: CounterParentComponent },
   { path: 'fetch-data', component: FetchDataComponent },
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
+  { path: 'friends', component: RelationshipsComponent, canActivate: [AuthGuard] },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   { path: 'restricted', component: RestrictedComponent },

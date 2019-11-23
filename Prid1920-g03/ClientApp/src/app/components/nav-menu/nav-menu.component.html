@@ -20,7 +20,7 @@
           <!-- <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
               <a class="nav-link text-dark" [routerLink]='["/"]' style = "color: white;">Home</a>
             </li> -->
-          <li class="nav-item" [routerLinkActive]='["link-active"]'>
+          <!-- <li class="nav-item" [routerLinkActive]='["link-active"]'>
             <a class="nav-link text-dar" [routerLink]='["/counter"]' *ngIf="currentUser"
               style="color: white;">Counter</a>
           </li>
@@ -31,12 +31,15 @@
           <li class="nav-item" [routerLinkActive]='["link-active"]'>
             <a class="nav-link text-dar" [routerLink]='["/fetch-data"]' style="color: white;" *ngIf="currentUser">Fetch
               data</a>
-          </li>
+          </li> -->
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser && isAdmin">
             <a class="nav-link text-dar" [routerLink]='["/users"]' style="color: white;">Users</a>
           </li>
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-            <a class="nav-link text-dark" [routerLink]='["/friends"]'>Friends</a>
+            <a class="nav-link text-dar" [routerLink]='["/friends"]' style="color: white;">Friends</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
+            <a class="nav-link text-dar" [routerLink]='["/UsersCard"]' style="color: white;">UsersCard</a>
           </li>
         </ul>
         <ul class="navbar-nav">

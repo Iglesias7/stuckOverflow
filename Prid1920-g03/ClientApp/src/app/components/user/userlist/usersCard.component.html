@@ -1,0 +1,40 @@
+<h1>Liste d'utilisateurs</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <mat-form-field>
+            <input matInput (keyup)="filterChanged($event.target.value)" placeholder="Filter" appSetFocus>
+        </mat-form-field>
+    </div>
+</div>
+<div class="card-container">
+    <mat-card class="example-card" matSort *ngFor="let user of users">
+        <mat-card-header>
+            <div mat-card-avatar [style.background-size]="'cover'"
+            [style.background-image]="'url(' + (user.picturePath || 'uploads/unknown-user.jpg') + ')'"></div>
+          <mat-card-title>{{user.pseudo}}</mat-card-title>
+          <mat-card-subtitle>{{user.firstName || '&nbsp;' }}</mat-card-subtitle>
+          <mat-card-subtitle>{{user.lastName || '&nbsp;' }}</mat-card-subtitle>
+        </mat-card-header>
+          <!-- <img mat-card-image [src]="(user.picturePath || 'uploads/unknown-user.jpg')" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content class="card-content">
+          <p>{{user.birthDate | date:'dd/MM/yyyy'}}</p>
+          <p>{{user.email || '&nbsp;' }}</p>
+          <p> Réputation: {{user.reputation || '0' }}</p>
+        </mat-card-content>
+        <mat-card-actions class="card-buttons">
+            <button mat-icon-button tabindex="-1">
+                <mat-icon (click)="edit(row)">edit</mat-icon>
+            </button>
+            <button mat-icon-button tabindex="-1">
+                <mat-icon (click)="delete(row)">delete</mat-icon>
+            </button>
+        </mat-card-actions>
+      </mat-card>
+
+</div>
+
+<div class="row mt-3">
+    <div class="col-12">
+        <button mat-raised-button (click)="create()">New User</button>
+    </div>
+</div>

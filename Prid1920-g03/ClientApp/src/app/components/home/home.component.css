@@ -1,7 +1,8 @@
 .bg-a{
-    width: 90%;
+    width: 100%;
 }
 
 .bg-a .img{
-    width: 500%;
+    width: 100%;
+    margin-left: 10px;
 }

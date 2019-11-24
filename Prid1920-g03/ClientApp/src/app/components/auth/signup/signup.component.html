@@ -52,15 +52,21 @@
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required
+                    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" [formControl]="ctlPassword" required
                         autocomplete="new-password">
+                        <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </a>
                     <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPassword.hasError('minlength')">Minimum length is
                         {{ctlPassword.errors['minlength'].requiredLength}}</mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="password" placeholder="Confirm your password"
+                    <input matInput [type]="hide2 ? 'password' : 'text'" placeholder="Confirm your password"
                         [formControl]="ctlConfirmPassword" required>
+                        <a mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </a>
                     <mat-error class="field-error" *ngIf="ctlConfirmPassword.hasError('required')">Required</mat-error>
                     <mat-error class="float-right" *ngIf="ctlConfirmPassword.hasError('minlength')">Minimum length is
                         {{ctlConfirmPassword.errors['minlength'].requiredLength}}</mat-error>

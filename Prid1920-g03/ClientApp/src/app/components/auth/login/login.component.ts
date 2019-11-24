@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
     returnUrl: string;
     ctlPseudo: FormControl;
     ctlPassword: FormControl;
+    hide = true;
 
     constructor(
         private formBuilder: FormBuilder,

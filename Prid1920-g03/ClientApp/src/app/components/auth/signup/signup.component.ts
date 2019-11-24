@@ -21,6 +21,8 @@ export class SignupComponent {
     public ctlEmail: FormControl;
     public ctlBirthDate: FormControl;
     public loading = false;   
+    hide = true;
+    hide2 = true;
 
     constructor(
         private formBuilder: FormBuilder,

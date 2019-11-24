@@ -3,7 +3,7 @@ import {
   MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
   MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule,
   MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule, 
-  MatSelectModule, MatCardModule
+  MatSelectModule, MatCardModule, MatMenuModule, MatMenuTrigger
 } from '@angular/material';
 
 
@@ -12,13 +12,13 @@ import {
     MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule,
     MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule,
-    MatSelectModule, MatCardModule
+    MatSelectModule, MatCardModule, MatMenuModule
   ],
   exports: [
     MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule,
     MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule,
-    MatSelectModule, MatCardModule
+    MatSelectModule, MatCardModule, MatMenuModule, MatMenuTrigger
   ],
 })
 export class SharedModule { }

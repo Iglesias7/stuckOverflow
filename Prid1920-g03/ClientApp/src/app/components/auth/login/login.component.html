@@ -11,7 +11,10 @@
                     </mat-error>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput type="password" placeholder="Password" [formControl]="ctlPassword" required>
+                    <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" [formControl]="ctlPassword" required>
+                    <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </a>
                     <mat-error class="field-error" *ngIf="ctlPassword.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPassword.hasError('custom')">{{ctlPassword.errors.custom}}
                     </mat-error>

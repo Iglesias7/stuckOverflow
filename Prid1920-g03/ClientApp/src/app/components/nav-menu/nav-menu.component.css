@@ -34,14 +34,28 @@ html {
 }
 
 .bg-color{
-  background-color: darkgreen;
-
+  background-color: white;
 }
 
 .nav-link * {
   vertical-align: middle;
 }
 
-.text-dar{
-  color: white;
+.bt-menu:hover{
+  color: orange;
+  border-right: 5px solid orange;
+}
+
+.bt-menu-i:hover{
+  color: darkorange;
+}
+
+.link-activee{
+  color: orange;
+  border-right: 5px solid orange;
+}
+
+.link-active{
+  color: orange;
+  font-weight: bolder;
 }

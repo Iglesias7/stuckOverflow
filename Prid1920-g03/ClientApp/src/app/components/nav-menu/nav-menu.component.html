@@ -1,16 +1,20 @@
 <header>
-  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3'>
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3' style="border-top: 7px solid orange;">
     <div class="container">
-      <div ngbDropdown class="d-inline-block" style="margin-right: 10px;">
-        <button class="btn btn-outline-success" id="dropdownBasic1" (click)="readonly = !readonly" ngbDropdownToggle>{{ readonly ? " X " : " Menu "}}</button>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button ngbDropdownItem>Action - 1</button>
-          <button ngbDropdownItem>Another Action</button>
-          <button ngbDropdownItem>Something else is here</button>
-        </div>
-      </div>
-      <img style="margin-right: 10px;" src="assets/pictures/logo.PNG" width="30"/>
-      <a class="navbar-brand text-dar" [routerLink]='["/"]'>Stuck <span>overflow</span></a>
+      
+      <button mat-button [matMenuTriggerFor]="menu" (click) = "readonly = !readonly"><mat-icon>{{ readonly ? " close " : " menu "}}</mat-icon></button>
+      <mat-menu #menu="matMenu">
+        <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/"]' [routerLinkActive]='["link-activee"]' [routerLinkActiveOptions]='{ exact: true }' class="bt-menu"><mat-icon class="bt-menu-i">home</mat-icon>Home</button>
+        <h4 style="color: orange">Public</h4>
+        <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/posts"]' [routerLinkActive]='["link-activee"]' class="bt-menu"><mat-icon class="bt-menu-i">public</mat-icon> Stuck overflow</button>
+        <button (click) = "readonly = !readonly"  *ngIf="currentUser && isAdmin" [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
+        <button  *ngIf="currentUser && isAdmin" [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/tags"]'><mat-icon class="bt-menu-i">list_alt</mat-icon> Tags</button>
+        <button (click) = "readonly = !readonly" *ngIf="currentUser" [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/UsersCard"]'><mat-icon class="bt-menu-i">people_outline</mat-icon>UsersCard</button>
+        <button (click) = "readonly = !readonly" *ngIf="currentUser" [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/friends"]'><mat-icon class="bt-menu-i">pan_tool</mat-icon>Friends</button>
+      </mat-menu>
+      
+      <img style="margin-right: 10px;" src="assets/pictures/logo.PNG" width="35"/>
+      <a class="navbar-brand text-dark" [routerLink]='["/"]'>Stuck <span>overflow</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
         aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
@@ -32,34 +36,34 @@
             <a class="nav-link text-dar" [routerLink]='["/fetch-data"]' style="color: white;" *ngIf="currentUser">Fetch
               data</a>
           </li> -->
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser && isAdmin">
-            <a class="nav-link text-dar" [routerLink]='["/users"]' style="color: white;">Users</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-            <a class="nav-link text-dar" [routerLink]='["/friends"]' style="color: white;">Friends</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-            <a class="nav-link text-dar" [routerLink]='["/UsersCard"]' style="color: white;">UsersCard</a>
-          </li>
+          
+          
+            <mat-form-field  style="margin-left: 60px; width: 400px; text-align: center;">
+              <mat-label style="margin-left: 25px;">Recherche</mat-label>
+              <input matInput placeholder="Tapez votre recherche ici." >
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
         </ul>
+        
         <ul class="navbar-nav">
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser" style="color: white;">
+          <li class="nav-ite" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
             <a class="nav-link text-dar" [routerLink]='["/login"]'>
-              <span class="material-icons" style="color: white;">exit_to_app</span>
-              <span style="color: white;"> Login </span>
+              <span [routerLinkActive]='["link-active"]' class="material-icons">exit_to_app</span>
+              <span [routerLinkActive]='["link-active"]'> Login </span>
             </a>
           </li>
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
             <a class="nav-link text-dar" [routerLink]='["/signup"]'>
-              <span class="material-icons" style="color: white;">exit_to_app</span>
-              <span style="color: white;"> SignUp </span>
+              <span [routerLinkActive]='["link-active"]'><mat-icon>person_add</mat-icon></span>
+              <span [routerLinkActive]='["link-active"]'> SignUp </span>
             </a>
           </li>
+          <div mat-card-avatar [style.background-size]="'cover'"  *ngIf="currentUser" [style.background-image]="'url(' + (authenticationService.currentUser.picturePath || 'uploads/unknown-user.jpg') + ')'"></div>
+            <span  *ngIf="currentUser" class="nav-link text-dar" style="color: orange">{{authenticationService.currentUser.pseudo}}</span>
           <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-            <a class="nav-link text-dar" [routerLink]='' (click)='logout()'>
+            <a class="nav-link text-dark" [routerLink]='' (click)='logout()'>
               <span class="material-icons">power_settings_new</span>
               <span> Logout </span>
-              <span class="text-info">({{authenticationService.currentUser.pseudo}})</span>
             </a>
           </li>
         </ul>

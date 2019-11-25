@@ -121,12 +121,6 @@ export class SignupComponent {
         return group.value.password === group.value.confirm_password ? null : { passwordNotConfirmed: true };
     }
 
-    // validateFirstnameAndLastname(group: FormGroup) : ValidationErrors {
-    //     return group.value.firstName !== "" && group.value.lastName !== "" ? null : {validatefirstname: true };
-
-    // }
-
-    
 
     signup() {
         this.loading = true;

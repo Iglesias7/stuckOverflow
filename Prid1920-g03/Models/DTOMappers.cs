@@ -78,17 +78,17 @@ namespace Prid1920_g03.Models
         }
 
 //-----------------------TagDTO--------------------------------------------------------
-        // public static TagDTO ToDTO(this Tag tag) {
-        //     return new TagDTO {
-        //         Id = tag.Id,
-        //         Name = tag.Name,
+         public static TagDTO ToDTO(this Tag tag) {
+             return new TagDTO {
+                 Id = tag.Id,
+                 Name = tag.Name,
 
-        //         Posts = tag.Posts.ToDTO(),
-        //     };
-        // }
+                 Posts = tag.Posts.ToDTO(),
+             };
+         }
 
-        // public static List<TagDTO> ToDTO(this IEnumerable<Tag> tags) {
-        //     return tags.Select(t => t.ToDTO()).ToList();
-        // }
+         public static List<TagDTO> ToDTO(this IEnumerable<Tag> tags) {
+             return tags.Select(t => t.ToDTO()).ToList();
+         }
     }
 }

@@ -15,7 +15,7 @@ namespace Prid1920_g03.Models
 
         public IList<VoteDTO> Votes { get; set; }
 
-        // public IList<TagDTO> Tags { get; set; }
+        public IList<TagDTO> Tags { get; set; }
         public IList<PostDTO> Posts { get; set; }
     }
 }

@@ -27,6 +27,9 @@ namespace Prid1920_g03.Models
 
             modelBuilder.Entity<Follow>().HasKey(f => new { f.FollowerPseudo, f.FolloweePseudo });
 
+            modelBuilder.Entity<Tag>().HasIndex(u => u.Name)
+            .IsUnique(true);
+
             modelBuilder.Entity<Follow>()
                 .HasOne<User>(f => f.Follower)
                 .WithMany(m => m.FolloweesFollows)

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Prid1920_g03.Models {
 
     public class Tag {
+        [Key]
        public int Id {get; set;} 
        public string Name {get; set;}
        public virtual IList<Post> Posts {get; set;} = new List<Post>();

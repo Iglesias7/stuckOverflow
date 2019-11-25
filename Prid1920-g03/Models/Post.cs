@@ -28,9 +28,16 @@ namespace Prid1920_g03.Models
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
 
         public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
-
-        public virtual IList<Tag> Tags { get; set; } = new List<Tag>();
-
         public virtual IList<Post> Posts { get; set; } = new List<Post>();
+
+
+
+        public virtual IList<PostTag> LsPostTags { get; set; } = new List<PostTag>();
+
+         [NotMapped]
+        public IEnumerable<Post> LsPosts {get => LsPostTags.Select( p => p.Post);}
+
+        [NotMapped]
+        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
     }
 }

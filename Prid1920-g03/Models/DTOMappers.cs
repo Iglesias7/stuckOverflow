@@ -44,7 +44,7 @@ namespace Prid1920_g03.Models
                 Posts = post.Posts.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),
-                // Tags = post.Tags.ToDTO()
+                LsTags = post.Tags.Select(t => t.Name).ToList()
             };
         }
 
@@ -82,8 +82,6 @@ namespace Prid1920_g03.Models
              return new TagDTO {
                  Id = tag.Id,
                  Name = tag.Name,
-
-                 Posts = tag.Posts.ToDTO(),
              };
          }
 

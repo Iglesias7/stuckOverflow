@@ -26,6 +26,7 @@ namespace Prid1920_g03.Models
             
 
             modelBuilder.Entity<Follow>().HasKey(f => new { f.FollowerPseudo, f.FolloweePseudo });
+            modelBuilder.Entity<PostTag>().HasKey(pt => new { pt.PostId, pt.TagId });
 
             modelBuilder.Entity<Tag>().HasIndex(u => u.Name)
             .IsUnique(true);
@@ -40,6 +41,20 @@ namespace Prid1920_g03.Models
                 .HasOne<User>(f => f.Followee)
                 .WithMany(m => m.FollowersFollows)
                 .HasForeignKey(f => f.FolloweePseudo)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+
+            modelBuilder.Entity<PostTag>()
+                .HasOne<Post>(p => p.Post)
+                .WithMany(m => m.LsPostTags)
+                .HasForeignKey(f => f.PostId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PostTag>()
+                .HasOne<Tag>(f => f.Tag)
+                .WithMany(m => m.PostTags)
+                .HasForeignKey(f => f.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>().HasData(
@@ -83,6 +98,6 @@ namespace Prid1920_g03.Models
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Follow> Follows { get; set; }
-        // public DbSet<Tag> Tags { get; set; }        
+        public DbSet<Tag> Tags { get; set; }        
     }
 }

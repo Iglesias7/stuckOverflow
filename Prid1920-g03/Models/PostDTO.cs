@@ -14,8 +14,10 @@ namespace Prid1920_g03.Models
         public IList<CommentDTO> Comments { get; set; }
 
         public IList<VoteDTO> Votes { get; set; }
-
-        public IList<TagDTO> Tags { get; set; }
         public IList<PostDTO> Posts { get; set; }
+
+        public virtual IEnumerable<string> LsTags { get; set; }
+
+
     }
 }

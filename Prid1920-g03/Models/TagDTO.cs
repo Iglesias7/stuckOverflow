@@ -9,6 +9,9 @@ namespace Prid1920_g03.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public IList<PostDTO> Posts { get; set; }
+        // public IList<PostDTO> Posts { get; set; }
+
+        //  public virtual IEnumerable<string> TagPosts { get; set; }
+
     }
 }

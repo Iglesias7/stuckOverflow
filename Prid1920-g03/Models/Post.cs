@@ -29,7 +29,7 @@ namespace Prid1920_g03.Models
 
         public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
 
-        // public virtual IList<Tag> Tags { get; set; } = new List<Tag>();
+        public virtual IList<Tag> Tags { get; set; } = new List<Tag>();
 
         public virtual IList<Post> Posts { get; set; } = new List<Post>();
     }

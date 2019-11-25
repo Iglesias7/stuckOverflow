@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Swagger;
 using Prid1920_g03.Models;
 
 namespace Prid1920_g03
@@ -35,6 +36,15 @@ namespace Prid1920_g03
                 opt.UseLazyLoadingProxies();
                 // opt.UseSqlServer(Configuration.GetConnectionString("prid1920-tuto-mssql"));
                 opt.UseMySql(Configuration.GetConnectionString("prid1920-g03-mysql"));
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info 
+                {
+                    Title = "stuckoverflow",
+                    Version = "v1"
+                });
             });
 
             services.AddMvc()
@@ -108,6 +118,8 @@ namespace Prid1920_g03
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -125,6 +137,12 @@ namespace Prid1920_g03
             app.UseHttpsRedirection();
             app.UseSpaStaticFiles();
             app.UseAuthentication();
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => 
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "stuckoverflow v1");
+            });
 
             app.UseMvc(routes =>
             {

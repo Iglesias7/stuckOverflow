@@ -87,16 +87,22 @@ namespace Prid1920_g03.Controllers
                 select c).FirstOrDefault();
                 var vt = (from v in model.Votes where v.Post.Id == p.Id 
                 select v).FirstOrDefault();
-                model.Comments.Remove(com);
-                model.Votes.Remove(vt);             
+                if(com != null)
+                    model.Comments.Remove(com);
+                if(vt != null)
+                     model.Votes.Remove(vt);             
                 model.Posts.Remove(p);
             }
-            var comment = (from c in model.Comments where c.Post.Id == post.Id 
-            select c).FirstOrDefault();
-            var vote = (from v in model.Votes where v.Post.Id == post.Id 
-            select v).FirstOrDefault();
-            model.Comments.Remove(comment);
-            model.Votes.Remove(vote); 
+            var comments = (from c in model.Comments where c.Post.Id == post.Id 
+            select c);
+            var votes = (from v in model.Votes where v.Post.Id == post.Id 
+            select v);
+            foreach(var c in comments)
+                if(c != null)
+                    model.Comments.Remove(c);
+            foreach(var v in votes )
+                if(v != null)
+                    model.Votes.Remove(v);
             model.Posts.Remove(post);  
 
             await model.SaveChangesAsync();

@@ -83,7 +83,7 @@ namespace Prid1920_g03.Controllers
            } 
 
         // Supression en cascade des relations par composition
-            foreach(var p in post.Posts){
+            foreach(var p in post.LsPosts){
                 var com = (from c in model.Comments where c.Post.Id == p.Id 
                 select c).FirstOrDefault();
                 var vt = (from v in model.Votes where v.Post.Id == p.Id 

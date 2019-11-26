@@ -81,7 +81,6 @@ namespace Prid1920_g03.Controllers
            if(post == null){
                return NotFound();
            } 
-
         // Supression en cascade des relations par composition
             foreach(var p in post.LsPosts){
                 var com = (from c in model.Comments where c.Post.Id == p.Id 

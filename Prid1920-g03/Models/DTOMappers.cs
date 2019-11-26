@@ -41,7 +41,7 @@ namespace Prid1920_g03.Models
                 Body = post.Body,
                 Timestamp = post.Timestamp,
 
-                Posts = post.Posts.ToDTO(),
+                Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),
                 LsTags = post.Tags.Select(t => t.Name).ToList()
@@ -67,7 +67,7 @@ namespace Prid1920_g03.Models
         public static VoteDTO ToDTO(this Vote vote) {
             return new VoteDTO {
                 PostId = vote.PostId,
-                UserId = vote.UserId,
+                AuthorId = vote.AuthorId,
                 UpDown = vote.UpDown,
                 Timestamp = vote.Timestamp,
             };

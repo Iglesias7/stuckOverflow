@@ -12,15 +12,14 @@ namespace Prid1920_g03.Models
     public class Vote
     {
         public int PostId { get; set; }
-        public int UserId { get; set; }
-
+        
         [Required(ErrorMessage = "Required")]
         public int UpDown { get; set; }
 
         [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual int AuthorId { get; set; }
 
         public virtual Post Post { get; set; }
     }

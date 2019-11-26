@@ -28,7 +28,7 @@ namespace Prid1920_g03.Models
 
         [Required(ErrorMessage = "Required")]
         [MinLength(3, ErrorMessage = "Minimum 3 characters")]
-        [MaxLength(10, ErrorMessage = "Maximum 10 characters")]
+        [MaxLength(255, ErrorMessage = "Maximum 255 characters")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Required")]

@@ -13,8 +13,6 @@ namespace Prid1920_g03.Models
     {
         [Key]
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Required")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Required")]
@@ -23,12 +21,19 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual int AuthorId { get; set; }
+
+        public virtual int ParentId { get; set; }
+
+        public virtual int AcceptedAnswerId { get; set; }
 
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
 
         public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
-        public virtual IList<Post> Posts { get; set; } = new List<Post>();
+        public virtual IList<Post> Responses { get; set; } = new List<Post>();
+
+        [NotMapped]
+        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
 
 
 
@@ -37,7 +42,6 @@ namespace Prid1920_g03.Models
          [NotMapped]
         public IEnumerable<Post> LsPosts {get => LsPostTags.Select( p => p.Post);}
 
-        [NotMapped]
-        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
+        
     }
 }

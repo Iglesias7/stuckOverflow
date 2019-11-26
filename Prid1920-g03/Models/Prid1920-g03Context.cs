@@ -22,7 +22,7 @@ namespace Prid1920_g03.Models
             modelBuilder.Entity<User>().HasIndex(u => u.Email)
             .IsUnique(true);
 
-            modelBuilder.Entity<Vote>().HasKey(v => new {v.PostId, v.UserId});
+            modelBuilder.Entity<Vote>().HasKey(v => new {v.PostId, v.AuthorId});
             
 
             modelBuilder.Entity<Follow>().HasKey(f => new { f.FollowerPseudo, f.FolloweePseudo });
@@ -57,40 +57,15 @@ namespace Prid1920_g03.Models
                 .HasForeignKey(f => f.TagId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<User>().HasData(
-                new User() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
-                new User() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },
-                new User() { Id=1, Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle", Email="ben@test.com", Role = Role.Manager },
-                new User() { Id=2, Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix", Email="bruno@test.com"}
-            );
-
-            modelBuilder.Entity<Post>().HasData(
-                new Post() { Id=4, Title = "PHP", Body = "Hi, why do you doing"},
-                new Post() { Id=3, Title = "JAVA", Body = "hi, please help me"},
-                new Post() { Id=1, Title = "CSHARP", Body = "what do you ask to me"},
-                new Post() { Id=2, Title = "DOTNET", Body = "time break"}
-            );
-
-            // modelBuilder.Entity<Comment>().HasData(
-            //     new Comment() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
-            //     new Comment() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },
-            //     new Comment() { Id=1, Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle", Email="ben@test.com", Role = Role.Manager },
-            //     new Comment() { Id=2, Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix", Email="bruno@test.com"}
-            // );
-
-            // modelBuilder.Entity<Vote>().HasData(
-            //     new Vote() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
-            //     new Vote() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },
-            //     new Vote() { Id=1, Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle", Email="ben@test.com", Role = Role.Manager },
-            //     new Vote() { Id=2, Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix", Email="bruno@test.com"}
-            // );
-
-            // modelBuilder.Entity<Tag>().HasData(
-            //     new Tag() { Id=4, Pseudo = "merveil", Password = "bruno", FirstName = "merveil Nzitusu", Email="merveil@test.com", Role = Role.Admin },
-            //     new Tag() { Id=3, Pseudo = "iglesias", Password = "iglesias", FirstName = "iglesias Chendjou", Email="iglesias@test.com", Role = Role.Admin },
-            //     new Tag() { Id=1, Pseudo = "ben", Password = "ben", FirstName = "Benoît Penelle", Email="ben@test.com", Role = Role.Manager },
-            //     new Tag() { Id=2, Pseudo = "bruno", Password = "bruno", FirstName = "Bruno Lacroix", Email="bruno@test.com"}
-            // );
+                base.OnModelCreating(modelBuilder);
+                
+                // Comment.Post (1) <--> Post.Comments (*)
+                modelBuilder.Entity<Comment>()
+                    .HasOne(c => c.Post)                  // définit la propriété de navigation pour le côté (1) de la relation
+                    .WithMany(p => p.Comments)            // définit la propriété de navigation pour le côté (N) de la relation
+                    .HasForeignKey(c => c.PostId)         // spécifie que la clé étrangère est Comment.PostId
+                    .OnDelete(DeleteBehavior.Restrict);   // spécifie le comportement en cas de delete : ici, un refus
+          
         }
 
         public DbSet<User> Users { get; set; }
@@ -98,6 +73,7 @@ namespace Prid1920_g03.Models
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<Follow> Follows { get; set; }
-        public DbSet<Tag> Tags { get; set; }        
+        public DbSet<Tag> Tags { get; set; }  
+        public DbSet<PostTag> PostTags { get; set; }        
     }
 }

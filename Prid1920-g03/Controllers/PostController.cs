@@ -50,6 +50,27 @@ namespace Prid1920_g03.Controllers
         
         }
 
+        [HttpPost]
+        public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
+
+            var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title);
+            if(post != null){
+                var error = new ValidationErrors().Add("Change the title, this one is already used", nameof(post.Title));
+                return BadRequest(error);
+            }
+
+            var newPost = new Post(){
+                Title = data.Title,
+                Body = data.Body,
+                Timestamp = data.Timestamp
+            };
+            model.Posts.Add(newPost);
+            var res = await model.SaveChangesAsyncWithValidation();
+            if(!res.IsEmpty)
+                return BadRequest(res);
+            return CreatedAtAction(nameof(GetOnePost), new {id = newPost.Id }, newPost.ToDTO());
+        }
+
         
     }
 }

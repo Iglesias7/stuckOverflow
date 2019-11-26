@@ -9,7 +9,7 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191126165045_seedData")]
+    [Migration("20191126172634_seedData")]
     partial class seedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,8 +75,7 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<DateTime>("Timestamp");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 

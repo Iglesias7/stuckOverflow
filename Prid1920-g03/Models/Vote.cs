@@ -24,5 +24,6 @@ namespace Prid1920_g03.Models
         public virtual User User {get; set; }
 
         public virtual Post Post { get; set; }
+        
     }
 }

@@ -20,7 +20,7 @@ namespace Prid1920_g03
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseSetting("https_port", "5000")
+                .UseSetting("http_port", "5000")
                 .UseStartup<Startup>();
     }
 }

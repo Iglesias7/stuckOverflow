@@ -73,8 +73,7 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<DateTime>("Timestamp");
 
-                    b.Property<string>("Title")
-                        .IsRequired();
+                    b.Property<string>("Title");
 
                     b.Property<int?>("UserId");
 

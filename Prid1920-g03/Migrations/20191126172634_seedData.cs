@@ -96,6 +96,12 @@ namespace Prid1920_g03.Migrations
                 oldClrType: typeof(string),
                 oldMaxLength: 10);
 
+            migrationBuilder.AlterColumn<string>(
+                name: "Title",
+                table: "Posts",
+                nullable: true,
+                oldClrType: typeof(string));
+
             migrationBuilder.AddColumn<int>(
                 name: "AcceptedAnswerId",
                 table: "Posts",
@@ -227,6 +233,13 @@ namespace Prid1920_g03.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Title",
+                table: "Posts",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
                 name: "PostId",

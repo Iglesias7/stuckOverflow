@@ -21,6 +21,6 @@ namespace Prid1920_g03.Models
 
         public virtual int AuthorId { get; set; }
 
-        public virtual Post Post { get; set; }
+        // public virtual Post Post { get; set; }
     }
 }

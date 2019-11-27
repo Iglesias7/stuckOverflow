@@ -21,6 +21,8 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
+        public virtual User User {get; set; }
+
         public virtual int AuthorId { get; set; }
 
         public virtual int ParentId { get; set; }

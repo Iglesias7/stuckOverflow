@@ -35,7 +35,6 @@ namespace Prid1920_g03.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
-            
             return (await model.Posts.ToListAsync()).ToDTO();
         }
 
@@ -72,39 +71,42 @@ namespace Prid1920_g03.Controllers
 
         //Only the owner of a post can delete it 
 
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> DeletePost(int id)
-        // {
-        //    var post = await model.Posts.FindAsync(id);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePost(int id)
+        {
+           var post = await model.Posts.FindAsync(id);
 
-        //    if(post == null){
-        //        return NotFound();
-        //    } 
-        // // Supression en cascade des relations par composition
-        //     foreach(var p in post.LsPosts){
-        //         var com = (from c in model.Comments where c.Post.Id == p.Id 
-        //         select c).FirstOrDefault();
-        //         var vt = (from v in model.Votes where v.Post.Id == p.Id 
-        //         select v).FirstOrDefault();
-        //         model.Comments.Remove(com);
-        //         model.Votes.Remove(vt);             
-        //         model.Posts.Remove(p);
-        //     }
-        //     var comment = (from c in model.Comments where c.Post.Id == post.Id 
-        //     select c).FirstOrDefault();
-        //     var vote = (from v in model.Votes where v.Post.Id == post.Id 
-        //     select v).FirstOrDefault();
-        //     model.Comments.Remove(comment);
-        //     model.Votes.Remove(vote); 
-        //     model.Posts.Remove(post);  
+           if(post == null){
+               return NotFound();
+           } 
+        // Supression en cascade des relations par composition
+            foreach(var p in post.LsPosts){
+                var com = (from c in model.Comments where c.Post.Id == p.Id 
+                select c).FirstOrDefault();
+                var vt = (from v in model.Votes where v.Post.Id == p.Id 
+                select v).FirstOrDefault();
+                if(com != null)
+                    model.Comments.Remove(com);
+                if(vt != null)
+                     model.Votes.Remove(vt);             
+                model.Posts.Remove(p);
+            }
+            var comments = (from c in model.Comments where c.Post.Id == post.Id 
+            select c);
+            var votes = (from v in model.Votes where v.Post.Id == post.Id 
+            select v);
+            foreach(var c in comments)
+                if(c != null)
+                    model.Comments.Remove(c);
+            foreach(var v in votes )
+                if(v != null)
+                    model.Votes.Remove(v);
+            model.Posts.Remove(post);  
 
-        //     await model.SaveChangesAsync();
+            await model.SaveChangesAsync();
 
-        //     return NoContent();
+            return NoContent();
             
-
-        // }
-
-        
+        }
     }
 }

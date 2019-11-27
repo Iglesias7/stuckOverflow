@@ -30,11 +30,21 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet]
-
         public async Task<ActionResult<IEnumerable<TagDTO>>> GetAllTags()
         {
             return (await model.Tags.ToListAsync()).ToDTO();
         }
+        
+        [HttpGet]
+        public async Task<ActionResult<TagDTO>> GetOneTag(int id)
+        {
+            var tag = await model.Tags.FindAsync(id);
+            if(tag == null)
+                return NotFound();
+            return tag.ToDTO();
+        }
+
+
 
     }
 }

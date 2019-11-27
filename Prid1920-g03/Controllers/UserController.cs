@@ -120,12 +120,18 @@ namespace Prid1920_g03.Controllers
             }
 
             // Suppression en cascade des relations avec ce membre
-            user.Votes.Clear();
-            user.Posts.Clear();
-            user.Comments.Clear();
-            user.FolloweesFollows.Clear();
-            user.FollowersFollows.Clear();
-
+            var comments = (from c in _context.Comments where c.User.Id == user.Id select c);
+            var votes = (from v in _context.Votes where v.User.Id == user.Id select v);
+            var posts = (from p in _context.Posts where p.Id == user.Id select p);
+            if(comments != null)
+                foreach(var c in comments)
+                    _context.Remove(c);    
+            if(votes != null)
+                foreach(var v in votes)
+                    _context.Votes.Remove(v);
+            if(posts != null)
+                foreach(var p in posts)
+                    _context.Posts.Remove(p);
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 

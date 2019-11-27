@@ -51,18 +51,23 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
+        public async Task<ActionResult<PostDTO>> AddPost(PostDTO data, int authorId){
 
             var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title);
+            var user = await model.Users.SingleOrDefaultAsync(u => u.Id === authorId);
             if(post != null){
                 var error = new ValidationErrors().Add("Change the title, this one is already used", nameof(post.Title));
                 return BadRequest(error);
             }
-
+            if(user == null){
+                return BadRequest("The author of the post doesn't exist !");
+            }
             var newPost = new Post(){
                 Title = data.Title,
                 Body = data.Body,
-                Timestamp = data.Timestamp
+                Timestamp = data.Timestamp,
+                User = user,
+                AuthorId = authorId
             };
             model.Posts.Add(newPost);
             var res = await model.SaveChangesAsyncWithValidation();
@@ -109,6 +114,28 @@ namespace Prid1920_g03.Controllers
 
             return NoContent();
             
+
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditPost(int id, PostDTO data)
+        {
+            if(id != data.Id)
+                return BadRequest();
+            var post = model.Posts.FindAsync(id);
+            if(post == null)
+                return NotFound();
+            post.Title = data.Title;
+            post.Body = data.Body;
+
+            var res = await model.SaveChangesAsyncWithValidation();
+
+            // if(!string.IsNullOrWhiteSpace(data.Title))    
+            //     post.Title = data.Title + "?" + DateTime.Now.Ticks;;
+            // if(!string.IsNullOrWhiteSpace(data.Body))    
+            //     post.Body = data.Body+ "?" + DateTime.Now.Ticks;
+
+            return NoContent();
 
         }
 

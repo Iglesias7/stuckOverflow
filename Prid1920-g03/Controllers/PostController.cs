@@ -35,7 +35,6 @@ namespace Prid1920_g03.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
-
             return (await model.Posts.ToListAsync()).ToDTO();
         }
 
@@ -47,7 +46,6 @@ namespace Prid1920_g03.Controllers
                return NotFound();
            }
             return post.ToDTO();
-        
         }
 
         [HttpPost]
@@ -114,7 +112,6 @@ namespace Prid1920_g03.Controllers
 
             return NoContent();
             
-
         }
 
         [HttpPut("{id}")]

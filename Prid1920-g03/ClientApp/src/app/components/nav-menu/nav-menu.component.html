@@ -20,31 +20,9 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex" [ngClass]='{"show": isExpanded}'>
-        <ul class="navbar-nav flex-grow mr-auto">
-          <!-- <li class="nav-item" [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-              <a class="nav-link text-dark" [routerLink]='["/"]' style = "color: white;">Home</a>
-            </li> -->
-          <!-- <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link text-dar" [routerLink]='["/counter"]' *ngIf="currentUser"
-              style="color: white;">Counter</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link text-dar" [routerLink]='["/counter-stateless"]' *ngIf="currentUser"
-              style="color: white;">Counter (Stateless)</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]'>
-            <a class="nav-link text-dar" [routerLink]='["/fetch-data"]' style="color: white;" *ngIf="currentUser">Fetch
-              data</a>
-          </li> -->
-          
-          
-            <!-- <mat-form-field  style="margin-left: 60px; width: 400px; text-align: center;">
-              <mat-label style="margin-left: 25px;">Recherche</mat-label>-->
-              <!-- <input matInput placeholder="Tapez votre recherche ici." > -->
-              <!-- <mat-icon matPrefix>search</mat-icon>
-            </mat-form-field>  -->
-        </ul>
-        
+          <ul class="navbar-nav flex-grow mr-auto">
+             
+            </ul>
         <ul class="navbar-nav">
           <li class="nav-ite" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
             <a class="nav-link text-dar" [routerLink]='["/login"]'>

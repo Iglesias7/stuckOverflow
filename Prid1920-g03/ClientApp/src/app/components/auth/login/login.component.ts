@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     ) {
         // redirect to home if already logged in
         if (this.authenticationService.currentUser) {
-            this.router.navigate(['/counter']);
+            this.router.navigate(['/posts']);
         }
     }
 
@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
             password: this.ctlPassword
         });
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/counter';
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/posts';
     }
 
     // On définit ici un getter qui permet de simplifier les accès aux champs du formulaire dans le HTML

@@ -24,6 +24,7 @@ import { SetFocusDirective } from '../directives/setfocus.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RelationshipsComponent } from '../components/relationships/relationships.component';
 import { UserCardComponent } from '../components/user/userlist/usersCard.component';
+import { PostListComponent } from '../components/post/postlist/postlist.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { UserCardComponent } from '../components/user/userlist/usersCard.compone
     SetFocusDirective,
     EditUserComponent,
     RelationshipsComponent,
-    UserCardComponent
+    UserCardComponent,
+    PostListComponent
   ],
   entryComponents: [EditUserComponent],
   imports: [

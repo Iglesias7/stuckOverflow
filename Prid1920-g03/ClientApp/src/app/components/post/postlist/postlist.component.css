@@ -1,0 +1,9 @@
+h1{
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.ecard{
+    margin: 3px;
+    border-bottom: 3px solid orange;
+}

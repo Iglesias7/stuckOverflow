@@ -21,29 +21,26 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
-        public virtual User User {get; set; }
-
-        public virtual int AuthorId { get; set; }
-
-        public virtual int ParentId { get; set; }
-
-        public virtual int AcceptedAnswerId { get; set; }
-
-        public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
-
-        public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
+               
+        
+        public int AuthorId { get; set; } 
+        public int? AcceptedAnswerId { get; set; }
+        public int? ParentId { get; set; }
+        public virtual Post PostParent { get; set; }
+        public virtual User User { get; set; }
         public virtual IList<Post> Responses { get; set; } = new List<Post>();
-
-        [NotMapped]
-        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
-
+        public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
+        public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
+       
 
 
         public virtual IList<PostTag> LsPostTags { get; set; } = new List<PostTag>();
 
-         [NotMapped]
-        public IEnumerable<Post> LsPosts {get => LsPostTags.Select( p => p.Post);}
+        //  [NotMapped]
+        // public IEnumerable<Post> LsPosts {get => LsPostTags.Select( p => p.Post);}
 
+        [NotMapped]
+        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
         
     }
 }

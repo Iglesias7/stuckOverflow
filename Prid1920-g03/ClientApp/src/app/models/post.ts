@@ -13,7 +13,7 @@ import { Tag } from "./Tag";
       comments: (string | Comment)[];
       responses: (string | Post)[];
       tags: (string | Tag)[];
-      votes: (string | Vote)[];
+      votes: (number | Vote)[];
     
       constructor(data: any) {
         if (data) {
@@ -21,6 +21,7 @@ import { Tag } from "./Tag";
           this.title = data.title;
           this.body = data.body;
           this.timestamp = data.timestamp;
+          
           this.authorId = data.AuthorId;
           this.parentId = data.parentId;
           this.acceptedAnswerId = data.acceptedAnswerId;          

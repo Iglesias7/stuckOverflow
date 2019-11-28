@@ -80,17 +80,17 @@ namespace Prid1920_g03.Controllers
                return NotFound();
            } 
         // Supression en cascade des relations par composition
-            foreach(var p in post.LsPosts){
-                var com = (from c in model.Comments where c.Post.Id == p.Id 
+            // foreach(var p in post.LsPosts){
+                var com = (from c in model.Comments where c.Post.Id == post.Id 
                 select c).FirstOrDefault();
-                var vt = (from v in model.Votes where v.Post.Id == p.Id 
+                var vt = (from v in model.Votes where v.Post.Id == post.Id 
                 select v).FirstOrDefault();
                 if(com != null)
                     model.Comments.Remove(com);
                 if(vt != null)
                      model.Votes.Remove(vt);             
-                model.Posts.Remove(p);
-            }
+                model.Posts.Remove(post);
+            // }
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
             var votes = (from v in model.Votes where v.Post.Id == post.Id 

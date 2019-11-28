@@ -41,6 +41,12 @@ namespace Prid1920_g03.Models
                 Body = post.Body,
                 Timestamp = post.Timestamp,
 
+                AuthorId = post.AuthorId,
+                AcceptedAnswerId = post.AcceptedAnswerId,
+                ParentId = post.ParentId,
+                Parent = post.PostParent,
+                User = post.User,
+
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),
@@ -57,6 +63,11 @@ namespace Prid1920_g03.Models
                 Id = comment.Id,
                 Body = comment.Body,
                 Timestamp = comment.Timestamp,
+
+                PostId = comment.PostId,
+                AuthorId = comment.AuthorId,
+                User = comment.User,
+                Post = comment.Post
             };
         }
 
@@ -66,10 +77,13 @@ namespace Prid1920_g03.Models
 //----------------------------VoteDTO-----------------------------------------------------
         public static VoteDTO ToDTO(this Vote vote) {
             return new VoteDTO {
-                PostId = vote.PostId,
-                AuthorId = vote.AuthorId,
                 UpDown = vote.UpDown,
                 Timestamp = vote.Timestamp,
+
+                AuthorId = vote.AuthorId,
+                PostId = vote.PostId,
+                User = vote.User,
+                Post = vote.Post
             };
         }
 

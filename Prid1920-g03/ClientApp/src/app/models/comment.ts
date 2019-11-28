@@ -1,11 +1,14 @@
 
   export class Comment {
     id: number;
-    title: string;
+    body: string;
     
 
       constructor(data: any) {
-      
+        if(data){
+          this.id = data.id;
+          this.body = data.body;
+        }
       }
   }
     

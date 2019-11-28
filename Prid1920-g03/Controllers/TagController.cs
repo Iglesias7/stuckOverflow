@@ -35,7 +35,7 @@ namespace Prid1920_g03.Controllers
             return (await model.Tags.ToListAsync()).ToDTO();
         }
         
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<TagDTO>> GetOneTag(int id)
         {
             var tag = await model.Tags.FindAsync(id);
@@ -43,6 +43,23 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             return tag.ToDTO();
         }
+
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<TagDTO>> GetTagsByPost(int id)
+        // {
+        //     var tagrs = null;
+        //     await model.PostTags.ForEachAsync(pt => {
+        //         if(pt.PostId.Equals(id)){
+                    
+        //             this.GetAllTags.ForEachAsync(t => {
+        //                 if(t.Id.Equals(pt)){
+                            
+        //                 }
+        //             });
+        //     });
+        //     return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
+        // }
+       
 
 
 

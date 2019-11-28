@@ -14,8 +14,8 @@ namespace Prid1920_g03.Models {
 
         public virtual IList<PostTag> PostTags { get; set; } = new List<PostTag>();
 
-        [NotMapped]
-        public IEnumerable<Tag> Tags { get => PostTags.Select(t => t.Tag);}
+        // [NotMapped]
+        // public IEnumerable<Tag> Tags { get => PostTags.Select(t => t.Tag);}
        
     }
 }

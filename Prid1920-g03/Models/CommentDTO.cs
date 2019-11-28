@@ -9,5 +9,10 @@ namespace Prid1920_g03.Models
         public int Id { get; set; }
         public string Body { get; set; }
         public DateTime Timestamp { get; set; }
+
+        public int PostId { get; set; }
+        public int AuthorId { get; set; }
+        public User User {get; set;}
+        public Post Post { get; set; }
     }
 }

@@ -21,9 +21,7 @@ namespace Prid1920_g03.Models
         public DateTime Timestamp { get; set; }
 
         public int PostId { get; set; }
-        
-        public virtual int AuthorId { get; set; }
-
+        public int AuthorId { get; set; }
         public virtual User User {get; set;}
         public virtual Post Post { get; set; }
     }

@@ -122,10 +122,10 @@ namespace Prid1920_g03.Controllers
             var post = model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-            // post.Title = data.Title;
-            // post.Body = data.Body;
+            post.Title = data.Title;
+            post.Body = data.Body;
 
-            var res = await model.SaveChangesAsyncWithValidation();
+            await model.SaveChangesAsyncWithValidation();
 
             // if(!string.IsNullOrWhiteSpace(data.Title))    
             //     post.Title = data.Title + "?" + DateTime.Now.Ticks;;

@@ -100,6 +100,22 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
+        [HttpPut('{id}')]
+
+        public async Task<IActionResult> EditTag(int id, TagDTO data)
+        {
+            if(id != data.Id)
+                return BadRequest();
+            var tag = model.Tags.FindAsync(id);
+            if(tag == null)
+                return NotFound();
+            tag.Name = data.Name;
+
+            await model.SaveChangesAsyncWithValidation();
+            return NoContent();
+
+        }
+
 
 
        

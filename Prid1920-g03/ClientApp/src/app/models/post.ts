@@ -10,9 +10,9 @@ import { Tag } from "./Tag";
       parentId: number;
       acceptedAnswerId: number;
       
-      comments: (string | Comment)[];
+      comments: any[];
       responses: (string | Post)[];
-      tags: (string | Tag)[];
+      tags: any[];
       votes: (number | Vote)[];
     
       constructor(data: any) {
@@ -27,8 +27,8 @@ import { Tag } from "./Tag";
           this.acceptedAnswerId = data.acceptedAnswerId;          
   
           this.comments = data.Comments;
-          this.responses = data.Responses;
-          this.tags = data.Tags;
+          this.responses = data.Replies;
+          this.tags = data.LsTags;
           this.votes = data.Votes;
         }
       }

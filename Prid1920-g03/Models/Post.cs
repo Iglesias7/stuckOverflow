@@ -22,10 +22,10 @@ namespace Prid1920_g03.Models
         public DateTime Timestamp { get; set; }
 
                
-        
+        public int? ParentId { get; set; }
         public int AuthorId { get; set; } 
         public int? AcceptedAnswerId { get; set; }
-        public int? ParentId { get; set; }
+        
         public virtual Post PostParent { get; set; }
         public virtual User User { get; set; }
         public virtual IList<Post> Responses { get; set; } = new List<Post>();
@@ -35,9 +35,6 @@ namespace Prid1920_g03.Models
 
 
         public virtual IList<PostTag> LsPostTags { get; set; } = new List<PostTag>();
-
-        //  [NotMapped]
-        // public IEnumerable<Post> LsPosts {get => LsPostTags.Select( p => p.Post);}
 
         [NotMapped]
         public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}

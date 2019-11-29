@@ -52,7 +52,7 @@ namespace Prid1920_g03.Controllers
         public async Task<ActionResult<PostDTO>> AddPost(PostDTO data, int authorId){
 
             var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title);
-            var user = await model.Users.SingleOrDefaultAsync(u => u.Id === authorId);
+            var user = await model.Users.SingleOrDefaultAsync(u => u.Id == authorId);
             if(post != null){
                 var error = new ValidationErrors().Add("Change the title, this one is already used", nameof(post.Title));
                 return BadRequest(error);
@@ -122,8 +122,8 @@ namespace Prid1920_g03.Controllers
             var post = model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-            post.Title = data.Title;
-            post.Body = data.Body;
+            // post.Title = data.Title;
+            // post.Body = data.Body;
 
             var res = await model.SaveChangesAsyncWithValidation();
 

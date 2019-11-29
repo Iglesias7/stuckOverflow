@@ -9,7 +9,7 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191128131231_seedData")]
+    [Migration("20191128140805_seedData")]
     partial class seedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

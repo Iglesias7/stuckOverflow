@@ -20,9 +20,10 @@ namespace Prid1920_g03.Models
         [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
-        public int PostId { get; set; }
         public int AuthorId { get; set; }
-        public virtual User User {get; set;}
+        public int PostId { get; set; }
+        
         public virtual Post Post { get; set; }
+        public virtual User User {get; set;}
     }
 }

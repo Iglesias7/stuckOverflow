@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -30,14 +30,14 @@ namespace Prid1920_g03.Controllers
             _context = context;
         }
 
-        //[Authorized(Role.Admin)]
+        [Authorized(Role.Admin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
@@ -171,7 +171,7 @@ namespace Prid1920_g03.Controllers
                                              new Claim(ClaimTypes.Role, user.Role.ToString())
                                                  }),
                     IssuedAt = DateTime.UtcNow,
-                    Expires = DateTime.UtcNow.AddMinutes(20),
+                    Expires = DateTime.UtcNow.AddMinutes(10),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);

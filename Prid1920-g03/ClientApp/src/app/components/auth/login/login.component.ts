@@ -30,9 +30,12 @@ export class LoginComponent implements OnInit {
         if (this.authenticationService.currentUser) {
             this.router.navigate(['/posts']);
         }
+      
     }
 
     ngOnInit() {
+
+       
         /**
          * Ici on construit le formulaire réactif. On crée un 'group' dans lequel on place deux
          * 'controls'. Remarquez que la méthode qui crée les controls prend comme paramêtre une
@@ -65,8 +68,9 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.invalid) return;
         this.loading = true;
         this.authenticationService.login(this.f.pseudo.value, this.f.password.value)
+
             .subscribe(
-                // si login est ok, on navigue vers la page demandée
+  // si login est ok, on navigue vers la page demandée
                 data => {
                     this.router.navigate([this.returnUrl]);
                 },

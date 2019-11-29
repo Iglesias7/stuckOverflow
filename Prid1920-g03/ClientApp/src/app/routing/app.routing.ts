@@ -22,7 +22,7 @@ const appRoutes: Routes = [
   {path: 'users', component: UserListComponent, canActivate: [AuthGuard], data: { roles: [Role.Admin] }},
   { path: 'friends', component: RelationshipsComponent, canActivate: [AuthGuard] },
   { path: 'UsersCard', component: UserCardComponent, canActivate: [AuthGuard] },
-  { path: 'posts', component: PostListComponent, canActivate: [AuthGuard] },
+  { path: 'posts', component: PostListComponent },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
   { path: 'restricted', component: RestrictedComponent },

@@ -37,6 +37,7 @@ namespace Prid1920_g03
                 // opt.UseSqlServer(Configuration.GetConnectionString("prid1920-tuto-mssql"));
                 opt.UseMySql(Configuration.GetConnectionString("prid1920-g03-mysql"));
             });
+            
 
             services.AddSwaggerGen(c =>
             {

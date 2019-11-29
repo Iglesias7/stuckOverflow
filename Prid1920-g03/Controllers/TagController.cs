@@ -59,6 +59,31 @@ namespace Prid1920_g03.Controllers
         //     });
         //     return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
         // }
+
+        [HttpPost]
+
+        public async Task<ActionResult<TagDTO>> AddTag(TagDTO data){
+
+            var tag = await model.Tags.SingleOrDefaultAsync(tg => tg.Name == data.Name);
+            if(tag != null) {
+                var error = new ValidationErrors().Add("This tag already exists !", nameof(tag.Name));
+                return BadRequest(error);
+            }
+            var newTag = new Tag()
+            {
+                Name = data.Name,
+            };
+
+            model.Tags.Add(newTag);
+            var res = await model.SaveChangesAsyncWithValidation();
+            if(!res.IsEmpty)
+                return BadRequest(res);
+            return CreatedAtAction(nameof(GetOneTag), new {id = newTag.Id}, newTag.TagDTO());
+
+        }
+
+
+
        
 
 

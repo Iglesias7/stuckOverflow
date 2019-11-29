@@ -115,23 +115,24 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditPost(int id, PostDTO data)
+        public async Task<IActionResult> EditPost(int id, PostDTO data, string pseudo)
         {
+            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo)
             if(id != data.Id)
                 return BadRequest();
             var post = model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
+            if(user == null && )
+                return NotFound(); 
+            if(user.Id != post.AuthorId || user.Role != Role.Admin )
+                return NotFound("You are not the owner of this post !"); 
+  
             post.Title = data.Title;
             post.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
-
-            // if(!string.IsNullOrWhiteSpace(data.Title))    
-            //     post.Title = data.Title + "?" + DateTime.Now.Ticks;;
-            // if(!string.IsNullOrWhiteSpace(data.Body))    
-            //     post.Body = data.Body+ "?" + DateTime.Now.Ticks;
-
+            
             return NoContent();
 
         }

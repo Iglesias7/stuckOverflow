@@ -60,6 +60,7 @@ namespace Prid1920_g03.Controllers
         //     return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
         // }
 
+        [Authorized(Role.Admin)]
         [HttpPost]
 
         public async Task<ActionResult<TagDTO>> AddTag(TagDTO data){
@@ -82,6 +83,7 @@ namespace Prid1920_g03.Controllers
 
         }
 
+        [Authorized(Role.Admin)]
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteTag(int id)
@@ -100,6 +102,8 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
+
+        [Authorized(Role.Admin)]
         [HttpPut('{id}')]
 
         public async Task<IActionResult> EditTag(int id, TagDTO data)

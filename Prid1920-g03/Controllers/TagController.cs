@@ -82,6 +82,24 @@ namespace Prid1920_g03.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+
+        public async Task<IActionResult> DeleteTag(int id)
+        {
+            var tag = await model.Tags.FindAsync(id);
+
+            if(tag == null){
+                return NotFound();
+            }
+
+            model.Tags.Remove(tag);
+            foreach (var p in model.Posts)
+                if(p.Contains(tag))
+                    p.LsPostTags.Remove(tag);
+            await.model.SaveChangesAsyncWithValidation();
+            return NoContent();
+        }
+
 
 
        

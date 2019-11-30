@@ -15,11 +15,11 @@ namespace Prid1920_g03.Models {
         public string PicturePath { get; set; }
         public Role Role { get; set; }
 
-        public IList<PostDTO> Posts { get; set; }
+        // public IList<PostDTO> Posts { get; set; }
 
-        public IList<CommentDTO> Comments { get; set; }
+        // public IList<CommentDTO> Comments { get; set; }
 
-        public IList<VoteDTO> Votes { get; set; }
+        // public IList<VoteDTO> Votes { get; set; }
 
         public IEnumerable<int> Followers { get; set; }
         public IEnumerable<int> Followees { get; set; }

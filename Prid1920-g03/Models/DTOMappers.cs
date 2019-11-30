@@ -20,9 +20,9 @@ namespace Prid1920_g03.Models
                 PicturePath = user.PicturePath,
                 Role = user.Role,
 
-                Posts = user.Posts.ToDTO(),
-                Comments = user.Comments.ToDTO(),
-                Votes = user.Votes.ToDTO(),
+                // Posts = user.Posts.ToDTO(),
+                // Comments = user.Comments.ToDTO(),
+                // Votes = user.Votes.ToDTO(),
 
                 Followers = user.Followers.Select(f => f.Id).ToList(),
                 Followees = user.Followees.Select(f => f.Id).ToList()
@@ -45,7 +45,7 @@ namespace Prid1920_g03.Models
                 AcceptedAnswerId = post.AcceptedAnswerId,
                 ParentId = post.ParentId,
                 
-
+                PostUser = post.User.ToDTO(),
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),

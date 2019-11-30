@@ -1,5 +1,4 @@
-import { Vote } from "./vote";
-import { Tag } from "./Tag";
+import { User } from "./user";
 
   export class Post {
       id: number;
@@ -9,11 +8,13 @@ import { Tag } from "./Tag";
       authorId: number;
       parentId: number;
       acceptedAnswerId: number;
+
+      user: any;
       
-      comments: any[];
+      comments: (string | Comment)[];
       responses: (string | Post)[];
-      tags: any[];
-      votes: (number | Vote)[];
+      tags: string[];
+      votes: number;
     
       constructor(data: any) {
         if (data) {
@@ -22,14 +23,16 @@ import { Tag } from "./Tag";
           this.body = data.body;
           this.timestamp = data.timestamp;
           
-          this.authorId = data.AuthorId;
+          this.authorId = data.authorId;
           this.parentId = data.parentId;
           this.acceptedAnswerId = data.acceptedAnswerId;          
-  
-          this.comments = data.Comments;
-          this.responses = data.Replies;
-          this.tags = data.LsTags;
-          this.votes = data.Votes;
+          
+          this.user = data.postUser;
+
+          this.comments = data.comments;
+          this.responses = data.replies;
+          this.tags = data.lsTags;
+          this.votes = data.votes;
         }
       }
     }  

@@ -23,37 +23,4 @@ export class PostService {
       catchError(err => of(null))
     );
   }
-
-
-
-//   public update(m: User): Observable<boolean> {
-//     return this.http.put<User>(`${this.baseUrl}api/user/${m.id}`, m).pipe(
-//       map(res => true),
-//       catchError(err => {
-//         console.error(err);
-//         return of(false);
-//       })
-//     );
-//   }
-
-//   public delete(m: User): Observable<boolean> {
-//     return this.http.delete<boolean>(`${this.baseUrl}api/user/${m.id}`).pipe(
-//       map(res => true),
-//       catchError(err => {
-//         console.error(err);
-//         return of(false);
-//       })
-//     );
-//   }
-
-//   public add(m: User): Observable<boolean> {
-//     return this.http.post<User>(`${this.baseUrl}api/user`, m).pipe(
-//       map(res => true),
-//       catchError(err => {
-//         console.error(err);
-//         return of(false);
-//       })
-//     );
-//   }
-
 }

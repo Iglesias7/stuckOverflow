@@ -39,9 +39,9 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PostDTO>> GetOnePost(int postId) {
+        public async Task<ActionResult<PostDTO>> GetOnePost(int id) {
 
-           var post = await model.Posts.FindAsync(postId);
+           var post = await model.Posts.FindAsync(id);
            if(post == null){
                return NotFound();
            }

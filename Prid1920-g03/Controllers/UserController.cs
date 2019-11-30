@@ -30,14 +30,14 @@ namespace Prid1920_g03.Controllers
             _context = context;
         }
 
-        //[Authorized(Role.Admin)]
+        [Authorized(Role.Admin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetOne(int id)
         {

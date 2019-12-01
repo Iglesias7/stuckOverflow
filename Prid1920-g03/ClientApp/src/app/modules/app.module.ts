@@ -25,6 +25,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RelationshipsComponent } from '../components/relationships/relationships.component';
 import { UserCardComponent } from '../components/user/userlist/usersCard.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
+import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { PostListComponent } from '../components/post/postlist/postlist.componen
     EditUserComponent,
     RelationshipsComponent,
     UserCardComponent,
-    PostListComponent
+    PostListComponent,
+    SinglePostListComponent
   ],
   entryComponents: [EditUserComponent],
   imports: [

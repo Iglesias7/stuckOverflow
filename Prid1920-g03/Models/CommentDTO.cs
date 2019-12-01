@@ -12,7 +12,7 @@ namespace Prid1920_g03.Models
 
         public int PostId { get; set; }
         public int AuthorId { get; set; }
-        // public User User {get; set;}
+        public UserDTO CommentUser {get; set;}
         // public Post Post { get; set; }
     }
 }

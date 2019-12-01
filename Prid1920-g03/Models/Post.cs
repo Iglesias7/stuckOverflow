@@ -38,6 +38,56 @@ namespace Prid1920_g03.Models
 
         [NotMapped]
         public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
+
+        [NotMapped]
+        public int NumResponse
+        {
+            get
+            {
+                return(
+                    from c in Responses
+                    select c
+                ).Count();
+            }
+        }
+
+        [NotMapped]
+        public int VoteState
+        {
+            get
+            {
+                int nb = 0;
+                foreach(Vote v in Votes)
+                {
+                    nb += v.UpDown; 
+                }
+                return nb;
+            }
+        }
+
+        [NotMapped]
+        public int NumVote
+        {
+            get
+            {
+                return(
+                    from v in Votes
+                    select v
+                ).Count();
+            }
+        }
+
+        [NotMapped]
+        public int NumComment
+        {
+            get
+            {
+                return(
+                    from c in Comments
+                    select c
+                ).Count();
+            }
+        }
         
     }
 }

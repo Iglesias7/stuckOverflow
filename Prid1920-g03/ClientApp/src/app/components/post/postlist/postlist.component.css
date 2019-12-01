@@ -4,6 +4,15 @@ h1{
 }
 
 .ecard{
-    margin: 3px;
     border-bottom: 3px solid orange;
+    width: 100%;
 }
+
+.example-button {
+    margin-top: 16px;
+    cursor: pointer;
+}
+  
+  .example-tooltip-red {
+    background: black;
+  }

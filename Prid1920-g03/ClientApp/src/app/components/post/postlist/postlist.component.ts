@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit, ElementRef, OnDestroy, Input } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatListItem, MatSnackBar, PageEvent, MatSortHeader } from '@angular/material';
 import * as _ from 'lodash';
 import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
@@ -9,7 +9,8 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
     selector: 'app-userCard',
     templateUrl: './postlist.component.html',
-    styleUrls: ['./postlist.component.css']
+    styleUrls: ['./postlist.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class PostListComponent implements AfterViewInit {

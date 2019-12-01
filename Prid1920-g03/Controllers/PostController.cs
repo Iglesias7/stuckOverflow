@@ -49,10 +49,10 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PostDTO>> AddPost(PostDTO data, int authorId){
+        public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
 
             var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title);
-            var user = await model.Users.SingleOrDefaultAsync(u => u.Id == authorId);
+            var user = await model.Users.FindAsync(data.AuthorId);
             if(post != null){
                 var error = new ValidationErrors().Add("Change the title, this one is already used", nameof(post.Title));
                 return BadRequest(error);
@@ -77,25 +77,16 @@ namespace Prid1920_g03.Controllers
         //Only the owner of a post can delete it 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        public async Task<IActionResult> DeletePost(int id, int authorId)
         {
            var post = await model.Posts.FindAsync(id);
+           var user = await model.Users.FindAsync(authorId);
 
            if(post == null){
                return NotFound();
            } 
-        // Supression en cascade des relations par composition
-            // foreach(var p in post.LsPosts){
-                var com = (from c in model.Comments where c.Post.Id == post.Id 
-                select c).FirstOrDefault();
-                var vt = (from v in model.Votes where v.Post.Id == post.Id 
-                select v).FirstOrDefault();
-                if(com != null)
-                    model.Comments.Remove(com);
-                if(vt != null)
-                     model.Votes.Remove(vt);             
-                model.Posts.Remove(post);
-            // }
+           if(user.AuthorId != authorId || user.Role != Role.Admin)
+                return NotFound();
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
             var votes = (from v in model.Votes where v.Post.Id == post.Id 
@@ -115,15 +106,15 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditPost(int id, PostDTO data, string pseudo)
+        public async Task<IActionResult> EditPost(int id, PostDTO data)
         {
-            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo)
+            var user = await model.Users.FindAsync(data.AuthorId);
             if(id != data.Id)
                 return BadRequest();
             var post = model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-            if(user == null && )
+            if(user == null  )
                 return NotFound(); 
             if(user.Id != post.AuthorId || user.Role != Role.Admin )
                 return NotFound("You are not the owner of this post !"); 
@@ -135,6 +126,52 @@ namespace Prid1920_g03.Controllers
             
             return NoContent();
 
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<CommentDTO>> GetAllComments()
+        {
+            return(await model.Comments.ToListAsync()).ToDTO();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CommentDTO>> GetOneComment(int id)
+        {
+            var comment =await model.Comments.FindAsync(id);
+            if(comment == null)
+                return NotFound();
+            return comment.CommentDTO();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PostDTO>> AddComment(CommentDTO data)
+        {
+            var com = await model.Comments.FindAsync(data.Id);
+            if(com != null)
+                return BadRequest('Error');
+            var user = await model.Users.FindAsync(data.AuthorId);
+            if(user == null)
+                return BadRequest("Error! The author of the comment doesn't exists in our db");
+            var post = await model.Posts.FindAsync(data.PostId);
+            if(post == null ) 
+                return BadRequest("Error! Really weird the post witch the comment is based doesn't exists in our db");  
+            var newComment = new Comment()
+            {
+               Body = data.Body,
+               Timestamp = data.Timestamp,
+               AuthorId = data.AuthorId,
+               PostId = data,
+               Post = post,
+               User = user
+
+
+            };
+            model.Comments.Add(newComment);
+            var res = await model.SaveChangesAsyncWithValidation();
+            if(!res.IsEmpty)
+                return BadRequest(res);
+            return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
+            
         }
 
         

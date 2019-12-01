@@ -181,14 +181,34 @@ namespace Prid1920_g03.Controllers
             var comment = await model.Comments.FindAsync(id);
             if(comment == null)
                 return NotFound();
+            if(user == null)
+                return BadRequest("Error! The author of the comment doesn't exists in our db");
             if(user.id != comment.AuthorId || user.Role != Role.Admin)
             comment.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
             return NoContent();
             
+                  
+        }
+
+        [HttpPost("{id}")]
+        public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
+        {
+            if(id != data.Id)
+                return BadRequest();
+            var comment = await model.Comments.FindAsync(id);
+            var user = await model.Users.FindAsync(comment.AuthorId);
+            if(user == null)
+                return BadRequest("Error! The author of the comment doesn't exists in our db");
+            if(comment.AuthorId != data.AuthorId || user.Role != Role.Admin )
+                return BadRequest("Only the author or the admin can execute this action!");
             
-            
+            await model.Comments.Remove(comment);
+
+            await model.SaveChangesAsync();
+
+            return NoContent();
         }
 
         

@@ -171,6 +171,26 @@ namespace Prid1920_g03.Controllers
             
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditComment(int id, CommentDTO data)
+        {
+            var user = await model.Users.FindAsync(data.AuthorId);
+            
+            if(id != data.Id)
+                return BadRequest();
+            var comment = await model.Comments.FindAsync(id);
+            if(comment == null)
+                return NotFound();
+            if(user.id != comment.AuthorId || user.Role != Role.Admin)
+            comment.Body = data.Body;
+
+            await model.SaveChangesAsyncWithValidation();
+            return NoContent();
+            
+            
+            
+        }
+
         
     }
 }

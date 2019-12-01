@@ -1,3 +1,4 @@
+import { User } from "./user";
 
   export class Comment {
     id: number;
@@ -5,6 +6,7 @@
     timestamp: string; 
     authorId: number;
     postId: number;
+    commentUser: User;
     
 
       constructor(data: any) {
@@ -14,6 +16,7 @@
           this.timestamp = data.timestamp;
           this.authorId = data.authorId;
           this.postId = data.postId;
+          this.commentUser = data.commentUser;
         }
       }
   }

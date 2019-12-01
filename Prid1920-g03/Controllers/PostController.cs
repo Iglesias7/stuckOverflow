@@ -24,14 +24,11 @@ namespace Prid1920_g03.Controllers
 
     public class PostController : ControllerBase {
 
-        private readonly Prid1920_g03Context model ;
+        private readonly Prid1920_g03Context model;
 
         public PostController(Prid1920_g03Context _model){
-
             this.model = _model;
         }
-
-
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
@@ -86,20 +83,16 @@ namespace Prid1920_g03.Controllers
            } 
         // Supression en cascade des relations par composition
             // foreach(var p in post.LsPosts){
-                var com = (from c in model.Comments where c.Post.Id == post.Id 
-                select c).FirstOrDefault();
-                var vt = (from v in model.Votes where v.Post.Id == post.Id 
-                select v).FirstOrDefault();
+                var com = (from c in model.Comments where c.Post.Id == post.Id select c).FirstOrDefault();
+                var vt = (from v in model.Votes where v.Post.Id == post.Id select v).FirstOrDefault();
                 if(com != null)
                     model.Comments.Remove(com);
                 if(vt != null)
                      model.Votes.Remove(vt);             
                 model.Posts.Remove(post);
             // }
-            var comments = (from c in model.Comments where c.Post.Id == post.Id 
-            select c);
-            var votes = (from v in model.Votes where v.Post.Id == post.Id 
-            select v);
+            var comments = (from c in model.Comments where c.Post.Id == post.Id select c);
+            var votes = (from v in model.Votes where v.Post.Id == post.Id select v);
             foreach(var c in comments)
                 if(c != null)
                     model.Comments.Remove(c);
@@ -114,29 +107,26 @@ namespace Prid1920_g03.Controllers
             
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditPost(int id, PostDTO data, string pseudo)
-        {
-            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo)
-            if(id != data.Id)
-                return BadRequest();
-            var post = model.Posts.FindAsync(id);
-            if(post == null)
-                return NotFound();
-            if(user == null && )
-                return NotFound(); 
-            if(user.Id != post.AuthorId || user.Role != Role.Admin )
-                return NotFound("You are not the owner of this post !"); 
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> EditPost(int id, PostDTO data, string pseudo)
+        // {
+        //     var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo)
+        //     if(id != data.Id)
+        //         return BadRequest();
+        //     var post = model.Posts.FindAsync(id);
+        //     if(post == null)
+        //         return NotFound();
+        //     if(user == null && )
+        //         return NotFound(); 
+        //     if(user.Id != post.AuthorId || user.Role != Role.Admin )
+        //         return NotFound("You are not the owner of this post !"); 
   
-            post.Title = data.Title;
-            post.Body = data.Body;
+        //     post.Title = data.Title;
+        //     post.Body = data.Body;
 
-            await model.SaveChangesAsyncWithValidation();
+        //     await model.SaveChangesAsyncWithValidation();
             
-            return NoContent();
-
-        }
-
-        
+        //     return NoContent();
+        // }
     }
 }

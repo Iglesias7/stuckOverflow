@@ -10,6 +10,10 @@ import { User } from "./user";
       acceptedAnswerId: number;
 
       user: any;
+      numResponse: number;
+      numVote: number;
+      numComments: number;
+      voteState: number;
       
       comments: (string | Comment)[];
       responses: (string | Post)[];
@@ -28,6 +32,10 @@ import { User } from "./user";
           this.acceptedAnswerId = data.acceptedAnswerId;          
           
           this.user = data.postUser;
+          this.numResponse = data.numResponse,
+          this.voteState = data.voteState,
+          this.numVote = data.numVote,
+          this.numComments = data.numComments,
 
           this.comments = data.comments;
           this.responses = data.replies;

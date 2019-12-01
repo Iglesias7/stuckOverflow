@@ -1,0 +1,26 @@
+
+<h1>{{ title }}</h1>
+<span style="color: green;">asked at {{ timestamp | date: 'short' }}</span><br><br>
+<div class="row card-container">
+    <div>{{ body }}</div>
+    <div style="display: inline-block;" *ngFor="let tag of tags">
+        <button mat-raised-button matTooltip="Tag"
+            aria-label="Button that displays a tooltip when focused or hovered over"
+            style="margin-right: 3px; border: none;  color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
+    </div><br><br><br>
+
+    <mat-expansion-panel style="width: 100%;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                    {{ numComments }} {{ '&nbsp;' }} Commentaire(s)
+            </mat-panel-title>
+            <mat-panel-description>
+                
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div *ngFor="let comment of comments">
+            <i style="color: rgb(65, 76, 80); border-bottom: 1px solid rgb(68, 66, 66); padding: 5px;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
+        </div>
+        <button>Add Comment</button>
+    </mat-expansion-panel>
+</div>

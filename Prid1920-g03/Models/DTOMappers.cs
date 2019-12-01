@@ -44,7 +44,10 @@ namespace Prid1920_g03.Models
                 AuthorId = post.AuthorId,
                 AcceptedAnswerId = post.AcceptedAnswerId,
                 ParentId = post.ParentId,
-                
+                NumResponse = post.NumResponse,
+                VoteState = post.VoteState,
+                NumVote = post.NumVote,
+                NumComments = post.NumComment,
                 PostUser = post.User.ToDTO(),
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
@@ -62,6 +65,7 @@ namespace Prid1920_g03.Models
                 Id = comment.Id,
                 Body = comment.Body,
                 Timestamp = comment.Timestamp,
+                CommentUser = comment.User.ToDTO(),
 
                 PostId = comment.PostId,
                 AuthorId = comment.AuthorId,

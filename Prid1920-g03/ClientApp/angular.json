@@ -33,14 +33,15 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/simplemde-antd/dist/simplemde.min.js",
+              
               "node_modules/marked/lib/marked.js",
+              "node_modules/simplemde-antd/dist/simplemde.min.js",
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/components/prism-csharp.min.js", 
               "node_modules/prismjs/components/prism-css.min.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.js",
-              "node_modules/katex/dist/katex.min.js", 
+              "node_modules/katex/dist/katex.min.js" 
             ]
           },
           "configurations": {

@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AppRoutes } from '../routing/app.routing';
 import { AppComponent } from '../components/app/app.component';
 import { JwtInterceptor } from '../interceptors/jwt.interceptor';
@@ -27,7 +27,7 @@ import { UserCardComponent } from '../components/user/userlist/usersCard.compone
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
 import { SimplemdeModule } from 'ngx-simplemde';
-import { MarkdownModule } from 'ngx-markdown';
+import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
 
 
 @NgModule({
@@ -61,8 +61,26 @@ import { MarkdownModule } from 'ngx-markdown';
     BrowserAnimationsModule,
     SharedModule,
     NgbModule,
-    SimplemdeModule.forRoot(),
+    SimplemdeModule.forRoot({
+      
+    }),
     MarkdownModule.forRoot(),
+    MarkdownModule.forRoot({ loader: HttpClient }),
+    MarkdownModule.forRoot({
+      loader: HttpClient, // optional, only if you use [src] attribute
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          gfm: true,
+          tables: true,
+          breaks: false,
+          pedantic: false,
+          sanitize: false,
+          smartLists: true,
+          smartypants: false,
+        },
+      },
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

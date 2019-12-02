@@ -9,7 +9,7 @@
         </mat-card>
         <mat-card-header>
 <div class="row card-container" style="background-color: white; padding: 10px;">
-    <div>{{ body }}</div>
+    <div><markdown >{{ body || '&nbsp;' }}</markdown></div>
     <div style="display: block;" *ngFor="let tag of tags">
         <button mat-raised-button matTooltip="Tag"
             aria-label="Button that displays a tooltip when focused or hovered over"
@@ -23,7 +23,7 @@
                 </span></mat-card-subtitle>
             <mat-card-header>
                 <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
-                    [style.background-image]="'url(' + (user.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                    [style.background-image]="'url(' + (user!.picturePath || 'uploads/unknown-user.jpg') + ')'">
                 </div>
                 <mat-card-title style=" font-size: 10px">{{user.firstName}}{{ '&nbsp;' }}{{user.lastName}}</mat-card-title>
                 <mat-card-subtitle>
@@ -61,7 +61,7 @@
                 </mat-card-subtitle><br>
             </mat-card>
             <mat-card-header>
-                <mat-card-subtitle>{{ response.body || '&nbsp;' }}</mat-card-subtitle>
+                <mat-card-subtitle><markdown >{{ response.body || '&nbsp;' }}</markdown></mat-card-subtitle>
                 <mat-card-subtitle>
                     <mat-card class="example-card" style="width: 190px; height: 100px; float: right; background-color: rgb(202, 227, 243); box-shadow: none;">
                         <mat-card-subtitle><span mat-raised-button matTooltip="Date du post"
@@ -71,13 +71,13 @@
                             </span></mat-card-subtitle>
                         <mat-card-header>
                             <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
-                                [style.background-image]="'url(' + (response.postUser.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                                [style.background-image]="'url(' + (response.postUser!.picturePath || 'uploads/unknown-user.jpg') + ')'">
                             </div>
-                            <mat-card-title style=" font-size: 10px">{{ response.postUser.firstName}}{{ '&nbsp;' }}{{ response.postUser.lastName}}</mat-card-title>
+                            <mat-card-title style=" font-size: 10px">{{ response.postUser!.firstName}}{{ '&nbsp;' }}{{ response.postUser!.lastName}}</mat-card-title>
                             <mat-card-subtitle>
                                 <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
                                     aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
-                                    {{ response.postUser.reputation }}
+                                    {{ response.postUser!.reputation }}
                                 </span>
                             </mat-card-subtitle>
                         </mat-card-header>
@@ -94,7 +94,7 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
                     <div *ngFor="let comment of response.comments">
-                        <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ response.comment.body }}-----<span style="color: darkblue;">{{ response.comment.commentUser.firstName }}{{ '&nbsp;' }}{{ response.comment.commentUser.lastName }}</span>--asked at {{ response.comment.timestamp | date: 'short' }}</i><br><br>
+                        <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;"><markdown >{{ question.body || '&nbsp;' }}</markdown>{{ response.comment.body }}-----<span style="color: darkblue;">{{ response.comment.commentUser.firstName }}{{ '&nbsp;' }}{{ response.comment.commentUser.lastName }}</span>--asked at {{ response.comment.timestamp | date: 'short' }}</i><br><br>
                         <mat-divider></mat-divider><br>
                     </div>
                     <button mat-stroked-button color="primary">Add Comment</button>
@@ -103,6 +103,14 @@
         </mat-card>
         <mat-divider></mat-divider><br>
         
-    </div>
+    </div><br><br><br>
 
-    <simplemde [(ngModel)]="demo"></simplemde>
+<mat-toolbar style="background-color: skyblue;">
+    <mat-toolbar-row>
+        <span>Your Answer</span>
+        <span class="example-spacer"></span>
+        <mat-icon class="example-icon" aria-hidden="false" aria-label="chat">chat</mat-icon>
+    </mat-toolbar-row>
+</mat-toolbar>
+<simplemde [(ngModel)]="responseBody"></simplemde>
+<button mat-raised-button style="background-color: darkblue; color: white;">Post Your Answer</button>

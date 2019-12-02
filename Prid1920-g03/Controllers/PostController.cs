@@ -77,6 +77,8 @@ namespace Prid1920_g03.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id, PostDTO data)
         {
+           // var user = User.Identity.Name;-----
+           //  User.IsInRole(Role.Admin.ToString()) ------ 
            var post = await model.Posts.FindAsync(id);
            var user = await model.Users.FindAsync(data.AuthorId);
 

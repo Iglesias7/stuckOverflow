@@ -155,8 +155,6 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<int>("AuthorId");
 
-                    b.Property<DateTime>("Timestamp");
-
                     b.Property<int>("UpDown");
 
                     b.HasKey("PostId", "AuthorId");

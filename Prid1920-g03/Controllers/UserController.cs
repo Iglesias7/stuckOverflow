@@ -158,7 +158,7 @@ namespace Prid1920_g03.Controllers
             // return null if member not found
             if (user == null)
                 return null;
-            if (user.Password == TokenHelper.GetPasswordHash(password))
+            if ( user.Password == TokenHelper.GetPasswordHash(password))
             {
                 // authentication successful so generate jwt token
                 var tokenHandler = new JwtSecurityTokenHandler();

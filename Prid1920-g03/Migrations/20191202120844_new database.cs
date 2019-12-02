@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Prid1920_g03.Migrations
 {
-    public partial class seedData : Migration
+    public partial class newdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -86,6 +86,10 @@ namespace Prid1920_g03.Migrations
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 4);
+
+            migrationBuilder.DropColumn(
+                name: "Timestamp",
+                table: "Votes");
 
             migrationBuilder.DropColumn(
                 name: "UserId",
@@ -313,6 +317,12 @@ namespace Prid1920_g03.Migrations
                 name: "IX_PostTags_TagId",
                 table: "PostTag",
                 newName: "IX_PostTag_TagId");
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "Timestamp",
+                table: "Votes",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
             migrationBuilder.AlterColumn<string>(
                 name: "Password",

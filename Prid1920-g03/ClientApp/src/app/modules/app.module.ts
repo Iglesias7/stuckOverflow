@@ -26,6 +26,8 @@ import { RelationshipsComponent } from '../components/relationships/relationship
 import { UserCardComponent } from '../components/user/userlist/usersCard.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
+import { SimplemdeModule } from 'ngx-simplemde';
+import { MarkdownModule } from 'ngx-markdown';
 
 
 @NgModule({
@@ -58,7 +60,9 @@ import { SinglePostListComponent } from '../components/post/single-post/single-p
     AppRoutes,
     BrowserAnimationsModule,
     SharedModule,
-    NgbModule
+    NgbModule,
+    SimplemdeModule.forRoot(),
+    MarkdownModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

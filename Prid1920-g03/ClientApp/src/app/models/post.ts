@@ -9,7 +9,7 @@ import { User } from "./user";
       parentId: number;
       acceptedAnswerId: number;
 
-      user: any;
+      user: User;
       numResponse: number;
       numVote: number;
       numComments: number;

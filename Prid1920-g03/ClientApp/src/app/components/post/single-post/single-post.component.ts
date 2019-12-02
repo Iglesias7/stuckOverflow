@@ -44,7 +44,11 @@ export class SinglePostListComponent implements OnInit {
             this.timestamp = post.timestamp;
             this.tags = post.tags;
             this.comments = post.comments;
-            this.numComments = post.numComments
+            this.numComments = post.numComments;
+            this.user = post.user;
+            this.numResponse = post.numResponse;
+            this.responses = post.responses;
+            this.voteState = post.voteState;
         });
     }
 }

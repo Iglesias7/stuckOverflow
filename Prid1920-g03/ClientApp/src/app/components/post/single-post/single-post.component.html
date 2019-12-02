@@ -1,15 +1,39 @@
 
 <h1>{{ title }}</h1>
-<span style="color: green;">asked at {{ timestamp | date: 'short' }}</span><br><br>
-<div class="row card-container">
+<i style="color: green; display: inline;">asked at {{ timestamp | date: 'short' }}</i><br><br>
+<mat-card class="example-cad ecard" style=" box-shadow: none;">
+        <mat-card class="example-card" style="float: left; box-shadow: none;">
+            <mat-card-subtitle style="text-align: center;">
+                {{ voteState }}<br> <span>	<mat-icon style="color: green; margin-right: 8px;">thumb_up</mat-icon><mat-icon style="color: red;">thumb_down</mat-icon></span>
+            </mat-card-subtitle><br>
+        </mat-card>
+        <mat-card-header>
+<div class="row card-container" style="background-color: white; padding: 10px;">
     <div>{{ body }}</div>
-    <div style="display: inline-block;" *ngFor="let tag of tags">
+    <div style="display: block;" *ngFor="let tag of tags">
         <button mat-raised-button matTooltip="Tag"
             aria-label="Button that displays a tooltip when focused or hovered over"
             style="margin-right: 3px; border: none;  color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
-    </div><br><br><br>
-
-    <mat-expansion-panel style="width: 100%;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    </div>
+    <mat-card class="example-card"  style="width: 170px; height: 100px; margin-left: 70%; margin-bottom: 20px; background-color: rgb(202, 227, 243); box-shadow: none;">
+            <mat-card-subtitle><span mat-raised-button matTooltip="Date du post"
+                    matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" style=" font-size: 10px"
+                    class="example-button">
+                    asked at {{timestamp | date:'dd/MM/yyyy'}}
+                </span></mat-card-subtitle>
+            <mat-card-header>
+                <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
+                    [style.background-image]="'url(' + (user.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                </div>
+                <mat-card-title style=" font-size: 10px">{{user.firstName}}{{ '&nbsp;' }}{{user.lastName}}</mat-card-title>
+                <mat-card-subtitle>
+                    <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
+                        aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
+                        {{user.reputation }}
+                    </span></mat-card-subtitle>
+            </mat-card-header>
+        </mat-card><br><br><br>
+    <mat-expansion-panel *ngIf = "numComments" style="width: 100%; margin-bottom: 15px; box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
                     {{ numComments }} {{ '&nbsp;' }} Commentaire(s)
@@ -19,8 +43,66 @@
             </mat-panel-description>
         </mat-expansion-panel-header>
         <div *ngFor="let comment of comments">
-            <i style="color: rgb(65, 76, 80); border-bottom: 1px solid rgb(68, 66, 66); padding: 5px;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
+            <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
+            <mat-divider></mat-divider><br>
         </div>
-        <button>Add Comment</button>
+        <button mat-stroked-button color="primary">Add Comment</button>
     </mat-expansion-panel>
-</div>
+    <button *ngIf = "!numComments" mat-stroked-button color="primary">Add Comment</button>
+</div></mat-card-header></mat-card>
+
+<h3>{{ numResponse }}{{ '&nbsp;' }} Answers</h3>
+
+<div class="row card-container" *ngFor="let response of responses">
+        <mat-card class="example-cad ecard" style=" box-shadow: none; width: 100%;">
+            <mat-card class="example-card" style="float: left; box-shadow: none;">
+                <mat-card-subtitle style="text-align: center;">
+                    {{ response.voteState }}<br> <span>	<mat-icon style="color: green; margin-right: 8px;">thumb_up</mat-icon><mat-icon style="color: red;">thumb_down</mat-icon></span>
+                </mat-card-subtitle><br>
+            </mat-card>
+            <mat-card-header>
+                <mat-card-subtitle>{{ response.body || '&nbsp;' }}</mat-card-subtitle>
+                <mat-card-subtitle>
+                    <mat-card class="example-card" style="width: 190px; height: 100px; float: right; background-color: rgb(202, 227, 243); box-shadow: none;">
+                        <mat-card-subtitle><span mat-raised-button matTooltip="Date du post"
+                                matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" style=" font-size: 10px"
+                                class="example-button">
+                                asked at {{ response.timestamp | date:'dd/MM/yyyy'}}
+                            </span></mat-card-subtitle>
+                        <mat-card-header>
+                            <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
+                                [style.background-image]="'url(' + (response.postUser.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                            </div>
+                            <mat-card-title style=" font-size: 10px">{{ response.postUser.firstName}}{{ '&nbsp;' }}{{ response.postUser.lastName}}</mat-card-title>
+                            <mat-card-subtitle>
+                                <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
+                                    aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
+                                    {{ response.postUser.reputation }}
+                                </span>
+                            </mat-card-subtitle>
+                        </mat-card-header>
+                    </mat-card>
+                </mat-card-subtitle>
+            </mat-card-header>
+            <mat-expansion-panel *ngIf = "response.numComments" style="width: 100%; margin-bottom: 15px; box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                                {{ response.numComments }} {{ '&nbsp;' }} Commentaire(s)
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div *ngFor="let comment of response.comments">
+                        <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ response.comment.body }}-----<span style="color: darkblue;">{{ response.comment.commentUser.firstName }}{{ '&nbsp;' }}{{ response.comment.commentUser.lastName }}</span>--asked at {{ response.comment.timestamp | date: 'short' }}</i><br><br>
+                        <mat-divider></mat-divider><br>
+                    </div>
+                    <button mat-stroked-button color="primary">Add Comment</button>
+                </mat-expansion-panel>
+                <button *ngIf = "!response.numComments" mat-stroked-button color="primary">Add Comment</button>
+        </mat-card>
+        <mat-divider></mat-divider><br>
+        
+    </div>
+
+    <simplemde [(ngModel)]="demo"></simplemde>

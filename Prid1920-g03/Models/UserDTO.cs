@@ -14,6 +14,7 @@ namespace Prid1920_g03.Models {
         public int Reputation {get; set;}
         public string PicturePath { get; set; }
         public Role Role { get; set; }
+        public string Token {get;set;}
 
         // public IList<PostDTO> Posts { get; set; }
 

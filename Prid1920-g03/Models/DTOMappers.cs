@@ -19,6 +19,7 @@ namespace Prid1920_g03.Models
                 Reputation = user.Reputation,
                 PicturePath = user.PicturePath,
                 Role = user.Role,
+                Token = user.Token,
 
                 // Posts = user.Posts.ToDTO(),
                 // Comments = user.Comments.ToDTO(),

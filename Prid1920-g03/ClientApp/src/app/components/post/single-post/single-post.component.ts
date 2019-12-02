@@ -20,7 +20,7 @@ export class SinglePostListComponent implements OnInit {
     authorId: number;
     parentId: number;
     acceptedAnswerId: number;
-    user: any;
+    user: any = {};
     numResponse: number;
     numVote: number;
     voteState: number;
@@ -31,7 +31,7 @@ export class SinglePostListComponent implements OnInit {
 
     numComments: number;
 
-    post: Post;
+    responseBody = "My response";
 
 
     constructor(private postService: PostService, private route: ActivatedRoute) {}
@@ -44,7 +44,12 @@ export class SinglePostListComponent implements OnInit {
             this.timestamp = post.timestamp;
             this.tags = post.tags;
             this.comments = post.comments;
-            this.numComments = post.numComments
+            this.numComments = post.numComments;
+            this.user = post.user;
+            this.numResponse = post.numResponse;
+            this.responses = post.responses;
+            this.voteState = post.voteState;
+            console.log(post);
         });
     }
 }

@@ -140,14 +140,14 @@ namespace Prid1920_g03.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<ActionResult<User>> Authenticate(UserDTO data)
+        public async Task<ActionResult<UserDTO>> Authenticate(UserDTO data)
         {
             var user = await Authenticate(data.Pseudo, data.Password);
             if (user == null)
                 return BadRequest(new ValidationErrors().Add("user not found", "Pseudo"));
             if (user.Token == null)
                 return BadRequest(new ValidationErrors().Add("Incorrect password", "Password"));
-            return Ok(user);
+            return user.ToDTO();
         }
 
         private async Task<User> Authenticate(string pseudo, string password)

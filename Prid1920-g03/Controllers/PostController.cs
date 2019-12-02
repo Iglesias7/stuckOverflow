@@ -117,10 +117,10 @@ namespace Prid1920_g03.Controllers
             if(user.Id != post.AuthorId || user.Role != Role.Admin )
                 return NotFound("You are not the owner of this post !"); 
   
-        //     post.Title = data.Title;
-        //     post.Body = data.Body;
+        // //     post.Title = data.Title;
+        // //     post.Body = data.Body;
 
-        //     await model.SaveChangesAsyncWithValidation();
+        // //     await model.SaveChangesAsyncWithValidation();
             
             return NoContent();
 
@@ -169,7 +169,7 @@ namespace Prid1920_g03.Controllers
                 return BadRequest(res);
             return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
             
-        }
+        // }
 
         [HttpPut("editcomment/{id}")]
         public async Task<IActionResult> EditComment(int id, CommentDTO data)

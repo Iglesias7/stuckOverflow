@@ -33,10 +33,7 @@ namespace Prid1920_g03.Controllers
 
         public PostController(Prid1920_g03Context _model){
             this.model = _model;
-            var userName = User.Identity.Name;
-            var user = (from u in model.Users where u.Pseudo == userName select u).FirstOrDefault();
-            if(user != null)
-                this.currentUser = user;
+           
         }
 
         
@@ -94,7 +91,7 @@ namespace Prid1920_g03.Controllers
            if(post == null){
                return NotFound();
            } 
-           if(post.AuthorId != user.Id || currentUser.Role != Role.Admin)
+           if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
@@ -128,7 +125,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null  )
                 return NotFound(); 
-            if(user.Id != post.AuthorId || currentUser.Role != Role.Admin )
+            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
                 return NotFound("You are not the owner of this post !"); 
   
         // //     post.Title = data.Title;
@@ -200,7 +197,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null)
                 return BadRequest();
-            if(user.Id != comment.AuthorId || currentUser.Role != Role.Admin )
+            if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
             comment.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
@@ -220,7 +217,7 @@ namespace Prid1920_g03.Controllers
             var user = await model.Users.FindAsync(com.AuthorId);
             if(user == null)
                 return BadRequest();
-            if(com.AuthorId != data.AuthorId || currentUser.Role != Role.Admin )
+            if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
                 return BadRequest();
             
             model.Comments.Remove(com);

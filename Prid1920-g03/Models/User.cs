@@ -91,24 +91,24 @@ namespace Prid1920_g03.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            // var currContext = validationContext.GetService(typeof(DbContext)) as Prid1920_g03Context;
-            // var user_pseudo = (from p in currContext.Users where p.Pseudo == Pseudo select p).FirstOrDefault();
-            // var user_email = (from e in currContext.Users where e.Email == Email select e).FirstOrDefault();
-            // Debug.Assert(currContext != null);
-            // if (BirthDate.HasValue && BirthDate.Value.Date > DateTime.Today)
-            //     yield return new ValidationResult("Can't be born in the future in this reality", new[] { nameof(BirthDate) });
-            // else if (Age.HasValue && Age < 18)
-            //     yield return new ValidationResult("Must be 18 years old", new[] { nameof(BirthDate) });
-            // if (FirstName == null && LastName != null)
-            //     yield return new ValidationResult("The FirstName cannot be null, if the LastName isn't", new[] { nameof(FirstName) });
-            // if (LastName == null && FirstName != null)
-            //     yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] { nameof(LastName) });
-            // if (Reputation < 0)
-            //     yield return new ValidationResult("The Reputation must be >= 0 ", new[] { nameof(Reputation) });
-            // if (user_pseudo != null)
-            //     yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
-            // else if (user_email != null)
-            //     yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
+            var currContext = validationContext.GetService(typeof(DbContext)) as Prid1920_g03Context;
+            var user_pseudo = (from p in currContext.Users where p.Pseudo == Pseudo select p).FirstOrDefault();
+            var user_email = (from e in currContext.Users where e.Email == Email select e).FirstOrDefault();
+            Debug.Assert(currContext != null);
+            if (BirthDate.HasValue && BirthDate.Value.Date > DateTime.Today)
+                yield return new ValidationResult("Can't be born in the future in this reality", new[] { nameof(BirthDate) });
+            else if (Age.HasValue && Age < 18)
+                yield return new ValidationResult("Must be 18 years old", new[] { nameof(BirthDate) });
+            if (FirstName == null && LastName != null)
+                yield return new ValidationResult("The FirstName cannot be null, if the LastName isn't", new[] { nameof(FirstName) });
+            if (LastName == null && FirstName != null)
+                yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] { nameof(LastName) });
+            if (Reputation < 0)
+                yield return new ValidationResult("The Reputation must be >= 0 ", new[] { nameof(Reputation) });
+            if (user_pseudo != null)
+                yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
+            else if (user_email != null)
+                yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
             yield return null;
         }
     }

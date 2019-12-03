@@ -21,13 +21,22 @@ namespace Prid1920_g03.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
+    /***********************TO GET CURRENT USER NAME************ */
+    // var user = User.Identity.Name
+    /***********************TO VERiFY IF CURRENT USER ROLE IS ADMIN *****************/
+    //  User.IsInRole(Role.Admin.ToString())
 
     public class PostController : ControllerBase {
 
         private readonly Prid1920_g03Context model;
+        private User currentUser;
 
         public PostController(Prid1920_g03Context _model){
             this.model = _model;
+            var userName = User.Identity.Name;
+            var user = (from u in model.Users where u.Pseudo == userName select u).FirstOrDefault();
+            if(user != null)
+                this.currentUser = user;
         }
 
         
@@ -72,20 +81,20 @@ namespace Prid1920_g03.Controllers
             return CreatedAtAction(nameof(GetOnePost), new {id = newPost.Id }, newPost.ToDTO());
         }
 
-        //Only the owner of a post can delete it 
+        /*Only the owner of a post or an administrator 
+        can execute this action */
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id, PostDTO data)
         {
-           // var user = User.Identity.Name;-----
-           //  User.IsInRole(Role.Admin.ToString()) ------ 
+           
            var post = await model.Posts.FindAsync(id);
            var user = await model.Users.FindAsync(data.AuthorId);
 
            if(post == null){
                return NotFound();
            } 
-           if(post.AuthorId != user.Id || user.Role != Role.Admin)
+           if(post.AuthorId != user.Id || currentUser.Role != Role.Admin)
                 return NotFound();
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
@@ -105,6 +114,9 @@ namespace Prid1920_g03.Controllers
             
         }
 
+        /*Only the owner of a post or an administrator 
+        can execute this action */
+
         [HttpPut("{id}")]
         public async Task<IActionResult> EditPost(int id, PostDTO data)
         {
@@ -116,7 +128,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null  )
                 return NotFound(); 
-            if(user.Id != post.AuthorId || user.Role != Role.Admin )
+            if(user.Id != post.AuthorId || currentUser.Role != Role.Admin )
                 return NotFound("You are not the owner of this post !"); 
   
         // //     post.Title = data.Title;
@@ -171,7 +183,10 @@ namespace Prid1920_g03.Controllers
                 return BadRequest(res);
             return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
             
-        // }
+         }
+
+        /*Only the owner of a post or an administrator 
+        can execute this action */
 
         [HttpPut("editcomment/{id}")]
         public async Task<IActionResult> EditComment(int id, CommentDTO data)
@@ -185,7 +200,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null)
                 return BadRequest();
-            if(user.Id != comment.AuthorId || )
+            if(user.Id != comment.AuthorId || currentUser.Role != Role.Admin )
             comment.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
@@ -194,6 +209,8 @@ namespace Prid1920_g03.Controllers
                   
         }
 
+        /*Only the owner of a post or an administrator 
+        can execute this action */
         [HttpPost("deletecomment/{id}")]
         public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
         {
@@ -203,7 +220,7 @@ namespace Prid1920_g03.Controllers
             var user = await model.Users.FindAsync(com.AuthorId);
             if(user == null)
                 return BadRequest();
-            if(com.AuthorId != data.AuthorId || user.Role != Role.Admin )
+            if(com.AuthorId != data.AuthorId || currentUser.Role != Role.Admin )
                 return BadRequest();
             
             model.Comments.Remove(com);

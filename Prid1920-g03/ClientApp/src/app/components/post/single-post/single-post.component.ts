@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, Vali
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
 import { ActivatedRoute } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { Vote } from 'src/app/models/vote';
 
 @Component({
     selector: 'app-userCard',
@@ -13,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class SinglePostListComponent implements OnInit {
-    
+    currentUser: User;
     id: number;
     title: string;
     body: string;
@@ -35,14 +37,18 @@ export class SinglePostListComponent implements OnInit {
     responseBody = "My response";
 
 
-    constructor(private postService: PostService, private route: ActivatedRoute) {}
+    constructor(private postService: PostService, private route: ActivatedRoute) {
+        this.currentUser = this.postService.currentUser;
+    }
 
     ngOnInit() {
         const id = this.route.snapshot.params['id'];
         this.postService.getPostById(+id).subscribe(post => {
+            
             this.id = post.id;
             this.title = post.title;
             this.body = post.body;
+            this.authorId = post.authorId;
             this.timestamp = post.timestamp;
             this.tags = post.tags;
             this.comments = post.comments;
@@ -56,8 +62,11 @@ export class SinglePostListComponent implements OnInit {
 
    
 
-    upDown(idPost: number, authorId: number, upDown: number){
+    upDown(idPost: number,  upDown: number){
         
-        console.log("id du post est : "+idPost+"nom de l'auteur"+authorId+"vote :"+upDown);
+        console.log("id du post est : "+idPost+" l'id de l'auteur "+this.currentUser.id+" vote :"+upDown);
+        const authorId = this.currentUser.id;
+        const vote = new Vote({upDown, authorId, idPost});
+        // this.postService.upDown()
     }
 }

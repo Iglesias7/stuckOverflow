@@ -13,9 +13,13 @@ export class PostService {
 
   posts: Post[] = [];
   postsSubject = new Subject<Post[]>();
+
+  public currentUser: User;
     
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     this.getPosts();
+    const data = JSON.parse(sessionStorage.getItem('currentUser'));
+      this.currentUser = data ? new User(data) : null;
   }
 
   emitPost(){
@@ -87,8 +91,8 @@ export class PostService {
     
   }
 
-  upDown(id: number, v: Vote){
-    return this.http.put<Post>(`${this.baseUrl}api/post/editPostWithVote/${id}`, v).pipe(
+  upDown(v: Vote){
+    return this.http.put<Post>(`${this.baseUrl}api/post/editPostWithVote/`, v).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);

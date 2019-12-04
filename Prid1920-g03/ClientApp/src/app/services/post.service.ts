@@ -5,6 +5,7 @@ import { map, flatMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Post } from '../models/post';
 import { Subject } from 'rxjs';
+import { Vote } from '../models/vote';
 
 @Injectable({ providedIn: 'root' })
 
@@ -82,23 +83,20 @@ export class PostService {
       map(m => !m ? null : new Post(m)),
       catchError(err => of(null))
     );
+
+    
   }
 
-  up(){
-    this.http.get<Post[]>(`${this.baseUrl}api/post/tagfilter`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
+  upDown(id: number, v: Vote){
+    return this.http.put<Post>(`${this.baseUrl}api/post/editPostWithVote/${id}`, v).pipe(
+      map(res => true),
+      catchError(err => {
+        console.error(err);
+        return of(false);
+     
+      })
+    ); 
   }
 
-  down(){
-    this.http.get<Post[]>(`${this.baseUrl}api/post/tagfilter`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
-  }
+  
 }

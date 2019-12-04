@@ -250,27 +250,27 @@ namespace Prid1920_g03.Controllers
             return vote1.ToDTO();
         }
 
-        //  [HttpPut("editPostWithVote/{id}")]
-        // public async Task<IActionResult> EditPost(int id, VoteDTO data)
-        // {
-        //     var post = await model.Posts.FindAsync(id);
-        //     if(post == null)
-        //         return NotFound();
+         [HttpPut("editPostWithVote/{id}")]
+        public async Task<IActionResult> EditPostWithVote(int id, VoteDTO data)
+        {
+            var post = await model.Posts.FindAsync(id);
+            if(post == null)
+                return NotFound();
 
             
-        //     var newVote = new Vote()
-        //     {
-        //         UpDown = data.UpDown,
-        //         AuthorId = data.AuthorId,
-        //         PostId = data.PostId
-        //     };
-        //     post.Votes.Add(newVote);
-        //     model.Votes.Add(newVote);
+            var newVote = new Vote()
+            {
+                UpDown = data.UpDown,
+                AuthorId = data.AuthorId,
+                PostId = data.PostId
+            };
+            post.Votes.Add(newVote);
+            model.Votes.Add(newVote);
 
-        //     await model.SaveChangesAsyncWithValidation();
+            await model.SaveChangesAsyncWithValidation();
             
-        //     return NoContent();
-        // }
+            return NoContent();
+        }
 
 
         [HttpPost("add_vote/{id}")]
@@ -335,5 +335,9 @@ namespace Prid1920_g03.Controllers
 
             return NoContent();
         }
+
+
+
+
     }
 }

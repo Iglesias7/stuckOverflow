@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 
 export class SinglePostListComponent implements OnInit {
     
+    id: number;
     title: string;
     body: string;
     timestamp: string;
@@ -39,6 +40,7 @@ export class SinglePostListComponent implements OnInit {
     ngOnInit() {
         const id = this.route.snapshot.params['id'];
         this.postService.getPostById(+id).subscribe(post => {
+            this.id = post.id;
             this.title = post.title;
             this.body = post.body;
             this.timestamp = post.timestamp;
@@ -52,11 +54,10 @@ export class SinglePostListComponent implements OnInit {
         });
     }
 
-    up(){
+   
 
-    }
-
-    down(){
+    upDown(idPost: number, authorId: number, upDown: number){
         
+        console.log("id du post est : "+idPost+"nom de l'auteur"+authorId+"vote :"+upDown);
     }
 }

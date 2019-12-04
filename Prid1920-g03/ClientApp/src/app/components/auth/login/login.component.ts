@@ -80,6 +80,7 @@ export class LoginComponent implements OnInit {
                 error => {
                     const errors = error.error.errors;
                     for (let field in errors) {
+                        console.log(field);
                         this.loginForm.get(field.toLowerCase()).setErrors({ custom: errors[field] })
                     }
                     this.loading = false;

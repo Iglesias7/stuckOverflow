@@ -21,10 +21,15 @@ namespace Prid1920_g03.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
+    /***********************TO GET CURRENT USER NAME************ */
+    // var user = User.Identity.Name
+    /***********************TO VERiFY IF CURRENT USER ROLE IS ADMIN *****************/
+    //  User.IsInRole(Role.Admin.ToString())
 
     public class PostController : ControllerBase {
 
         private readonly Prid1920_g03Context model;
+<<<<<<< HEAD
         // private User currentUser;
 
         public PostController(Prid1920_g03Context _model){
@@ -33,15 +38,27 @@ namespace Prid1920_g03.Controllers
             // var user = (from u in model.Users where u.Pseudo == userName select u).FirstOrDefault();
             // if(user != null)
             //     this.currentUser = user;
+=======
+        private User currentUser;
+
+        public PostController(Prid1920_g03Context _model){
+            this.model = _model;
+           
+>>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
         }
 
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
+<<<<<<< HEAD
             var itemList = from p in model.Posts
                         where p.Title != (null)
                         select p;
 
             return (await itemList.ToListAsync()).ToDTO();
+=======
+             return (await model.Posts.ToListAsync()).ToDTO();
+>>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
         }
 
         [HttpGet("{id}")]
@@ -93,8 +110,13 @@ namespace Prid1920_g03.Controllers
            if(post == null){
                return NotFound();
            } 
+<<<<<<< HEAD
         //    if(post.AuthorId != user.Id || currentUser.Role != Role.Admin)
         //         return NotFound();
+=======
+           if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+>>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
             var votes = (from v in model.Votes where v.Post.Id == post.Id 
@@ -127,8 +149,13 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null  )
                 return NotFound(); 
+<<<<<<< HEAD
             // if(user.Id != post.AuthorId || currentUser.Role != Role.Admin )
             //     return NotFound("You are not the owner of this post !"); 
+=======
+            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
+                return NotFound("You are not the owner of this post !"); 
+>>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
   
         // //     post.Title = data.Title;
         // //     post.Body = data.Body;
@@ -180,54 +207,11 @@ namespace Prid1920_g03.Controllers
             var res = await model.SaveChangesAsyncWithValidation();
             if(!res.IsEmpty)
                 return BadRequest(res);
-            return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
-            
+            return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());            
          }
 
-        /*Only the owner of a post or an administrator 
-        can execute this action */
-
-        [HttpPut("editcomment/{id}")]
-        public async Task<IActionResult> EditComment(int id, CommentDTO data)
-        {
-            var user = await model.Users.FindAsync(data.AuthorId);
-            
-            if(id != data.Id)
-                return BadRequest();
-            var comment = await model.Comments.FindAsync(id);
-            if(comment == null)
-                return NotFound();
-            if(user == null)
-                return BadRequest();
-            // if(user.Id != comment.AuthorId || currentUser.Role != Role.Admin )
-            //     comment.Body = data.Body;
-
-            await model.SaveChangesAsyncWithValidation();
-            return NoContent();
-            
-                  
-        }
-
-        /*Only the owner of a post or an administrator 
-        can execute this action */
-        [HttpPost("deletecomment/{id}")]
-        public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
-        {
-            if(id != data.Id)
-                return BadRequest();
-            var com = await model.Comments.FindAsync(id);
-            var user = await model.Users.FindAsync(com.AuthorId);
-            if(user == null)
-                return BadRequest();
-            // if(com.AuthorId != data.AuthorId || currentUser.Role != Role.Admin )
-            //     return BadRequest();
-            
-            model.Comments.Remove(com);
-
-            await model.SaveChangesAsyncWithValidation();
-
-            return NoContent();
-        }
+        
+        
 
         [HttpGet("newest")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest() {
@@ -330,8 +314,52 @@ namespace Prid1920_g03.Controllers
                 return BadRequest(res);
             return CreatedAtAction(nameof(GetOneVote), new { authorId = newVote.AuthorId, postId = newVote.PostId }, newVote.ToDTO());
         }
+            
+         }
 
+        /*Only the owner of a post or an administrator 
+        can execute this action */
 
-        
+        [HttpPut("editcomment/{id}")]
+        public async Task<IActionResult> EditComment(int id, CommentDTO data)
+        {
+            var user = await model.Users.FindAsync(data.AuthorId);
+            
+            if(id != data.Id)
+                return BadRequest();
+            var comment = await model.Comments.FindAsync(id);
+            if(comment == null)
+                return NotFound();
+            if(user == null)
+                return BadRequest();
+            if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
+            comment.Body = data.Body;
+
+            await model.SaveChangesAsyncWithValidation();
+            return NoContent();
+            
+                  
+        }
+
+        /*Only the owner of a post or an administrator 
+        can execute this action */
+        [HttpPost("deletecomment/{id}")]
+        public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
+        {
+            if(id != data.Id)
+                return BadRequest();
+            var com = await model.Comments.FindAsync(id);
+            var user = await model.Users.FindAsync(com.AuthorId);
+            if(user == null)
+                return BadRequest();
+            if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
+                return BadRequest();
+            
+            model.Comments.Remove(com);
+
+            await model.SaveChangesAsyncWithValidation();
+
+            return NoContent();
+        }
     }
 }

@@ -9,8 +9,8 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191128140805_seedData")]
-    partial class seedData
+    [Migration("20191202120844_new database")]
+    partial class newdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,8 +156,6 @@ namespace Prid1920_g03.Migrations
                     b.Property<int>("PostId");
 
                     b.Property<int>("AuthorId");
-
-                    b.Property<DateTime>("Timestamp");
 
                     b.Property<int>("UpDown");
 

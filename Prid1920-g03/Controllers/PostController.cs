@@ -290,8 +290,6 @@ namespace Prid1920_g03.Controllers
                 return BadRequest(res);
             return CreatedAtAction(nameof(GetOneVote), new { authorId = newVote.AuthorId, postId = newVote.PostId }, newVote.ToDTO());
         }
-            
-         }
 
         /*Only the owner of a post or an administrator 
         can execute this action */

@@ -65,7 +65,8 @@ namespace Prid1920_g03.Models
             }
         }
 
-        public virtual int HightVote
+        [NotMapped]
+        public int HightVote
         {
             get
             {

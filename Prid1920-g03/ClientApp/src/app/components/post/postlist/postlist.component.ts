@@ -29,8 +29,9 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.postsBackup = _.cloneDeep(posts);
           }
         );
-        this.postService.emitPost();
+        
         this.postService.getPosts();
+        this.postService.emitPost();
     }
 
     newest(){

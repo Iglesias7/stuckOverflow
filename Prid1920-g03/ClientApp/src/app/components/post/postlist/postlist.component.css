@@ -16,3 +16,11 @@ h1{
   .example-tooltip-red {
     background: black;
   }
+
+  .example-icon {
+    padding: 0 14px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }

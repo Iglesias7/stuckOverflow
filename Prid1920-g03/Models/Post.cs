@@ -65,6 +65,24 @@ namespace Prid1920_g03.Models
             }
         }
 
+        public virtual int HightVote
+        {
+            get
+            {
+                int nb = 0;
+                foreach(Post r in Responses)
+                {
+                    if(r.VoteState > nb)
+                        nb = r.VoteState; 
+                }
+
+                if(this.VoteState > nb)
+                        nb = this.VoteState;
+
+                return nb;
+            }
+        }
+
         [NotMapped]
         public int NumVote
         {

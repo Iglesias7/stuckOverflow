@@ -48,6 +48,7 @@ namespace Prid1920_g03.Models
                 NumResponse = post.NumResponse,
                 VoteState = post.VoteState,
                 NumVote = post.NumVote,
+                HightVote = post.HightVote,
                 NumComments = post.NumComment,
                 PostUser = post.User.ToDTO(),
                 Replies = post.Responses.ToDTO(),

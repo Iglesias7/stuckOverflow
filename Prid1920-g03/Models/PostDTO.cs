@@ -20,6 +20,7 @@ namespace Prid1920_g03.Models
         public int NumVote { get; set; }
         public int NumComments { get; set; }
         public int VoteState { get; set; }
+        public int HightVote { get; set; }
 
         public IList<CommentDTO> Comments { get; set; }
         public IList<VoteDTO> Votes { get; set; }

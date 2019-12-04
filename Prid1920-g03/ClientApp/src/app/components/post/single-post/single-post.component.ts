@@ -49,7 +49,14 @@ export class SinglePostListComponent implements OnInit {
             this.numResponse = post.numResponse;
             this.responses = post.responses;
             this.voteState = post.voteState;
-            console.log(post);
         });
+    }
+
+    up(){
+
+    }
+
+    down(){
+        
     }
 }

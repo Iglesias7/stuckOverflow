@@ -5,34 +5,63 @@ import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, Vali
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
 import { UserService } from 'src/app/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-userCard',
     templateUrl: './postlist.component.html',
     styleUrls: ['./postlist.component.css'],
-    encapsulation: ViewEncapsulation.None
 })
 
-export class PostListComponent implements AfterViewInit {
+export class PostListComponent implements OnInit, OnDestroy {
     
     posts: Post[] = [];
-    questions: Post[] = [];
+    postsBackup: Post[] = [];
+    postsSubsription: Subscription;
+    demo = null;
 
     constructor(private postService: PostService, private userService: UserService,) {}
 
-    ngAfterViewInit(): void {
-        this.refresh();
+    ngOnInit() {
+        this.postsSubsription = this.postService.postsSubject.subscribe(
+          posts => {
+            this.posts = posts;
+            this.postsBackup = _.cloneDeep(posts);
+          }
+        );
+        this.postService.emitPost();
+        this.postService.getPosts();
     }
 
-    refresh() {
-        this.postService.getAllPosts().subscribe(posts => {
-            // assigne les données récupérées aux posts
-            this.posts = posts;
-            this.posts.forEach(post => {
-                if(post.title !== null){
-                    this.questions.push(post);
-                }
-            });            
-        });        
+    newest(){
+        this.postService.getNewest();
+        this.postService.emitPost();
+    }
+
+    tagfilter(){
+        this.postService.getTagfilter();
+        this.postService.emitPost();
+    }
+
+    tagunanswered(){
+        this.postService.getUnanswered();
+        this.postService.emitPost();
+    }
+
+    votefilter(){
+        this.postService.getHightVote();
+        this.postService.emitPost();
+    }
+
+    filterChanged(filter: string) {
+        const lFilter = filter.toLowerCase();
+        this.posts = _.filter(this.postsBackup, m => {
+            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
+            return str.includes(lFilter);
+        });
+    }
+
+    ngOnDestroy(){
+        this.postsSubsription.unsubscribe();
     }
 }

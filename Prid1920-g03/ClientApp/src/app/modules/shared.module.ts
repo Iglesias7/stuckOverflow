@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-  MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
+  MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatButtonToggleModule,
   MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatToolbarModule,
   MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatDividerModule, 
   MatSelectModule, MatCardModule, MatMenuModule, MatListModule, MatTooltipModule, MatExpansionModule
@@ -9,7 +9,7 @@ import {
 
 @NgModule({
   imports: [
-    MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
+    MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatButtonToggleModule,
     MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatToolbarModule,
     MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatDividerModule, 
     MatSelectModule, MatCardModule, MatMenuModule, MatListModule, MatTooltipModule, MatExpansionModule 
@@ -17,7 +17,7 @@ import {
   exports: [
     MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule,
     MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule, MatToolbarModule,
-    MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule,
+    MatSlideToggleModule, MatDialogModule, MatSnackBarModule, MatTabsModule, MatButtonToggleModule,
     MatSelectModule, MatCardModule, MatMenuModule, MatListModule, MatTooltipModule, MatExpansionModule, MatDividerModule 
   ],
 })

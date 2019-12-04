@@ -29,36 +29,20 @@ namespace Prid1920_g03.Controllers
     public class PostController : ControllerBase {
 
         private readonly Prid1920_g03Context model;
-<<<<<<< HEAD
-        // private User currentUser;
-
-        public PostController(Prid1920_g03Context _model){
-            this.model = _model;
-            // var userName = User.Identity.Name;
-            // var user = (from u in model.Users where u.Pseudo == userName select u).FirstOrDefault();
-            // if(user != null)
-            //     this.currentUser = user;
-=======
-        private User currentUser;
 
         public PostController(Prid1920_g03Context _model){
             this.model = _model;
            
->>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
         }
 
         
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
-<<<<<<< HEAD
             var itemList = from p in model.Posts
                         where p.Title != (null)
                         select p;
 
             return (await itemList.ToListAsync()).ToDTO();
-=======
-             return (await model.Posts.ToListAsync()).ToDTO();
->>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
         }
 
         [HttpGet("{id}")]
@@ -110,13 +94,9 @@ namespace Prid1920_g03.Controllers
            if(post == null){
                return NotFound();
            } 
-<<<<<<< HEAD
-        //    if(post.AuthorId != user.Id || currentUser.Role != Role.Admin)
-        //         return NotFound();
-=======
+
            if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
->>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
             var comments = (from c in model.Comments where c.Post.Id == post.Id 
             select c);
             var votes = (from v in model.Votes where v.Post.Id == post.Id 
@@ -149,13 +129,9 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             if(user == null  )
                 return NotFound(); 
-<<<<<<< HEAD
-            // if(user.Id != post.AuthorId || currentUser.Role != Role.Admin )
-            //     return NotFound("You are not the owner of this post !"); 
-=======
+
             if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
                 return NotFound("You are not the owner of this post !"); 
->>>>>>> 0b43f8895db8e30bbddea6f4e9cb02cf937e0c5e
   
         // //     post.Title = data.Title;
         // //     post.Body = data.Body;

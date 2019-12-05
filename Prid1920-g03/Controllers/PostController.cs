@@ -32,7 +32,6 @@ namespace Prid1920_g03.Controllers
 
         public PostController(Prid1920_g03Context _model){
             this.model = _model;
-           
         }
 
         
@@ -225,9 +224,7 @@ namespace Prid1920_g03.Controllers
             var itemList = from p in model.Posts
                         where p.Title != (null) 
                         orderby p.HightVote descending
-                        select p;
-                        
-                    
+                        select p;                    
             return (await itemList.ToListAsync()).ToDTO();
         }
 
@@ -250,23 +247,34 @@ namespace Prid1920_g03.Controllers
             return vote1.ToDTO();
         }
 
-         [HttpPut("editPostWithVote/{id}")]
-        public async Task<IActionResult> EditPostWithVote(int id, VoteDTO data)
+         [HttpPost("editPostWithVote")]
+        public async Task<IActionResult> EditPostWithVote(PostDTO data)
         {
-            var post = await model.Posts.FindAsync(id);
+            Console.WriteLine("data");
+            var post = await model.Posts.FindAsync(data.Id);
             if(post == null)
                 return NotFound();
 
+            foreach(VoteDTO vd in data.Votes){
+                Vote newVote = new Vote()
+                {
+                    UpDown = vd.UpDown,
+                    AuthorId = vd.AuthorId,
+                    PostId = vd.PostId
+                };
+                
+                // foreach(Vote v in model.Votes){
+                    // if(v.AuthorId.Equals(vd.AuthorId) && v.PostId.Equals(vd.PostId)){
+                        // post.Votes.Remove(newVote);
+                        // model.Votes.Remove(newVote);
+                        // await model.SaveChangesAsyncWithValidation();
+                    // }
+                    post.Votes.Add(newVote);
+                    model.Votes.Add(newVote);
+                   
+                // }
+            }
             
-            var newVote = new Vote()
-            {
-                UpDown = data.UpDown,
-                AuthorId = data.AuthorId,
-                PostId = data.PostId
-            };
-            post.Votes.Add(newVote);
-            model.Votes.Add(newVote);
-
             await model.SaveChangesAsyncWithValidation();
             
             return NoContent();

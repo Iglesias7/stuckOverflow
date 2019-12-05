@@ -1,6 +1,13 @@
-<div  class="container" >
-  <app-nav-menu></app-nav-menu>
-  <div class="bg">
-    <router-outlet></router-outlet>
+<div  class="containerr" >
+  <app-nav-menu class="menu"></app-nav-menu>
+  <div class="row">
+    <div class="col-lg-2">
+        <app-menu class="menu"></app-menu>
+    </div>
+    <div class="col-lg-8 bg">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col-lg-2">
+    </div>
   </div>
 </div>

@@ -87,17 +87,14 @@ export class PostService {
       map(m => !m ? null : new Post(m)),
       catchError(err => of(null))
     );
-
-    
   }
 
-  upDown(v: Vote){
-    return this.http.put<Post>(`${this.baseUrl}api/post/editPostWithVote/`, v).pipe(
+  upDown(p: Post): Observable<boolean>{
+    return this.http.post<Post>(`${this.baseUrl}api/post/editPostWithVote`, p).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);
         return of(false);
-     
       })
     ); 
   }

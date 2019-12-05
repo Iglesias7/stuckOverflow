@@ -9,8 +9,8 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191202120844_new database")]
-    partial class newdatabase
+    [Migration("20191204133502_vote")]
+    partial class vote
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

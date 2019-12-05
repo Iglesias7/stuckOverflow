@@ -4,14 +4,15 @@ a.navbar-brand {
   word-break: break-all;
 }
 
-html {
-  font-size: 14px;
-}
-
 @media (min-width: 768px) {
   html {
     font-size: 16px;
   }
+}
+
+header{
+  background-color: rgba(207, 205, 187, 0.7); 
+
 }
 
 .nav-text{
@@ -58,4 +59,19 @@ html {
 .link-active{
   color: orange;
   font-weight: bolder;
+}
+
+.vertical-menu{
+  margin-top: 70px;
+}
+
+.vertical-menu a {
+  display: block;
+  padding: 12px;
+  color: rgb(85, 173, 207);
+  text-decoration: none;
+}
+
+.vertical-menu a:hover {
+  background-color: rgb(248, 241, 174);
 }

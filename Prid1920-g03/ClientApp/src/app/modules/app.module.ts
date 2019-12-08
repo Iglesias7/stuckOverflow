@@ -28,6 +28,7 @@ import { PostListComponent } from '../components/post/postlist/postlist.componen
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
 import { SimplemdeModule } from 'ngx-simplemde';
 import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
+import { TagListComponent } from '../components/tags/taglist.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
     RelationshipsComponent,
     UserCardComponent,
     PostListComponent,
-    SinglePostListComponent
+    SinglePostListComponent,
+    TagListComponent
   ],
   entryComponents: [EditUserComponent],
   imports: [

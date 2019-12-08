@@ -56,6 +56,8 @@ namespace Prid1920_g03.Models
         {
             get
             {
+                // return Votes.Sum(r => r.UpDown);
+
                 int nb = 0;
                 foreach(Vote v in Votes)
                 {
@@ -79,9 +81,10 @@ namespace Prid1920_g03.Models
 
                 if(this.VoteState > nb)
                         nb = this.VoteState;
-
                 return nb;
-            }
+
+                // return Responses.Max(x => x.VoteState);
+            }        
         }
 
         [NotMapped]

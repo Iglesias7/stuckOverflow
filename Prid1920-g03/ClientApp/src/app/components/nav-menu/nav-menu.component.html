@@ -1,5 +1,5 @@
 <header >
-  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3' style="border-top: 7px solid orange; position: fixed; width: 100%;">
+  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3' style="border-top: 7px solid orange; width: 100%;">
       <div *ngIf="!currentUser">
         <button mat-button [matMenuTriggerFor]="menu" (click) = "readonly = !readonly"><mat-icon>{{ readonly ? " close " : " menu "}}</mat-icon></button>
         <mat-menu #menu="matMenu">

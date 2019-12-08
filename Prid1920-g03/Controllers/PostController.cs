@@ -221,82 +221,46 @@ namespace Prid1920_g03.Controllers
         [HttpGet("votefilter")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtVotefilter () {
 
-            var itemList = from p in model.Posts
+            var itemList =  (from p in model.Posts
                         where p.Title != (null) 
-                        orderby p.HightVote descending
-                        select p;                    
-            return (await itemList.ToListAsync()).ToDTO();
+                        select p).AsEnumerable().OrderByDescending(p => p.HightVote);     
+                      
+            return (itemList).ToDTO();
         }
 
-
-        [HttpGet("getOneVote/{authorId}/{postId}")]
-        public async Task<ActionResult<VoteDTO>> GetOneVote(int authorId, int postId)
-        {
-
-            var vote =  from v in model.Votes
-                        where v.PostId == postId 
-                        select v;
-
-            // var vote = await model.Votes.FindAsync(u => u.AuthorId == authorId);
-
-            var vote1 = await vote.SingleOrDefaultAsync(u => u.AuthorId == authorId);
-
-
-            if (vote == null)
-                return NotFound();
-            return vote1.ToDTO();
-        }
-
-         [HttpPost("editPostWithVote")]
+        [HttpPost("editPostWithVote")]
         public async Task<IActionResult> EditPostWithVote(PostDTO data)
         {
-            Console.WriteLine("data");
             var post = await model.Posts.FindAsync(data.Id);
             if(post == null)
                 return NotFound();
 
             foreach(VoteDTO vd in data.Votes){
-                Vote newVote = new Vote()
-                {
-                    UpDown = vd.UpDown,
-                    AuthorId = vd.AuthorId,
-                    PostId = vd.PostId
-                };
                 
-                // foreach(Vote v in model.Votes){
-                    // if(v.AuthorId.Equals(vd.AuthorId) && v.PostId.Equals(vd.PostId)){
-                        // post.Votes.Remove(newVote);
-                        // model.Votes.Remove(newVote);
-                        // await model.SaveChangesAsyncWithValidation();
-                    // }
-                    post.Votes.Add(newVote);
+                var vote = await model.Votes.FindAsync(vd.AuthorId, vd.PostId);
+                
+                if(vote == null){
+                    Vote newVote = new Vote()
+                    {
+                        UpDown = vd.UpDown,
+                        AuthorId = vd.AuthorId,
+                        PostId = vd.PostId
+                    };
+
+                    // post.Votes.Add(newVote);
                     model.Votes.Add(newVote);
-                   
-                // }
+                }else{
+                    // foreach(Vote v in post.Votes){
+                    //  if(v.AuthorId.Equals(vd.AuthorId) && v.PostId.Equals(vd.PostId))
+                    //     v.UpDown = vd.UpDown;
+                    // }
+                    vote.UpDown = vd.UpDown;
+                }
             }
             
             await model.SaveChangesAsyncWithValidation();
             
             return NoContent();
-        }
-
-
-        [HttpPost("add_vote/{id}")]
-        public async Task<ActionResult<VoteDTO>> GEtUpDow(VoteDTO data)
-        {
-            
-            var newVote = new Vote()
-            {
-                UpDown = data.UpDown,
-                AuthorId = data.AuthorId,
-                PostId = data.PostId
-            };
-            model.Votes.Add(newVote);
-
-            var res = await model.SaveChangesAsyncWithValidation();
-            if (!res.IsEmpty)
-                return BadRequest(res);
-            return CreatedAtAction(nameof(GetOneVote), new { authorId = newVote.AuthorId, postId = newVote.PostId }, newVote.ToDTO());
         }
 
         /*Only the owner of a post or an administrator 

@@ -19,7 +19,6 @@ export class SinglePostListComponent implements OnInit {
     currentUser: User;
     id: number;
     title: string;
-    body: any;
     timestamp: string;
     authorId: number;
     parentId: number;
@@ -53,7 +52,6 @@ export class SinglePostListComponent implements OnInit {
             this.post = post;
             this.id = post.id;
             this.title = post.title;
-            this.body = post.body;
             this.authorId = post.authorId;
             this.timestamp = post.timestamp;
             this.tags = post.tags;

@@ -1,4 +1,5 @@
 import { User } from "./user";
+import { Vote } from "./vote";
 
   export class Post {
       id: number;
@@ -18,7 +19,7 @@ import { User } from "./user";
       comments: (string | Comment)[];
       responses: (string | Post)[];
       tags: string[];
-      votes: number;
+      votes: Vote[];
     
       constructor(data: any) {
         if (data) {

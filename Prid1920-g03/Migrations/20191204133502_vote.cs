@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Prid1920_g03.Migrations
 {
-    public partial class newdatabase : Migration
+    public partial class vote : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

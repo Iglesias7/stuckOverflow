@@ -6,6 +6,7 @@ h1{
 .ecard{
     border-bottom: 3px solid orange;
     width: 100%;
+    position: inherit;
 }
 
 .example-button {

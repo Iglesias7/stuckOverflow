@@ -7,6 +7,7 @@ import { Post } from 'src/app/models/post';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { Vote } from 'src/app/models/vote';
+import { post } from 'selenium-webdriver/http';
 
 @Component({
     selector: 'app-userCard',
@@ -18,7 +19,7 @@ export class SinglePostListComponent implements OnInit {
     currentUser: User;
     id: number;
     title: string;
-    body: string;
+    body: any;
     timestamp: string;
     authorId: number;
     parentId: number;
@@ -31,6 +32,7 @@ export class SinglePostListComponent implements OnInit {
     responses: (string | Post)[];
     tags: string[];
     votes: number;
+    post: Post;
 
     numComments: number;
 
@@ -42,9 +44,13 @@ export class SinglePostListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getElem();
+    }
+
+    getElem(){
         const id = this.route.snapshot.params['id'];
         this.postService.getPostById(+id).subscribe(post => {
-            
+            this.post = post;
             this.id = post.id;
             this.title = post.title;
             this.body = post.body;
@@ -62,11 +68,17 @@ export class SinglePostListComponent implements OnInit {
 
    
 
-    upDown(idPost: number,  upDown: number){
+    upDown(postId: number,  upDown: number){
         
-        console.log("id du post est : "+idPost+" l'id de l'auteur "+this.currentUser.id+" vote :"+upDown);
         const authorId = this.currentUser.id;
-        const vote = new Vote({upDown, authorId, idPost});
-        // this.postService.upDown()
+
+        const vote = new Vote({upDown, authorId, postId});
+        
+        const votes = [];
+        votes.push(vote);
+        const id = postId;
+        const post = new Post({id, votes});
+        this.postService.upDown(post).subscribe();
+        this.getElem();
     }
 }

@@ -5,14 +5,17 @@
     }
 }
 
-.container{
-  background-color: rgba(246, 230, 87, 0.7); 
-  margin-top: 5%;
-  margin-bottom: 80px;
+.containerr{
   padding: 0%;
+}
+
+.menu{
+  width: 100%;
+  
 }
 
 .bg{
   padding: 20px;
+  position: inherit;
 }
   

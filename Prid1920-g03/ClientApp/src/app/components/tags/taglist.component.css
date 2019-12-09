@@ -8,6 +8,31 @@
     
 }
 
-.filter_btn_toggle {
-    display: inline;
+.filter_btn_toggle * {
+    display: inline-flex;
+}
+.toggle {
+    float: right;
+    padding-top: 5px;
+}
+
+.popular {
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+    position: inherit;
+}
+
+.Name {
+    background-color: darksalmon;
+    color: white;
+    font-weight: bolder;
+    position: inherit;
+}
+
+.New {
+    background-color: darkturquoise;
+    color: white;
+    font-weight: bolder;
+    position: inherit;
 }

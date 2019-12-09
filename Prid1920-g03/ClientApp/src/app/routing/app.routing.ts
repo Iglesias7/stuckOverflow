@@ -14,7 +14,7 @@ import { Role } from '../models/user';
 import { RelationshipsComponent } from '../components/relationships/relationships.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
-import { TagListComponent } from '../components/tags/taglist.component';
+import { TagListComponent } from '../components/tags/taglist/taglist.component';
 
 
 const appRoutes: Routes = [

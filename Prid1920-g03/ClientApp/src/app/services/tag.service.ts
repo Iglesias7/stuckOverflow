@@ -29,4 +29,39 @@ export class TagService {
         );
     }
 
+    getTagByName(name: string) {
+        return this.http.get<Tag[]>(`${this.baseUrl}api/tag/getTagByName/${name}`).pipe(
+            map(res => res.map(m => new Tag(m)))
+        );
+    }
+
+    public update(tg: Tag): Observable<boolean>{
+        return this.http.pit<Tag>(`${this.baseUrl}api/tag/${id}`).pipe(
+            map(t => !t ? null : new Tag(t)),
+            catchError(err => of(null))
+        );
+    }
+
+    public delete(tg: Tag): Observable<boolean> {
+        return this.http.delete<boolean>(`${this.baseUrl}api/tag/${tg.id}`).pipe(
+          map(res => true),
+         catchError(err => {
+        console.error(err);
+        return of(false);
+      })
+    );
+
+     }
+    
+    public add(tg: Tag): Observable<boolean> {
+        return this.http.post<Tag>(`${this.baseUrl}api/tag`, tg).pipe(
+         map(res => true),
+         catchError(err => {
+        console.error(err);
+        return of(false);
+      })
+    );
+  }
+
+
 }

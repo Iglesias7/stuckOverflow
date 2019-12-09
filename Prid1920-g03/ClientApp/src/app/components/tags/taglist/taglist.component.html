@@ -20,5 +20,15 @@
                 <mat-button-toggle class="New">New</mat-button-toggle>
         </mat-button-toggle-group>
 
+</div><br><br>
+
+<div class="tag-container">
+    <p>test</p>
+    <mat-card matSort *ngFor="let tag of tags" >
+        <mat-card-header>
+            <mat-card-title>{{tag.name}}</mat-card-title>
+        </mat-card-header>   
+    </mat-card>
+
 </div>
 

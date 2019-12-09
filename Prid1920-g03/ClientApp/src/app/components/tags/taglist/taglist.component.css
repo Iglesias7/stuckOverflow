@@ -36,3 +36,8 @@
     font-weight: bolder;
     position: inherit;
 }
+.tag-container {
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+}

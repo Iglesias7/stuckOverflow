@@ -1,0 +1,13 @@
+.title {
+    text-align: left;
+    margin-left: 10px;
+    font-weight: bold;
+}
+.tag_info {
+    font-size: 13px;
+    
+}
+
+.filter_btn_toggle {
+    display: inline;
+}

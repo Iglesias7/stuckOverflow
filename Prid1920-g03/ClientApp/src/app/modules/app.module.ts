@@ -30,7 +30,8 @@ import { SinglePostListComponent } from '../components/post/single-post/single-p
 import { EditPostComponent } from '../components/post/edit-post/edit-post.component';
 import { SimplemdeModule } from 'ngx-simplemde';
 import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
-import { TagListComponent } from '../components/tags/taglist.component';
+import { TagListComponent } from '../components/tags/taglist/taglist.component'
+
 
 
 @NgModule({

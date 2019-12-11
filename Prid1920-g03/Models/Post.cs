@@ -15,10 +15,8 @@ namespace Prid1920_g03.Models
         public int Id { get; set; }
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Required")]
         public string Body { get; set; }
 
-        [Required(ErrorMessage = "Required")]
         public DateTime Timestamp { get; set; }
 
                
@@ -37,7 +35,7 @@ namespace Prid1920_g03.Models
         public virtual IList<PostTag> LsPostTags { get; set; } = new List<PostTag>();
 
         [NotMapped]
-        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag);}
+        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag); }
 
         [NotMapped]
         public int NumResponse

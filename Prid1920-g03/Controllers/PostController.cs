@@ -56,29 +56,47 @@ namespace Prid1920_g03.Controllers
 
         [HttpPost]
         public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
-
-            var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title);
+            
             var user = await model.Users.FindAsync(data.AuthorId);
-            if(post != null){
-                var error = new ValidationErrors().Add("Change the title, this one is already used", nameof(post.Title));
-                return BadRequest(error);
-            }
             if(user == null){
                 return BadRequest();
             }
+            
             var newPost = new Post(){
                 Title = data.Title,
                 Body = data.Body,
-                Timestamp = data.Timestamp,
+                Timestamp = DateTime.Now,
                 User = user,
-                AuthorId = data.AuthorId
+                AuthorId = data.AuthorId,
+                ParentId = data.ParentId,
             };
+
+            var newDateTime = newPost.Timestamp;
+
             model.Posts.Add(newPost);
-            var res = await model.SaveChangesAsyncWithValidation();
-            if(!res.IsEmpty)
-                return BadRequest(res);
+         await model.SaveChangesAsyncWithValidation();
+            
+
+            if(data.LsTags != null){
+                foreach(var t in data.LsTags){
+                    var tag = await model.Tags.SingleOrDefaultAsync(p => p.Name == t);
+                    var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title && p.Body == data.Body && p.Timestamp == newDateTime);
+                    var newPostTag = new PostTag(){
+                        PostId = post.Id,
+                        TagId = tag.Id
+                    };
+                   
+                    model.PostTags.Add(newPostTag);
+                }
+            }
+
+            await model.SaveChangesAsyncWithValidation();
+
             return CreatedAtAction(nameof(GetOnePost), new {id = newPost.Id }, newPost.ToDTO());
         }
+
+
+        
 
         /*Only the owner of a post or an administrator 
         can execute this action */
@@ -229,33 +247,44 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpPost("editPostWithVote")]
-        public async Task<IActionResult> EditPostWithVote(PostDTO data)
+        public async Task<IActionResult> EditPostWithVote(VoteDTO data)
         {
-            var post = await model.Posts.FindAsync(data.Id);
+            var post = await model.Posts.FindAsync(data.PostId);
             if(post == null)
                 return NotFound();
-
-            foreach(VoteDTO vd in data.Votes){
                 
-                var vote = await model.Votes.FindAsync(vd.AuthorId, vd.PostId);
-                
-                if(vote == null){
-                    Vote newVote = new Vote()
-                    {
-                        UpDown = vd.UpDown,
-                        AuthorId = vd.AuthorId,
-                        PostId = vd.PostId
-                    };
+            var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == data.AuthorId && p.PostId == data.PostId);
+            
+            Vote newVote = new Vote()
+            {
+                UpDown = data.UpDown,
+                AuthorId = data.AuthorId,
+                PostId = data.PostId
+            };
 
-                    // post.Votes.Add(newVote);
-                    model.Votes.Add(newVote);
-                }else{
-                    // foreach(Vote v in post.Votes){
-                    //  if(v.AuthorId.Equals(vd.AuthorId) && v.PostId.Equals(vd.PostId))
-                    //     v.UpDown = vd.UpDown;
-                    // }
-                    vote.UpDown = vd.UpDown;
-                }
+            if(vote != null){
+                model.Votes.Remove(vote);
+            }
+
+            model.Votes.Add(newVote);
+            
+            await model.SaveChangesAsyncWithValidation();
+            
+            return NoContent();
+        }
+
+        [Authorize]
+        [HttpDelete("deleteVote/{id}")]
+        public async Task<IActionResult> DeleteVote(int id)
+        {
+            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
+
+            var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == user.Id && p.PostId == id);
+            
+            if(vote != null){
+                model.Votes.Remove(vote);
+            }else{
+                return BadRequest();
             }
             
             await model.SaveChangesAsyncWithValidation();
@@ -283,8 +312,6 @@ namespace Prid1920_g03.Controllers
 
             await model.SaveChangesAsyncWithValidation();
             return NoContent();
-            
-                  
         }
 
         /*Only the owner of a post or an administrator 

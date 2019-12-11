@@ -7,7 +7,7 @@ import { UserService } from "src/app/services/user.service";
 @Component({
     selector: 'app-taglist',
     templateUrl: 'taglist.component.html',
-    styleUrls: ['taglist.component.css'],
+    styleUrls: ['taglist.component.css']
 })
 
 export class TagListComponent implements OnInit {

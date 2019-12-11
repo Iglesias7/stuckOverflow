@@ -123,7 +123,7 @@ export class EditUserComponent implements OnDestroy {
     }
 
 
-    update() {
+    public update() {
         const data = this.editForm.value;
         data.picturePath = this.tempPicturePath;
         if (this.pictureChanged) {
@@ -134,22 +134,22 @@ export class EditUserComponent implements OnDestroy {
         this.dialogRef.close(data);
     }
 
-    cancelTempPicture() {
+    public cancelTempPicture() {
         const data = this.editForm.value;
         if (this.pictureChanged) {
             this.userService.cancelPicture(this.tempPicturePath).subscribe();
         }
     }
 
-    onNoClick(): void {
+    public onNoClick(): void {
         this.dialogRef.close();
     }
 
-    cancel() {
+    public cancel() {
         this.dialogRef.close();
     }
 
-    fileChange(event) {
+    public fileChange(event) {
         const fileList: FileList = event.target.files;
         if (fileList.length > 0) {
             const file = fileList[0];

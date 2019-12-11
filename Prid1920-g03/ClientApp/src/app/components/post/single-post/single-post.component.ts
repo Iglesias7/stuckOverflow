@@ -19,6 +19,7 @@ export class SinglePostListComponent implements OnInit {
     currentUser: User;
     id: number;
     title: string;
+    body: string;
     timestamp: string;
     authorId: number;
     parentId: number;
@@ -35,11 +36,12 @@ export class SinglePostListComponent implements OnInit {
 
     numComments: number;
 
-    responseBody = "My response";
+    responseBody = "";
 
 
-    constructor(private postService: PostService, private route: ActivatedRoute) {
+    constructor(private postService: PostService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
         this.currentUser = this.postService.currentUser;
+        this.getElem();
     }
 
     ngOnInit() {
@@ -52,6 +54,7 @@ export class SinglePostListComponent implements OnInit {
             this.post = post;
             this.id = post.id;
             this.title = post.title;
+            this.body = post.body;
             this.authorId = post.authorId;
             this.timestamp = post.timestamp;
             this.tags = post.tags;
@@ -70,13 +73,53 @@ export class SinglePostListComponent implements OnInit {
         
         const authorId = this.currentUser.id;
 
-        const vote = new Vote({upDown, authorId, postId});
-        
-        const votes = [];
-        votes.push(vote);
-        const id = postId;
-        const post = new Post({id, votes});
-        this.postService.upDown(post).subscribe();
-        this.getElem();
+        const newVote = new Vote({upDown, authorId, postId});
+
+        this.postService.getPostById(+postId).subscribe(post => {
+            var res = false;
+            post.votes.forEach(vote => {
+                
+                if(vote.authorId == authorId && vote.postId == postId && vote.upDown == upDown){
+                    res = true;
+                    const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
+                    snackBarRef.afterDismissed().subscribe(res => {
+                        if (res.dismissedByAction)
+                            this.getElem();
+                        else{
+                            this.postService.deleteVote(vote).subscribe(p => {
+                                this.getElem();
+                            });
+                        }
+                    });
+                }
+            });
+
+            if(!res){
+                this.postService.upDown(newVote).subscribe(p => {
+                    this.getElem();
+                });
+                
+            }
+        });
+    }
+
+    public reply(){
+        const body = this.responseBody;
+        const parentId = this.id;
+        const authorId = this.currentUser.id;
+        const title = null;
+        const tags = null;
+
+        const post =  new Post({body, authorId, parentId, title, tags});
+        const id = this.route.snapshot.params['id'];
+        this.postService.reply(post).subscribe(post =>{
+            this.postService.getPostById(+id).subscribe(post => {
+                this.post = post;
+                this.body = post.body;
+                this.numResponse = post.numResponse;
+                this.responses = post.responses;
+            });
+        });
+        this.responseBody = "";
     }
 }

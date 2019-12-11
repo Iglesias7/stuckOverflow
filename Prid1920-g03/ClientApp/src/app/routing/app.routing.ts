@@ -29,9 +29,9 @@ const appRoutes: Routes = [
   { path: 'single-post/:id', component: SinglePostListComponent },
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
+  { path: 'tags', component: TagListComponent},
   { path: 'restricted', component: RestrictedComponent },
-  { path: '**', component: UnknownComponent },
-  { path: 'tags', component: TagListComponent}
+  { path: '**', component: UnknownComponent }
 
 ];
 

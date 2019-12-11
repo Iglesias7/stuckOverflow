@@ -67,14 +67,14 @@ export class TagListComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-     create() {
+    create() {
         const tag = new Tag({});
         const dlg = this.dialog.open(EditTagComponent, { data: { tag, isNew: true } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 this.tagService.add(res).subscribe(res => {
                     if (!res) {
-                        this.snackBar.open(`There was an error at the server. The member has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.snackBar.open(`There was an error at the server. The tag has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
                         this.refresh();
                     }
                 });

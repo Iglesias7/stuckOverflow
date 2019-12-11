@@ -26,13 +26,18 @@
 
     <mat-card matSort *ngFor="let tag of tags" >
         <mat-card-header>
-            <mat-card-title>{{tag.name}}</mat-card-title>
+            <button mat-button type="submit">{{tag.name}}</button mat-button>
         </mat-card-header> 
         <mat-card-action>
-            <button mat-icon-button>edit</button>
-            <button mat-icon-button>delete</button>
+            <button mat-button type="submit" (click)="edit(row)">edit</button>
+            <button mat-button type="submit" (click)="delete(row)">delete</button>
         </mat-card-action>  
     </mat-card>
+</div>
 
+<div class="row mt-3">
+    <div class="col-12">
+        <button mat-raised-button (click)="create()">Add a New Tag</button>
+    </div>
 </div>
 

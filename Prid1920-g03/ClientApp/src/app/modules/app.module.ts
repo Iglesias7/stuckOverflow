@@ -30,6 +30,7 @@ import { SinglePostListComponent } from '../components/post/single-post/single-p
 import { SimplemdeModule } from 'ngx-simplemde';
 import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
 import { TagListComponent } from '../components/tags/taglist/taglist.component'
+import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component';
 
 
 
@@ -54,7 +55,8 @@ import { TagListComponent } from '../components/tags/taglist/taglist.component'
     UserCardComponent,
     PostListComponent,
     SinglePostListComponent,
-    TagListComponent
+    TagListComponent,
+    EditTagComponent
   ],
   entryComponents: [EditUserComponent],
   imports: [

@@ -41,3 +41,7 @@
     flex-direction: row;
     flex-flow: wrap;
 }
+
+.tag-container * {
+    margin: 5px;
+}

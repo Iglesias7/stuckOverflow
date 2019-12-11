@@ -23,11 +23,15 @@
 </div><br><br>
 
 <div class="tag-container">
-    <p>test</p>
+
     <mat-card matSort *ngFor="let tag of tags" >
         <mat-card-header>
             <mat-card-title>{{tag.name}}</mat-card-title>
-        </mat-card-header>   
+        </mat-card-header> 
+        <mat-card-action>
+            <button mat-icon-button>edit</button>
+            <button mat-icon-button>delete</button>
+        </mat-card-action>  
     </mat-card>
 
 </div>

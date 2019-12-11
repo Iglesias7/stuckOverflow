@@ -88,7 +88,7 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
                 _.assign(user, res);
                 this.userService.update(res).subscribe(res => {
                     if (!res) {
-                        this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Dismiss', { duration: 10000 });
                         this.refresh();
                     }
                 });

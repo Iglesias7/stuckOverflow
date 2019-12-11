@@ -32,7 +32,6 @@ const appRoutes: Routes = [
   { path: 'tags', component: TagListComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }
-  
 
 ];
 

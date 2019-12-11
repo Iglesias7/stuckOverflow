@@ -27,6 +27,7 @@ import { RelationshipsComponent } from '../components/relationships/relationship
 import { UserCardComponent } from '../components/user/userlist/usersCard.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
+import { EditPostComponent } from '../components/post/edit-post/edit-post.component';
 import { SimplemdeModule } from 'ngx-simplemde';
 import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
 import { TagListComponent } from '../components/tags/taglist/taglist.component'
@@ -56,9 +57,10 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     PostListComponent,
     SinglePostListComponent,
     TagListComponent,
-    EditTagComponent
+    EditTagComponent,
+    EditPostComponent
   ],
-  entryComponents: [EditUserComponent],
+  entryComponents: [EditUserComponent,UserCardComponent, EditPostComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

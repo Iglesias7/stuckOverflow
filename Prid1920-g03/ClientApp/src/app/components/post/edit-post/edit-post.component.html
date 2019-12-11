@@ -1,0 +1,26 @@
+<form id="editPostForm" class="form" [formGroup]="editPostForm" novalidate>
+    <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' post'}}</h1>
+    <mat-tab-group mat-stretch-tabs dynamicHeight>
+        <mat-tab label="General Data">
+            <div class="form">
+                <mat-form-field>
+                    <textarea matInput placeholder="Title" [formControl]="ctlTitle" required></textarea>
+                    <mat-error class="field-error" *ngIf="ctlTitle.hasError('required')">Required</mat-error>
+                </mat-form-field>
+                <simplemde [(ngModel)]="questionBody"></simplemde>
+            </div>
+        </mat-tab>
+        <mat-tab label="Choice tag(s)">
+            <div *ngFor="let tag of tags" style="padding: 10px;">
+                <mat-checkbox (click) = "checked(tag.name)">{{ tag.name }}</mat-checkbox>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    
+    <div class="footer">
+        <button type="submit" mat-button form="editPostForm"
+            [disabled]="editPostForm.pristine || editPostForm.invalid || editPostForm.pending"
+            (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
+        <button type="reset" mat-button (click)="cancel()">Cancel</button>
+    </div>
+</form>

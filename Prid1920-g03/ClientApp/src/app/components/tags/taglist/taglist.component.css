@@ -43,5 +43,9 @@
 }
 
 .tag-container * {
-    margin: 5px;
+    margin: 2px;
+}
+
+.add_tag {
+    margin-top: 270px;
 }

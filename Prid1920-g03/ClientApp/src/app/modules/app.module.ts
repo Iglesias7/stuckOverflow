@@ -66,7 +66,7 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     EditCommentComponent
     
   ],
-  entryComponents: [EditUserComponent, EditPostComponent, EditCommentComponent],
+  entryComponents: [EditUserComponent, EditPostComponent, EditCommentComponent,  EditTagComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

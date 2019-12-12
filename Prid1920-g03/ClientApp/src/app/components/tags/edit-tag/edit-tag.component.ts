@@ -24,11 +24,11 @@ export class EditTagComponent {
     constructor(public dialogRef: 
         MatDialogRef<EditTagComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { tag: Tag; isNew: boolean;},
-        private fb: FormBuilder,
+        private formbuilder: FormBuilder,
         private tagService: TagService
         ){
-            this.ctlTagName = this.fb.control('', [Validators.required]);
-            this.editForm = this.fb.group({
+            this.ctlTagName = this.formbuilder.control('', [this.tagAlreadyExist]);
+            this.editForm = this.formbuilder.group({
                 name: this.ctlTagName
             });
             console.log(data);

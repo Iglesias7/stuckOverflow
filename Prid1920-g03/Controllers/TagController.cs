@@ -31,10 +31,10 @@ namespace Prid1920_g03.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TagDTO>>> GetAllTags()
         {
-            return (await model.Tags.ToListAsync()).ToDTO();
+            return (await this.model.Tags.ToListAsync()).ToDTO();
         }
         
-        [HttpGet("getone/{id}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<TagDTO>> GetOne(int id)
         {
             var tag = await model.Tags.FindAsync(id);
@@ -97,19 +97,15 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
-        [Authorized(Role.Admin)]
+        //[Authorized(Role.Admin)]
         [HttpPut("{id}")]
-
         public async Task<IActionResult> EditTag(int id, TagDTO data)
         {
             var tag = await model.Tags.FindAsync(id);
-
-            if(id != data.Id)
-                return BadRequest();
             
             if(tag == null)
                 return NotFound();
-            //tag.Name = data.Name;
+            tag.Name = data.Name;
 
             await model.SaveChangesAsyncWithValidation();
             return NoContent();

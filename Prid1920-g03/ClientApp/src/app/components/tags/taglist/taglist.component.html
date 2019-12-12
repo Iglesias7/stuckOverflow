@@ -24,18 +24,24 @@
 
 <div class="tag-container">
 
-    <!-- <mat-card matSort *ngFor="let tag of tags" >
+    <mat-card matSort *ngFor="let tag of tags" >
         <mat-card-header>
-            <button mat-button type="submit">{{tag.name}}</button mat-button>
+            <mat-card-title>
+                    <button mat-button >{{tag.name}}</button>
+                </mat-card-title>
         </mat-card-header> 
-        <mat-card-action>
-            <button mat-button type="submit" (click)="edit(row)">edit</button>
-            <button mat-button type="submit" (click)="delete(row)">delete</button>
-        </mat-card-action>  
-    </mat-card> -->
+         <mat-card-actions> 
+            <button mat-icon-button tabindex="1" *ngIf="currentUser && isAdmin">
+                <mat-icon type="submit" (click)="edit(tag)">edit</mat-icon>
+            </button>
+            <button mat-icon-button tabindex="-1" *ngIf="currentUser && isAdmin">
+                <mat-icon type="submit" (click)="delete(tag)">delete</mat-icon>
+            </button>
+        </mat-card-actions>  
+    </mat-card>
 </div>
 
-<div class="row mt-3">
+<div class="add_tag" *ngIf="currentUser && isAdmin">
     <div class="col-12">
         <button mat-raised-button (click)="create()">Add a New Tag</button>
     </div>

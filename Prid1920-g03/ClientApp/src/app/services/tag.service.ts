@@ -36,10 +36,13 @@ export class TagService {
         );
     }
 
-    public update(tg: Tag): Observable<boolean>{
-        return this.http.put<Tag>(`${this.baseUrl}api/tag/${tg.id}`,tg).pipe(
-            map(t => !t ? null : new Tag(t)),
-            catchError(err => of(null))
+    public update(tg: Tag, id: number): Observable<boolean>{
+        return this.http.put<Tag>(`${this.baseUrl}api/tag/${id}`,tg).pipe(
+            map(res => true),
+            catchError(err => {
+                console.error(err);
+                return of(false);
+            })
         );
     }
 

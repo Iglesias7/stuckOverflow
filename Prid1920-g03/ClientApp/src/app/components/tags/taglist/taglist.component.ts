@@ -7,6 +7,8 @@ import { StatementVisitor } from "@angular/compiler";
 import { StateService } from "src/app/services/state.service";
 import { MatDialog, MatSnackBar } from "@angular/material";
 import { EditTagComponent } from "../edit-tag/edit-tag.component";
+import { AuthenticationService } from "src/app/services/authentication.service";
+import { Role } from "src/app/models/user";
 
 
 @Component({
@@ -15,10 +17,8 @@ import { EditTagComponent } from "../edit-tag/edit-tag.component";
     styleUrls: ['./taglist.component.css'],
 })
 
-export class TagListComponent implements AfterViewInit, OnDestroy {
-    ngOnDestroy(): void {
-        throw new Error("Method not implemented.");
-    }
+export class TagListComponent implements AfterViewInit {
+    
     ngAfterViewInit(): void {
         this.refresh();
     }
@@ -27,15 +27,13 @@ export class TagListComponent implements AfterViewInit, OnDestroy {
     tagsBackup: Tag[] = [];
 
     filter: string;
-
+   
     constructor(private tagService: TagService, private userService: UserService,
         private stateService: StateService,
         public dialog: MatDialog,
-        public snackBar: MatSnackBar){}
-
-    
-    
-
+        public snackBar: MatSnackBar,
+        public auth: AuthenticationService
+        ){}
 
     refresh() {
         this.tagService.getAllTags().subscribe(tags => {
@@ -44,20 +42,21 @@ export class TagListComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    // edit(tag: Tag) {
-    //     const dlg = this.dialog.open(EditTagComponent, { data: {tag, isNew: false}});
-    //     dlg.beforeClose().subscribe(res => {
-    //         if (res) {
-    //             _.assign(tag, res);
-    //             this.tagService.update(res).subscribe(res => {
-    //                 if (!res) {
-    //                     this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
-    //                     this.refresh();
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
+    edit(tag: Tag) {
+        const dlg = this.dialog.open(EditTagComponent, { data: {tag, isNew: false}});
+        dlg.beforeClose().subscribe(res => {
+            if (res) {
+                const tagId = tag.id;
+                _.assign(tag, res);
+                this.tagService.update(res, tagId).subscribe(res => {
+                    if (!res) {
+                        this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.refresh();
+                    }
+                });
+            }
+        });
+    }
 
     delete(tag: Tag) {
         const snackBarRef = this.snackBar.open(`Tag '${tag.name}' will be deleted`, 'Undo', { duration: 10000 });
@@ -89,6 +88,14 @@ export class TagListComponent implements AfterViewInit, OnDestroy {
             return str.includes(lFilter);
         });
     }
+
+    get currentUser() {
+        return this.auth.currentUser;
+      }
+      
+      get isAdmin() {
+        return this.currentUser && this.currentUser.role === Role.Admin;
+      }
 
 
 

@@ -32,6 +32,7 @@ import { EditPostComponent } from '../components/post/edit-post/edit-post.compon
 import { SimplemdeModule } from 'ngx-simplemde';
 import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
 import { TagListComponent } from '../components/tags/taglist/taglist.component'
+import { EditCommentComponent } from '../components/comment/edit-comment.component'
 import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component';
 
 
@@ -61,9 +62,11 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     EditPostComponent,
     PostViewComponent,
     EditTagComponent,
-    EditPostComponent
+    EditPostComponent,
+    EditCommentComponent
+    
   ],
-  entryComponents: [EditUserComponent,UserCardComponent, EditPostComponent],
+  entryComponents: [EditUserComponent, EditPostComponent, EditCommentComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,

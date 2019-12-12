@@ -1,17 +1,15 @@
 <form id="editCommentForm" class="form" [formGroup]="editCommentForm" novalidate>
         <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' comment'}}</h1>
-        <mat-tab label="General Data">
-            <div class="form">
-                <mat-form-field>
-                    <textarea matInput placeholder="Body" [formControl]="ctlBody" required></textarea>
-                    <mat-error class="field-error" *ngIf="ctlBody.hasError('required')">Required</mat-error>
-                </mat-form-field>
-            </div>
-        </mat-tab>
+        <div class="form">
+            <mat-form-field>
+                <textarea matInput placeholder="Body" [formControl]="ctlBody" required></textarea>
+                <mat-error class="field-error" *ngIf="ctlBody.hasError('required')">Required</mat-error>
+            </mat-form-field>
+        </div>
         
         <div class="footer">
             <button type="submit" mat-button form="editCommentForm"
-                [disabled]="editCommentForm.pristine || editCommentForm.invalid || editCommentForm.pending || !checkBox"
+                [disabled]="editCommentForm.pristine || editCommentForm.invalid || editCommentForm.pending"
                 (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
             <button type="reset" mat-button (click)="cancel()">Cancel</button>
         </div>

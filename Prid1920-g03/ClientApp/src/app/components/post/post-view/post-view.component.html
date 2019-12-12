@@ -48,10 +48,13 @@
             </mat-expansion-panel-header>
             <div *ngFor="let comment of comments">
                 <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
+                <button  mat-stroked-button style="color: darkcyan; position: inherit;" (click)="editComment(comment)">Edit Comment</button>
+                <button  mat-stroked-button style="color: red; position: inherit;" (click)="deleteComment(comment)">Delete Comment</button>
                 <mat-divider></mat-divider><br>
+                
             </div>
-            <button mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment(id)">Add Comment</button>
+            <button mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment()">Add Comment</button>
         </mat-expansion-panel>
-        <button *ngIf = "!numComments" mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment(id)">Add Comment</button>
+        <button *ngIf = "!numComments" mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment()">Add Comment</button>
         
     </mat-card>

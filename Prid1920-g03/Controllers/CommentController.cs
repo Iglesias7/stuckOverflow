@@ -38,31 +38,30 @@ namespace Prid1920_g03.Controllers
             return comment.ToDTO();
         }
 
-        [HttpPost]
-        public async Task<ActionResult<PostDTO>> AddComment(CommentDTO data)
+        [HttpPost("{id}")]
+        public async Task<ActionResult<PostDTO>> AddComment(int id, CommentDTO data)
         {
 
             var user = await model.Users.FindAsync(data.AuthorId);
             if(user == null)
                 return BadRequest();
-            var post = await model.Posts.FindAsync(data.PostId);
+            var post = await model.Posts.FindAsync(id);
             if(post == null )
                 return BadRequest();
             var newComment = new Comment()
             {
                Body = data.Body,
-               Timestamp = data.Timestamp,
+               Timestamp = DateTime.Now,
                AuthorId = data.AuthorId,
-               PostId = data.PostId,
-               Post = post,
-               User = user
-
+               PostId = post.Id
             };
-            post.Comments.Add(newComment);
+
             model.Comments.Add(newComment);
+
             var res = await model.SaveChangesAsyncWithValidation();
             if(!res.IsEmpty)
                 return BadRequest(res);
+
             return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
          }
    
@@ -74,15 +73,15 @@ namespace Prid1920_g03.Controllers
         public async Task<IActionResult> EditComment(int id, CommentDTO data)
         {
             var user = await model.Users.FindAsync(data.AuthorId);
-
-            if(id != data.Id)
+            if(user == null)
                 return BadRequest();
+
             var comment = await model.Comments.FindAsync(id);
             if(comment == null)
                 return NotFound();
-            if(user == null)
-                return BadRequest();
-            if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
+
+          
+            // if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
             comment.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
@@ -92,18 +91,18 @@ namespace Prid1920_g03.Controllers
         /*Only the owner of a post or an administrator
         can execute this action */
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
+        public async Task<IActionResult> DeleteComment(int id)
         {
-            if(id != data.Id)
-                return BadRequest();
-            var com = await model.Comments.FindAsync(id);
-            var user = await model.Users.FindAsync(com.AuthorId);
+            
+            var comment = await model.Comments.FindAsync(id);
+            var user = await model.Users.FindAsync(comment.AuthorId);
             if(user == null)
                 return BadRequest();
-            if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-                return BadRequest();
 
-            model.Comments.Remove(com);
+            // if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
+            //     return BadRequest();
+
+            model.Comments.Remove(comment);
 
             await model.SaveChangesAsyncWithValidation();
 

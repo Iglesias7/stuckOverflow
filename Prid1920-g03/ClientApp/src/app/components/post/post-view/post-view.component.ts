@@ -49,10 +49,11 @@ export class PostViewComponent {
                     const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
                     snackBarRef.afterDismissed().subscribe(res => {
                         if (res.dismissedByAction){
-
+                            this.postService.emitPost();
                         }
                         else{
                             this.voteService.deleteVote(vote).subscribe(p => {
+                                this.postService.emitPost();
                             });
                         }
                     });
@@ -61,31 +62,61 @@ export class PostViewComponent {
 
             if(!res){
                 this.voteService.upDown(newVote).subscribe(p => {
+                    this.postService.emitPost();
                 });
                 
             }
         });
     }
 
-    public addComment(postId: number) {
+    public addComment() {
         const comment = new Comment();
-        const authorId = this.currentUser.id;
         const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: true } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
-                const body = res.body;
-                this.commentService.add(res).subscribe(res => {
+                this.commentService.add(this.id, res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
                         this.postService.getPosts();
                         this.postService.emitPost();
                     }else{
-                        this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
+                        this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
                         this.postService.getPosts();
                         this.postService.emitPost();
                     }
                 });
             }
+        });
+    }
+
+    public editComment(comment: any) {
+        const id = comment.id;
+        const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: false } });
+        dlg.beforeClose().subscribe(res => {
+            if (res) {
+                this.commentService.update(res, id).subscribe(res => {
+                    if (!res) {
+                        this.snackBar.open(`There was an error at the server. The comment has not been update! Please try again.`, 'Dismiss', { duration: 4000 });
+                        this.postService.getPosts();
+                        this.postService.emitPost();
+                    }else{
+                        this.snackBar.open(`update comment successfully`, 'Dismiss', { duration: 4000 });
+                        this.postService.getPosts();
+                        this.postService.emitPost();
+                    }
+                });
+            }
+        });
+    }
+
+    public deleteComment(comment: any) {
+        const id = comment.id;
+        const snackBarRef = this.snackBar.open(`your comment will be deleted`, 'Undo', { duration: 4000 });
+        snackBarRef.afterDismissed().subscribe(res => {
+            if (!res.dismissedByAction){
+                this.commentService.delete(id).subscribe();
+            }
+                
         });
     }
 }

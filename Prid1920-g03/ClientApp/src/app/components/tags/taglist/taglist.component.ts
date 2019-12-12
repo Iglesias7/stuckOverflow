@@ -63,6 +63,7 @@ export class TagListComponent implements AfterViewInit {
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
                 this.tagService.delete(tag).subscribe();
+                this.refresh();
         });
     }
 
@@ -70,12 +71,13 @@ export class TagListComponent implements AfterViewInit {
         const tag = new Tag({});
         const dlg = this.dialog.open(EditTagComponent, { data: { tag, isNew: true } });
         dlg.beforeClose().subscribe(res => {
+            console.log(res.name);
             if (res) {
                 this.tagService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The tag has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
                     }
+                    this.refresh();
                 });
             }
         });

@@ -49,3 +49,8 @@
 .add_tag {
     margin-top: 270px;
 }
+
+.add_btn {
+    background-color: orange;
+    color: white;
+}

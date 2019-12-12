@@ -6,6 +6,7 @@ import { UserService } from "src/app/services/user.service";
 import { StatementVisitor } from "@angular/compiler";
 import { StateService } from "src/app/services/state.service";
 import { MatDialog, MatSnackBar } from "@angular/material";
+import { EditTagComponent } from "../edit-tag/edit-tag.component";
 
 
 @Component({
@@ -43,20 +44,20 @@ export class TagListComponent implements AfterViewInit, OnDestroy {
         });
     }
 
-    edit(tag: Tag) {
-        const dlg = this.dialog.open(EditTagComponent, { data: {tag, isNew: false}});
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                _.assign(tag, res);
-                this.tagService.update(res).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
-                    }
-                });
-            }
-        });
-    }
+    // edit(tag: Tag) {
+    //     const dlg = this.dialog.open(EditTagComponent, { data: {tag, isNew: false}});
+    //     dlg.beforeClose().subscribe(res => {
+    //         if (res) {
+    //             _.assign(tag, res);
+    //             this.tagService.update(res).subscribe(res => {
+    //                 if (!res) {
+    //                     this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
+    //                     this.refresh();
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 
     delete(tag: Tag) {
         const snackBarRef = this.snackBar.open(`Tag '${tag.name}' will be deleted`, 'Undo', { duration: 10000 });

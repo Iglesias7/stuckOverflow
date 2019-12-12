@@ -10,6 +10,7 @@ import { Vote } from '../models/vote';
 @Injectable({ providedIn: 'root' })
 
 export class PostService {
+    
 
   posts: Post[] = [];
   postsSubject = new Subject<Post[]>();
@@ -33,6 +34,19 @@ export class PostService {
     }); 
   }
 
+  public getAllPosts() {
+    return this.http.get<Post[]>(`${this.baseUrl}api/post`).pipe(
+      map(res => res.map(m => new Post(m)))
+    );
+  }
+
+  public getPostById(id: number) {
+    return this.http.get<Post>(`${this.baseUrl}api/post/${id}`).pipe(
+      map(m => !m ? null : new Post(m)),
+      catchError(err => of(null))
+    );
+  }
+
   public reply(p: Post): Observable<boolean> {
     return this.http.post<Post>(`${this.baseUrl}api/post`, p).pipe(
       map(res => true),
@@ -43,78 +57,30 @@ export class PostService {
     );
   }
 
-  public getAllPosts() {
-    return this.http.get<Post[]>(`${this.baseUrl}api/post`).pipe(
-      map(res => res.map(m => new Post(m)))
-    );
-  }
-
-  public getNewest() {
-    this.http.get<Post[]>(`${this.baseUrl}api/post/newest`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
-  }
-
-  public getTagfilter() {
-    this.http.get<Post[]>(`${this.baseUrl}api/post/tagfilter`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
-  }
-
-  public getUnanswered() {
-    this.http.get<Post[]>(`${this.baseUrl}api/post/unanswered`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
-  }
-
-  public getHightVote() {
-    this.http.get<Post[]>(`${this.baseUrl}api/post/votefilter`).pipe(
-      map(res => res.map(m => new Post(m)))
-    ).subscribe(posts => {
-      this.posts = posts;
-      this.emitPost();
-    });
-  }
-
-  public getPostById(id: number) {
-    return this.http.get<Post>(`${this.baseUrl}api/post/${id}`).pipe(
-      map(m => !m ? null : new Post(m)),
-      catchError(err => of(null))
-    );
-  }
-
-  public upDown(v: Vote): Observable<boolean>{
-    return this.http.post<Post>(`${this.baseUrl}api/post/editPostWithVote`, v).pipe(
-      map(res => true),
-      catchError(err => {
-        console.error(err);
-        return of(false);
-      })
-    ); 
-  }
-
-  public deleteVote(v: Vote): Observable<boolean>{
-    return this.http.delete<boolean>(`${this.baseUrl}api/post/deleteVote/${v.postId}`).pipe(
-      map(res => true),
-      catchError(err => {
-        console.error(err);
-        return of(false);
-      })
-    ); 
-  }
-
-  public addQuestion(p: Post): Observable<boolean> {
+  public add(p: Post): Observable<boolean> {
     console.log(p);
     return this.http.post<Post>(`${this.baseUrl}api/post`, p).pipe(
+      map(res => true),
+      catchError(err => {
+        console.error(err);
+        return of(false);
+      })
+    );
+  }
+
+  public update(p: Post, id:number): Observable<boolean> {
+    console.log(p)
+    return this.http.put<Post>(`${this.baseUrl}api/post/${id}`, p).pipe(
+      map(res => true),
+      catchError(err => {
+        console.error(err);
+        return of(false);
+      })
+    );
+  }
+
+  public delete(p: Post): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseUrl}api/post/${p.id}`).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);

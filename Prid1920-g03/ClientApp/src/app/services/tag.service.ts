@@ -1,8 +1,9 @@
 import { Injectable, Inject } from "@angular/core";
 import { Tag } from "../models/tag";
 import { HttpClient } from "@angular/common/http";
-import { map } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
 import { User } from "../models/user";
+import { Observable, of } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 
@@ -35,12 +36,12 @@ export class TagService {
         );
     }
 
-    public update(tg: Tag): Observable<boolean>{
-        return this.http.pit<Tag>(`${this.baseUrl}api/tag/${id}`).pipe(
-            map(t => !t ? null : new Tag(t)),
-            catchError(err => of(null))
-        );
-    }
+    // public update(tg: Tag): Observable<boolean>{
+    //     return this.http.put<Tag>(`${this.baseUrl}api/tag/${id}`).pipe(
+    //         map(t => !t ? null : new Tag(t)),
+    //         catchError(err => of(null))
+    //     );
+    // }
 
     public delete(tg: Tag): Observable<boolean> {
         return this.http.delete<boolean>(`${this.baseUrl}api/tag/${tg.id}`).pipe(

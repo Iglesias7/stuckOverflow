@@ -1,14 +1,11 @@
-import { Component, OnInit, ViewEncapsulation, AfterViewInit, ElementRef, OnDestroy, Input } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatListItem, MatSnackBar, PageEvent, MatSortHeader } from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog, MatSnackBar} from '@angular/material';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
-import { UserService } from 'src/app/services/user.service';
 import { Subscription } from 'rxjs';
 import { EditPostComponent } from '../edit-post/edit-post.component';
-import { User } from 'src/app/models/user';
-import { EditUserComponent } from '../../user/edit-user/edit-user.component';
+import { FilterService } from 'src/app/services/filter.service';
 
 @Component({
     selector: 'app-userCard',
@@ -23,7 +20,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     postsSubsription: Subscription;
     demo: string = null;
 
-    constructor(private postService: PostService, private userService: UserService,public dialog: MatDialog,
+    constructor(private filterService: FilterService,private postService: PostService, public dialog: MatDialog,
         public snackBar: MatSnackBar) {}
 
     ngOnInit() {
@@ -39,29 +36,29 @@ export class PostListComponent implements OnInit, OnDestroy {
     }
 
     newest(){
-        this.postService.getNewest();
+        this.filterService.getNewest();
         this.postService.emitPost();
     }
 
     tagfilter(){
-        this.postService.getTagfilter();
+        this.filterService.getTagfilter();
         this.postService.emitPost();
     }
 
     tagunanswered(){
-        this.postService.getUnanswered();
+        this.filterService.getUnanswered();
         this.postService.emitPost();
     }
 
     votefilter(){
-        this.postService.getHightVote();
+        this.filterService.getHightVote();
         this.postService.emitPost();
     }
 
     filterChanged(filter: string) {
         const lFilter = filter.toLowerCase();
         this.posts = _.filter(this.postsBackup, m => {
-            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
+            const str = (m.postUser.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
     }
@@ -71,14 +68,14 @@ export class PostListComponent implements OnInit, OnDestroy {
         const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
-                this.postService.addQuestion(res).subscribe(res => {
-                    console.log(res);
+                console.log(" ici res: " + res.body)
+                this.postService.add(res).subscribe(res => {
                     if (!res) {
-                        this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
                         this.postService.getPosts();
                         this.postService.emitPost();
                     }else{
-                        this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 10000 });
+                        this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
                         this.postService.getPosts();
                         this.postService.emitPost();
                     }

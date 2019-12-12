@@ -1,13 +1,13 @@
-import { Component, OnInit, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog, MAT_DIALOG_DATA, MatListItem, MatSnackBar, PageEvent, MatSortHeader } from '@angular/material';
+import { Component, OnInit} from '@angular/core';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { Vote } from 'src/app/models/vote';
-import { post } from 'selenium-webdriver/http';
+import { EditPostComponent } from '../edit-post/edit-post.component';
+import { VoteService } from 'src/app/services/vote.service';
+import { CommentService } from 'src/app/services/Comment.service';
 
 @Component({
     selector: 'app-userCard',
@@ -17,95 +17,32 @@ import { post } from 'selenium-webdriver/http';
 
 export class SinglePostListComponent implements OnInit {
     currentUser: User;
-    id: number;
-    title: string;
-    body: string;
-    timestamp: string;
-    authorId: number;
-    parentId: number;
-    acceptedAnswerId: number;
-    user: any = {};
-    numResponse: number;
-    numVote: number;
-    voteState: number;
-    comments: (string | Comment)[];
-    responses: (string | Post)[];
-    tags: string[];
-    votes: number;
     post: Post;
-
+    postUser: any;
     numComments: number;
-
     responseBody = "";
 
-
-    constructor(private postService: PostService, private route: ActivatedRoute, public snackBar: MatSnackBar) {
+    constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
         this.currentUser = this.postService.currentUser;
         this.getElem();
     }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.getElem();
     }
 
-    getElem(){
+    public getElem(){
         const id = this.route.snapshot.params['id'];
         this.postService.getPostById(+id).subscribe(post => {
             this.post = post;
-            this.id = post.id;
-            this.title = post.title;
-            this.body = post.body;
-            this.authorId = post.authorId;
-            this.timestamp = post.timestamp;
-            this.tags = post.tags;
-            this.comments = post.comments;
-            this.numComments = post.numComments;
-            this.user = post.user;
-            this.numResponse = post.numResponse;
-            this.responses = post.responses;
-            this.voteState = post.voteState;
-        });
-    }
-
-   
-
-    upDown(postId: number,  upDown: number){
-        
-        const authorId = this.currentUser.id;
-
-        const newVote = new Vote({upDown, authorId, postId});
-
-        this.postService.getPostById(+postId).subscribe(post => {
-            var res = false;
-            post.votes.forEach(vote => {
-                
-                if(vote.authorId == authorId && vote.postId == postId && vote.upDown == upDown){
-                    res = true;
-                    const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
-                    snackBarRef.afterDismissed().subscribe(res => {
-                        if (res.dismissedByAction)
-                            this.getElem();
-                        else{
-                            this.postService.deleteVote(vote).subscribe(p => {
-                                this.getElem();
-                            });
-                        }
-                    });
-                }
-            });
-
-            if(!res){
-                this.postService.upDown(newVote).subscribe(p => {
-                    this.getElem();
-                });
-                
-            }
+            this.postUser = post.postUser;
+            console.log(post)
         });
     }
 
     public reply(){
         const body = this.responseBody;
-        const parentId = this.id;
+        const parentId = this.post.id;
         const authorId = this.currentUser.id;
         const title = null;
         const tags = null;
@@ -115,11 +52,44 @@ export class SinglePostListComponent implements OnInit {
         this.postService.reply(post).subscribe(post =>{
             this.postService.getPostById(+id).subscribe(post => {
                 this.post = post;
-                this.body = post.body;
-                this.numResponse = post.numResponse;
-                this.responses = post.responses;
+                this.post.body = post.body;
+                this.post.numResponse = post.numResponse;
+                this.post.responses = post.responses;
             });
         });
         this.responseBody = "";
     }
+
+    public updateQuestion() {
+        const post = this.post;
+        const id = this.post.id;
+        // const body = this.post.body;
+        const tags = this.post.tags;
+        const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false } });
+        dlg.beforeClose().subscribe(res => {
+            if (res) {
+                _.assign(post, res);
+                this.postService.update(res, id).subscribe(res => {
+                    if (!res) {
+                        this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Dismiss', { duration: 4000 });
+                        this.getElem();
+                    }
+                });
+            }
+        });
+    }
+
+    public deleteQuestion() {
+        const post = this.post;
+        const snackBarRef = this.snackBar.open(`Post '${post.title}' will be deleted`, 'Undo', { duration: 4000 });
+        snackBarRef.afterDismissed().subscribe(res => {
+            if (!res.dismissedByAction){
+                this.postService.delete(post).subscribe();
+                this.router.navigate(['/posts']);
+            }
+                
+        });
+    }
+
+    
 }

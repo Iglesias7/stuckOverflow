@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
 
@@ -34,7 +34,7 @@ namespace Prid1920_g03.Controllers
             this.model = _model;
         }
 
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
             var itemList = from p in model.Posts
@@ -56,12 +56,12 @@ namespace Prid1920_g03.Controllers
 
         [HttpPost]
         public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
-            
+
             var user = await model.Users.FindAsync(data.AuthorId);
             if(user == null){
                 return BadRequest();
             }
-            
+
             var newPost = new Post(){
                 Title = data.Title,
                 Body = data.Body,
@@ -75,7 +75,7 @@ namespace Prid1920_g03.Controllers
 
             model.Posts.Add(newPost);
          await model.SaveChangesAsyncWithValidation();
-            
+
 
             if(data.LsTags != null){
                 foreach(var t in data.LsTags){
@@ -85,7 +85,7 @@ namespace Prid1920_g03.Controllers
                         PostId = post.Id,
                         TagId = tag.Id
                     };
-                   
+
                     model.PostTags.Add(newPostTag);
                 }
             }
@@ -96,247 +96,93 @@ namespace Prid1920_g03.Controllers
         }
 
 
-        
 
-        /*Only the owner of a post or an administrator 
+
+        /*Only the owner of a post or an administrator
         can execute this action */
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id, PostDTO data)
+        public async Task<IActionResult> DeletePost(int id)
         {
-           
+
            var post = await model.Posts.FindAsync(id);
-           var user = await model.Users.FindAsync(data.AuthorId);
+           var user = await model.Users.FindAsync(post.AuthorId);
 
-           if(post == null){
-               return NotFound();
-           } 
+        //    if(post == null){
+        //        return NotFound();
+        //    }
 
-           if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
-                return NotFound();
-            var comments = (from c in model.Comments where c.Post.Id == post.Id 
-            select c);
-            var votes = (from v in model.Votes where v.Post.Id == post.Id 
-            select v);
+        //    if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
+        //         return NotFound();
+            var comments = (from c in model.Comments where c.PostId == post.Id select c);
+            var votes = (from v in model.Votes where v.PostId == post.Id select v);
+            var responses = (from r in model.Posts where r.ParentId == post.Id select r);
+            var postTags = (from pt in model.PostTags where pt.PostId == post.Id select pt);
+
             foreach(var c in comments)
                 if(c != null)
                     model.Comments.Remove(c);
             foreach(var v in votes )
                 if(v != null)
                     model.Votes.Remove(v);
-            model.Posts.Remove(post);  
+
+            foreach(var r in responses )
+                if(r != null)
+                    model.Posts.Remove(r);
+            foreach(var pt in postTags )
+                if(pt != null)
+                    model.PostTags.Remove(pt);
+
+            model.Posts.Remove(post);
 
             await model.SaveChangesAsync();
 
             return NoContent();
-            
         }
 
-        /*Only the owner of a post or an administrator 
+        /*Only the owner of a post or an administrator
         can execute this action */
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditPost(int id, PostDTO data)
         {
             var user = await model.Users.FindAsync(data.AuthorId);
-            if(id != data.Id)
-                return BadRequest();
+           
             var post = await model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
             if(user == null  )
-                return NotFound(); 
-
-            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-                return NotFound("You are not the owner of this post !"); 
-  
-        // //     post.Title = data.Title;
-        // //     post.Body = data.Body;
-
-        // //     await model.SaveChangesAsyncWithValidation();
-            
-            return NoContent();
-
-        }
-
-        [Authorize]
-        [HttpGet("getallcomments")]
-        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetAllComments()
-        {
-             return(await model.Comments.ToListAsync()).ToDTO();
-        }
-
-        [HttpGet("getonecomment/{id}")]
-        public async Task<ActionResult<CommentDTO>> GetOneComment(int id)
-        {
-            var comment =await model.Comments.FindAsync(id);
-            if(comment == null)
                 return NotFound();
-            return comment.ToDTO();
-        }
 
-        [HttpPost("addcomment")]
-        public async Task<ActionResult<PostDTO>> AddComment(CommentDTO data)
-        {
-          
-            var user = await model.Users.FindAsync(data.AuthorId);
-            if(user == null)
-                return BadRequest();
-            var post = await model.Posts.FindAsync(data.PostId);
-            if(post == null ) 
-                return BadRequest();  
-            var newComment = new Comment()
-            {
-               Body = data.Body,
-               Timestamp = data.Timestamp,
-               AuthorId = data.AuthorId,
-               PostId = data.PostId,
-               Post = post,
-               User = user
+            // if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
+            //     return NotFound("You are not the owner of this post !");
 
-            };
-            post.Comments.Add(newComment);
-            model.Comments.Add(newComment);
-            var res = await model.SaveChangesAsyncWithValidation();
-            if(!res.IsEmpty)
-                return BadRequest(res);
-            return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());            
-         }
+            post.Title = data.Title;
+            post.Body = data.Body;
+            // var postTgs = [];
+             var  postTgs = new List<PostTag>();
 
-        
-        
+            if(data.LsTags != null){
+                foreach(var t in data.LsTags){
+                    var tag = await model.Tags.SingleOrDefaultAsync(p => p.Name == t);
+                    var postTag = await model.PostTags.SingleOrDefaultAsync(p => p.PostId == id && p.TagId == tag.Id);
+                    if(postTag != null)
+                        model.PostTags.Remove(postTag);
+                    var newPostTag = new PostTag(){
+                        PostId = id,
+                        TagId = tag.Id
+                    };
 
-        [HttpGet("newest")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest() {
-            var itemList = from p in model.Posts
-                        where p.Title != (null)
-                        orderby p.Timestamp descending
-                        select p;
+                    postTgs.Add(newPostTag);
+                }
 
-            return (await itemList.ToListAsync()).ToDTO();
-        }
-
-        [HttpGet("tagfilter")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter() {
-            var itemList = from p in model.Posts
-                        where p.Title != (null) && (from i in p.LsPostTags where i.PostId == p.Id  select i).Count() != 0 
-                        orderby p.Timestamp descending
-                        select p;
-            return (await itemList.ToListAsync()).ToDTO();
-        }
-
-        [HttpGet("unanswered")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered () {
-
-            var itemList = from p in model.Posts
-                        where p.Title != (null) && (from r in p.Responses where r.AcceptedAnswerId == null select r).Count() == (from r in p.Responses select r).Count()
-                        orderby p.Timestamp descending
-                        select p;
-                    
-            return (await itemList.ToListAsync()).ToDTO();
-        }
-
-        [HttpGet("votefilter")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtVotefilter () {
-
-            var itemList =  (from p in model.Posts
-                        where p.Title != (null) 
-                        select p).AsEnumerable().OrderByDescending(p => p.HightVote);     
-                      
-            return (itemList).ToDTO();
-        }
-
-        [HttpPost("editPostWithVote")]
-        public async Task<IActionResult> EditPostWithVote(VoteDTO data)
-        {
-            var post = await model.Posts.FindAsync(data.PostId);
-            if(post == null)
-                return NotFound();
-                
-            var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == data.AuthorId && p.PostId == data.PostId);
-            
-            Vote newVote = new Vote()
-            {
-                UpDown = data.UpDown,
-                AuthorId = data.AuthorId,
-                PostId = data.PostId
-            };
-
-            if(vote != null){
-                model.Votes.Remove(vote);
+                post.LsPostTags = postTgs;
             }
 
-            model.Votes.Add(newVote);
-            
-            await model.SaveChangesAsyncWithValidation();
-            
-            return NoContent();
-        }
-
-        [Authorize]
-        [HttpDelete("deleteVote/{id}")]
-        public async Task<IActionResult> DeleteVote(int id)
-        {
-            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
-
-            var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == user.Id && p.PostId == id);
-            
-            if(vote != null){
-                model.Votes.Remove(vote);
-            }else{
-                return BadRequest();
-            }
-            
-            await model.SaveChangesAsyncWithValidation();
-            
-            return NoContent();
-        }
-
-        /*Only the owner of a post or an administrator 
-        can execute this action */
-
-        [HttpPut("editcomment/{id}")]
-        public async Task<IActionResult> EditComment(int id, CommentDTO data)
-        {
-            var user = await model.Users.FindAsync(data.AuthorId);
-            
-            if(id != data.Id)
-                return BadRequest();
-            var comment = await model.Comments.FindAsync(id);
-            if(comment == null)
-                return NotFound();
-            if(user == null)
-                return BadRequest();
-            if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
-            comment.Body = data.Body;
-
-            await model.SaveChangesAsyncWithValidation();
-            return NoContent();
-        }
-
-        /*Only the owner of a post or an administrator 
-        can execute this action */
-        [HttpPost("deletecomment/{id}")]
-        public async Task<IActionResult> DeleteComment(int id, CommentDTO data)
-        {
-            if(id != data.Id)
-                return BadRequest();
-            var com = await model.Comments.FindAsync(id);
-            var user = await model.Users.FindAsync(com.AuthorId);
-            if(user == null)
-                return BadRequest();
-            if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-                return BadRequest();
-            
-            model.Comments.Remove(com);
-
             await model.SaveChangesAsyncWithValidation();
 
             return NoContent();
         }
-
-
-
-
     }
 }

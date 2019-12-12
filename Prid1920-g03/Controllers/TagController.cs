@@ -44,21 +44,22 @@ namespace Prid1920_g03.Controllers
         }
 
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TagDTO>> GetTagsByPost(int id)
-        {
-            var tagrs = null;
-            await model.PostTags.ForEachAsync(pt => {
-                if(pt.PostId.Equals(id)){
+        // [HttpGet("{id}")]
+        // public async Task<ActionResult<TagDTO>> GetTagsByPost(int id)
+        // {
+        //     var tagrs = null;
+        //     await model.PostTags.ForEachAsync(pt => {
+        //         if(pt.PostId.Equals(id)){
                     
-                    this.GetAllTags.ForEachAsync(t => {
-                        if(t.Id.Equals(pt)){
+        //             this.GetAllTags.ForEachAsync(t => {
+        //                 if(t.Id.Equals(pt)){
                             
-                        }
-                    });
-            });
-            return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
-        }
+        //                 }
+        //             });
+        //         }
+        //     });
+        //     return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
+        // }
 
         [HttpGet("getTagByName/{tgName}")]
         public async Task<ActionResult<TagDTO>> GetTagByName(string tgName){
@@ -87,43 +88,43 @@ namespace Prid1920_g03.Controllers
             var res = await model.SaveChangesAsyncWithValidation();
             if(!res.IsEmpty)
                 return BadRequest(res);
-            return CreatedAtAction(nameof(GetOneTag), new {id = newTag.Id}, newTag.TagDTO());
+            return CreatedAtAction(nameof(GetOneTag), new {id = newTag.Id}, newTag.ToDTO());
 
         }
 
-        [Authorized(Role.Admin)]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTag(int id)
-        {
-            var tag = await model.Tags.FindAsync(id);
+        // [Authorized(Role.Admin)]
+        // [HttpDelete("{id}")]
+        // public async Task<IActionResult> DeleteTag(int id)
+        // {
+        //     var tag = await model.Tags.FindAsync(id);
 
-            if(tag == null){
-                return NotFound();
-            }
+        //     if(tag == null){
+        //         return NotFound();
+        //     }
 
-            model.Tags.Remove(tag);
-            foreach (var p in model.Posts)
-                if(p.Contains(tag))
-                    p.LsPostTags.Remove(tag);
-            await.model.SaveChangesAsyncWithValidation();
-            return NoContent();
-        }
+        //     model.Tags.Remove(tag);
+        //     foreach (var p in model.Posts)
+        //         if(p.Contains(tag))
+        //             p.LsPostTags.Remove(tag);
+        //     await model.SaveChangesAsyncWithValidation();
+        //     return NoContent();
+        // }
 
 
-        [Authorized(Role.Admin)]
-        [HttpPut('{id}')]
-        public async Task<IActionResult> EditTag(int id, TagDTO data)
-        {
-            if(id != data.Id)
-                return BadRequest();
-            var tag = model.Tags.FindAsync(id);
-            if(tag == null)
-                return NotFound();
-            tag.Name = data.Name;
+        // [Authorized(Role.Admin)]
+        // [HttpPut("{id}")]
+        // public async Task<IActionResult> EditTag(int id, TagDTO data)
+        // {
+        //     if(id != data.Id)
+        //         return BadRequest();
+        //     var tag = model.Tags.FindAsync(id);
+        //     if(tag == null)
+        //         return NotFound();
+        //     tag.Name = data.Name;
 
-            await model.SaveChangesAsyncWithValidation();
-            return NoContent();
+        //     await model.SaveChangesAsyncWithValidation();
+        //     return NoContent();
 
-        }
+        // }
     }
 }

@@ -60,13 +60,13 @@
             </mat-card-subtitle>
             <mat-card-header>
                 <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
-                    [style.background-image]="'url(' + (question.user.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                    [style.background-image]="'url(' + (question.postUser.picturePath || 'uploads/unknown-user.jpg') + ')'">
                 </div>
-                <mat-card-title style=" font-size: 10px">{{question.user.firstName!}}{{ '&nbsp;' }}{{question.user.lastName!}}</mat-card-title>
+                <mat-card-title style=" font-size: 10px">{{question.postUser.firstName!}}{{ '&nbsp;' }}{{question.postUser.lastName!}}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
                         aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
-                        {{question.user.reputation }}
+                        {{question.postUser.reputation }}
                     </span>
                 </mat-card-subtitle>
             </mat-card-header>

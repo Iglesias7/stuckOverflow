@@ -1,0 +1,57 @@
+<mat-card style="box-shadow: none; position: inherit; width: 100%;">
+        <mat-card style="float: left; box-shadow: none;">
+            <mat-card-subtitle style="text-align: center;">
+                {{ voteState! }}<br> <span>	<mat-icon (click) = "upDown(id, 1)" style="color: green; margin-right: 8px;">thumb_up</mat-icon>
+                                            <mat-icon (click) = "upDown(id, -1)" style="color: red;">thumb_down</mat-icon>
+                                    </span>
+            </mat-card-subtitle><br>
+        </mat-card>
+        <mat-card-header>
+                <mat-card-subtitle><markdown >{{ body! || '&nbsp;' }}</markdown></mat-card-subtitle>
+                <mat-card-subtitle><div style="display: inline-block;" *ngFor="let tag of tags">
+                    <button  matTooltip="Tag"
+                        style="margin-right: 3px; border: none;  position: inherit; color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
+                </div></mat-card-subtitle>
+        </mat-card-header>
+        <mat-card style="margin-left: 80%; margin-bottom: 20px; box-shadow: none;  position: inherit;">
+            <mat-card-subtitle>
+                <span mat-raised-button matTooltip="Date du post"
+                        matTooltipClass="example-tooltip-red" 
+                        aria-label="Button that shows a red tooltip" 
+                        style=" font-size: 10px"
+                        class="example-button">
+                    asked at {{timestamp | date:'dd/MM/yyyy'}}
+                </span>
+            </mat-card-subtitle>
+            <mat-card-header>
+                <div mat-card-avatar [style.background-size]="'cover'" 
+                                        style="width: 25px; height: 25px;"
+                                        [style.background-image]="'url(' + (postUser!.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                </div>
+                <mat-card-title style=" font-size: 10px">{{postUser?.firstName!}}{{ '&nbsp;' }}{{postUser?.lastName!}}</mat-card-title>
+                <mat-card-subtitle>
+                    <span mat-raised-button matTooltip="reputation score" 
+                                            matTooltipClass="example-tooltip-red"
+                                            aria-label="Button that shows a red tooltip" 
+                                            style=" font-size: 10px" 
+                                            class="example-button">
+                        {{postUser?.reputation! }}
+                    </span>
+                </mat-card-subtitle>
+            </mat-card-header>
+        </mat-card><br><br><br>
+        <mat-expansion-panel *ngIf = "numComments" style="width: 100%; margin-bottom: 15px; box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                        {{ numComments }} {{ '&nbsp;' }} Commentaire(s)
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let comment of comments">
+                <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
+                <mat-divider></mat-divider><br>
+            </div>
+            <button mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment(id)">Add Comment</button>
+        </mat-expansion-panel>
+        <button *ngIf = "!numComments" mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment(id)">Add Comment</button>
+        
+    </mat-card>

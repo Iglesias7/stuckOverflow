@@ -1,4 +1,3 @@
-import { User } from "./user";
 
   export class Comment {
     id: number;
@@ -6,7 +5,7 @@ import { User } from "./user";
     timestamp: string; 
     authorId: number;
     postId: number;
-    commentUser: User;
+    commentUser: any;
     
 
       constructor(data: any) {

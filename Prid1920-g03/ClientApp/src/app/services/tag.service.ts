@@ -36,12 +36,21 @@ export class TagService {
         );
     }
 
+<<<<<<< HEAD
     // public update(tg: Tag): Observable<boolean>{
     //     return this.http.put<Tag>(`${this.baseUrl}api/tag/${id}`).pipe(
     //         map(t => !t ? null : new Tag(t)),
     //         catchError(err => of(null))
     //     );
     // }
+=======
+    public update(tg: Tag): Observable<boolean>{
+        return this.http.put<Tag>(`${this.baseUrl}api/tag/${tg.id}`,tg).pipe(
+            map(t => !t ? null : new Tag(t)),
+            catchError(err => of(null))
+        );
+    }
+>>>>>>> c46003de33e59c7e9f8de78f5b8e8ff040893c7b
 
     public delete(tg: Tag): Observable<boolean> {
         return this.http.delete<boolean>(`${this.baseUrl}api/tag/${tg.id}`).pipe(

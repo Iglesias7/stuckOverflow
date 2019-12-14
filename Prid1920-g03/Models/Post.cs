@@ -54,14 +54,14 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                // return Votes.Sum(r => r.UpDown);
+                return Votes.Sum(r => r.UpDown);
 
-                int nb = 0;
-                foreach(Vote v in Votes)
-                {
-                    nb += v.UpDown; 
-                }
-                return nb;
+                // int nb = 0;
+                // foreach(Vote v in Votes)
+                // {
+                //     nb += v.UpDown; 
+                // }
+                // return nb;
             }
         }
 
@@ -106,6 +106,21 @@ namespace Prid1920_g03.Models
                     from c in Comments
                     select c
                 ).Count();
+            }
+        }
+
+        [NotMapped]
+        public Boolean AcceptedAnswerIdExist
+        {
+            get
+            {
+               Boolean q = false;
+               foreach(Post r in Responses)
+                {
+                    if(r.AcceptedAnswerId != null)
+                        q = true;
+                }
+                return q;
             }
         }
         

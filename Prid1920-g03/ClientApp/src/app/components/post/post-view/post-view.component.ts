@@ -22,6 +22,9 @@ export class PostViewComponent {
 
     @Input() postUser: any;
     @Input() comments: any[];
+    @Input() isaccept: boolean;
+    @Input() title: boolean;
+    @Input() acceptedAnswerIdExist: boolean;
     @Input() tags: string[];
     @Input() numComments: number;
     @Input() voteState: string;
@@ -48,21 +51,17 @@ export class PostViewComponent {
                     res = true;
                     const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
                     snackBarRef.afterDismissed().subscribe(res => {
-                        if (res.dismissedByAction){
-                            this.postService.emitPost();
+                        if (!res.dismissedByAction){
+                            this.voteService.deleteVote(vote).subscribe();
                         }
-                        else{
-                            this.voteService.deleteVote(vote).subscribe(p => {
-                                this.postService.emitPost();
-                            });
-                        }
+                        this.postService.getRefrechPost(this.id);
                     });
                 }
             });
 
             if(!res){
                 this.voteService.upDown(newVote).subscribe(p => {
-                    this.postService.emitPost();
+                    this.postService.getRefrechPost(this.id);
                 });
                 
             }
@@ -77,13 +76,10 @@ export class PostViewComponent {
                 this.commentService.add(this.id, res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
                     }else{
                         this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
                     }
+                    this.postService.getRefrechPost(this.id);
                 });
             }
         });
@@ -97,13 +93,10 @@ export class PostViewComponent {
                 this.commentService.update(res, id).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The comment has not been update! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
                     }else{
                         this.snackBar.open(`update comment successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
                     }
+                    this.postService.getRefrechPost(this.id);
                 });
             }
         });
@@ -116,7 +109,18 @@ export class PostViewComponent {
             if (!res.dismissedByAction){
                 this.commentService.delete(id).subscribe();
             }
-                
+            this.postService.getRefrechPost(this.id);
         });
+    }
+
+    public accept(acceptedAnswerId: any){
+        const id = this.id;
+        const authorId = this.postUser.id;
+        const post = new Post({id, acceptedAnswerId, authorId});
+       
+        // if(this.postUser.id == this.currentUser.id){
+            this.postService.accept(post).subscribe();
+            this.postService.getRefrechPost(id);
+        // }
     }
 }

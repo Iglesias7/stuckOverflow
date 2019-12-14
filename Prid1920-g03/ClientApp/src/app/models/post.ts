@@ -9,6 +9,7 @@ import { Vote } from "./vote";
       authorId: number;
       parentId: number;
       acceptedAnswerId: number;
+      acceptedAnswerIdExist: boolean;
 
       postUser: any;
       numResponse: number;
@@ -27,6 +28,7 @@ import { Vote } from "./vote";
           this.title = data.title;
           this.body = data.body;
           this.timestamp = data.timestamp;
+          this.acceptedAnswerIdExist = data.acceptedAnswerIdExist;
           
           this.authorId = data.authorId;
           this.parentId = data.parentId;

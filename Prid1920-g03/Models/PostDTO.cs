@@ -11,6 +11,7 @@ namespace Prid1920_g03.Models
         public string Body { get; set; }
         public DateTime Timestamp { get; set; }
         public int? AcceptedAnswerId { get; set; }
+        public Boolean AcceptedAnswerIdExist {get; set;}
 
         public int AuthorId { get; set; }
         public int? ParentId { get; set; }

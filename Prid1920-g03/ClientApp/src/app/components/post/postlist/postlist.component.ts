@@ -18,7 +18,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     posts: Post[] = [];
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
-    demo: string = null;
+    // demo: string = null;
 
     constructor(private filterService: FilterService,private postService: PostService, public dialog: MatDialog,
         public snackBar: MatSnackBar) {}
@@ -31,8 +31,7 @@ export class PostListComponent implements OnInit, OnDestroy {
           }
         );
         
-        this.postService.getPosts();
-        this.postService.emitPost();
+        this.postService.getRefrechAllPosts();
     }
 
     newest(){
@@ -72,12 +71,10 @@ export class PostListComponent implements OnInit, OnDestroy {
                 this.postService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
+                        this.postService.getRefrechAllPosts();
                     }else{
                         this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
-                        this.postService.emitPost();
+                        this.postService.getRefrechAllPosts();
                     }
                 });
             }

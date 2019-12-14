@@ -8,6 +8,7 @@ import { User } from 'src/app/models/user';
 import { EditPostComponent } from '../edit-post/edit-post.component';
 import { VoteService } from 'src/app/services/vote.service';
 import { CommentService } from 'src/app/services/Comment.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-userCard',
@@ -17,28 +18,28 @@ import { CommentService } from 'src/app/services/Comment.service';
 
 export class SinglePostListComponent implements OnInit {
     currentUser: User;
-    post: Post;
+    // post: Post;
     postUser: any;
     numComments: number;
     responseBody = "";
+    id = this.route.snapshot.params['id'];
+    post: Post;
+    postSubsription: Subscription;
 
     constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
         this.currentUser = this.postService.currentUser;
-        this.getElem();
     }
 
     public ngOnInit() {
-        this.getElem();
-    }
-
-    public getElem(){
-        const id = this.route.snapshot.params['id'];
-        this.postService.getPostById(+id).subscribe(post => {
+        this.postSubsription = this.postService.postSubject.subscribe(post => {
             this.post = post;
             this.postUser = post.postUser;
             console.log(post)
         });
+        this.postService.getRefrechPost(this.id);
     }
+
+    
 
     public reply(){
         const body = this.responseBody;
@@ -50,12 +51,7 @@ export class SinglePostListComponent implements OnInit {
         const post =  new Post({body, authorId, parentId, title, tags});
         const id = this.route.snapshot.params['id'];
         this.postService.reply(post).subscribe(post =>{
-            this.postService.getPostById(+id).subscribe(post => {
-                this.post = post;
-                this.post.body = post.body;
-                this.post.numResponse = post.numResponse;
-                this.post.responses = post.responses;
-            });
+            this.postService.getRefrechPost(this.id);
         });
         this.responseBody = "";
     }
@@ -71,9 +67,15 @@ export class SinglePostListComponent implements OnInit {
                 _.assign(post, res);
                 this.postService.update(res, id).subscribe(res => {
                     if (!res) {
-                        this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Dismiss', { duration: 4000 });
-                        this.getElem();
+                        this.snackBar.open(`la modification a échoué.`, 'Dismiss', { duration: 4000 });
+                    }else{
+                        this.snackBar.open(`la modification a réussi.`, 'Dismiss', { duration: 4000 });
                     }
+                    this.postSubsription = this.postService.postSubject.subscribe(post => {
+                        this.post = post;
+                        this.postUser = post.postUser;
+                    });
+                    this.postService.getRefrechPost(this.id);
                 });
             }
         });
@@ -87,9 +89,6 @@ export class SinglePostListComponent implements OnInit {
                 this.postService.delete(post).subscribe();
                 this.router.navigate(['/posts']);
             }
-                
         });
     }
-
-    
 }

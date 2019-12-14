@@ -16,6 +16,7 @@ import { PostService } from 'src/app/services/post.service';
 
 
 export class EditPostComponent {
+
     
     public editPostForm: FormGroup;
     public ctlTitle: FormControl;
@@ -37,13 +38,10 @@ export class EditPostComponent {
         
         this.editPostForm = this.formBuilder.group({
             title: this.ctlTitle,
-            body: this.ctlBody
+            body: this.ctlBody,
         });
 
         this.isNew = data.isNew;
-        // if(this.isNew == false){
-        //     this.questionBody = data.post.body;
-        // }
         this.editPostForm.patchValue(data.post);
 
         this.tagService.getAllTags().subscribe(tags => {
@@ -62,16 +60,11 @@ export class EditPostComponent {
         });
     }
 
+
     update() {
         const data = this.editPostForm.value;
-        // data.id = data.post.id;
-        // console.log(" le body est: " + this.questionBody)
-        // data.body = this.questionBody;
-        // data.parentId = null;
         data.authorId = this.postService.currentUser.id;
-   
         data.lstags = this.tags.filter(t=>t.isChecked == true).map(m=>m.name);
-        
          
         this.dialogRef.close(data);
     }

@@ -15,21 +15,35 @@ export class PostService {
   posts: Post[] = [];
   postsSubject = new Subject<Post[]>();
 
+  post: Post;
+  postSubject = new Subject<Post>();
+
   public currentUser: User;
     
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    this.getPosts();
+    // this.getRefrechAllPosts();
     const data = JSON.parse(sessionStorage.getItem('currentUser'));
       this.currentUser = data ? new User(data) : null;
   }
 
-  public emitPost(){
+  public emitAllPosts(){
     this.postsSubject.next(this.posts);
   }
 
-  public getPosts(){
+  public emitPost(){
+    this.postSubject.next(this.post);
+  }
+
+  public getRefrechAllPosts(){
     this.getAllPosts().subscribe(posts => {
       this.posts = posts;
+      this.emitAllPosts();
+    }); 
+  }
+
+  public getRefrechPost(id: number){
+    this.getPostById(id).subscribe(post => {
+      this.post = post;
       this.emitPost();
     }); 
   }
@@ -49,6 +63,16 @@ export class PostService {
 
   public reply(p: Post): Observable<boolean> {
     return this.http.post<Post>(`${this.baseUrl}api/post`, p).pipe(
+      map(res => true),
+      catchError(err => {
+        console.error(err);
+        return of(false);
+      })
+    );
+  }
+
+  public accept(p: Post): Observable<boolean> {
+    return this.http.put<Post>(`${this.baseUrl}api/post/accept/${p.id}`, p).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);

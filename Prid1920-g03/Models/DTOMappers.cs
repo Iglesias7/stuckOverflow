@@ -41,6 +41,7 @@ namespace Prid1920_g03.Models
                 Title = post.Title,
                 Body = post.Body,
                 Timestamp = post.Timestamp,
+                AcceptedAnswerIdExist = post.AcceptedAnswerIdExist,
 
                 AuthorId = post.AuthorId,
                 AcceptedAnswerId = post.AcceptedAnswerId,

@@ -22,8 +22,5 @@ namespace Prid1920_g03.Models {
 
         // public IList<VoteDTO> Votes { get; set; }
 
-        public IEnumerable<int> Followers { get; set; }
-        public IEnumerable<int> Followees { get; set; }
-
     }
 }

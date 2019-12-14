@@ -12,7 +12,6 @@ import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/auth/login/login.component';
 import { SignupComponent } from '../components/auth/signup/signup.component';
 import { CounterComponent } from '../components/count/counter/counter.component';
-import { FetchDataComponent } from '../components/fetch-data/fetch-data.component';
 import { UserListComponent } from '../components/user/userlist/userlist.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
 import { CounterStatelessComponent } from '../components/count/counter-stateless/counter-stateless.component';
@@ -23,7 +22,6 @@ import { EditUserComponent } from '../components/user/edit-user/edit-user.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SetFocusDirective } from '../directives/setfocus.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { RelationshipsComponent } from '../components/relationships/relationships.component';
 import { UserCardComponent } from '../components/user/userlist/usersCard.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
@@ -44,7 +42,6 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     MenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent,
     LoginComponent,
     UserListComponent,
     UnknownComponent,
@@ -54,7 +51,6 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     CounterParentComponent,
     SetFocusDirective,
     EditUserComponent,
-    RelationshipsComponent,
     UserCardComponent,
     PostListComponent,
     SinglePostListComponent,
@@ -80,22 +76,22 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
       
     }),
     MarkdownModule.forRoot(),
-    MarkdownModule.forRoot({ loader: HttpClient }),
-    MarkdownModule.forRoot({
-      loader: HttpClient, // optional, only if you use [src] attribute
-      markedOptions: {
-        provide: MarkedOptions,
-        useValue: {
-          gfm: true,
-          tables: true,
-          breaks: false,
-          pedantic: false,
-          sanitize: false,
-          smartLists: true,
-          smartypants: false,
-        },
-      },
-    }),
+    // MarkdownModule.forRoot({ loader: HttpClient }),
+    // MarkdownModule.forRoot({
+    //   loader: HttpClient, // optional, only if you use [src] attribute
+    //   markedOptions: {
+    //     provide: MarkedOptions,
+    //     useValue: {
+    //       gfm: true,
+    //       tables: true,
+    //       breaks: false,
+    //       pedantic: false,
+    //       sanitize: false,
+    //       smartLists: true,
+    //       smartypants: false,
+    //     },
+    //   },
+    // }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

@@ -76,18 +76,6 @@ namespace Prid1920_g03.Models
 
         public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
 
-        public virtual IList<Follow> FollowersFollows { get; set; } = new List<Follow>();
-        public virtual IList<Follow> FolloweesFollows { get; set; } = new List<Follow>();
-
-        [NotMapped]
-        public IEnumerable<User> Followers {
-            get => FollowersFollows.Select(f => f.Follower);
-        }
-
-        [NotMapped]
-        public IEnumerable<User> Followees {
-            get => FolloweesFollows.Select(f => f.Followee);
-        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -105,10 +93,10 @@ namespace Prid1920_g03.Models
                 yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] { nameof(LastName) });
             if (Reputation < 0)
                 yield return new ValidationResult("The Reputation must be >= 0 ", new[] { nameof(Reputation) });
-            if (user_pseudo != null)
-                yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
-            else if (user_email != null)
-                yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
+            // if (user_pseudo != null)
+            //     yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
+            // else if (user_email != null)
+            //     yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
         }
     }
 }

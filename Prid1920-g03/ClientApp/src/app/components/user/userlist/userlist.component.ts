@@ -81,20 +81,20 @@ export class UserListComponent implements AfterViewInit, OnDestroy {
     }
 
     // appelée quand on clique sur le bouton "edit" d'un membre
-    edit(user: User) {
-        const dlg = this.dialog.open(EditUserComponent, { data: { user, isNew: false } });
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                _.assign(user, res);
-                this.userService.update(res).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
-                    }
-                });
-            }
-        });
-    }
+    // edit(user: User) {
+    //     const dlg = this.dialog.open(EditUserComponent, { data: { user, isNew: false } });
+    //     dlg.beforeClose().subscribe(res => {
+    //         if (res) {
+    //             _.assign(user, res);
+    //             this.userService.update(res).subscribe(res => {
+    //                 if (!res) {
+    //                     this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Dismiss', { duration: 10000 });
+    //                     this.refresh();
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 
     // appelée quand on clique sur le bouton "delete" d'un membre
     delete(user: User) {

@@ -61,16 +61,7 @@ export class PostService {
     );
   }
 
-  public reply(p: Post): Observable<boolean> {
-    return this.http.post<Post>(`${this.baseUrl}api/post`, p).pipe(
-      map(res => true),
-      catchError(err => {
-        console.error(err);
-        return of(false);
-      })
-    );
-  }
-
+  
   public accept(p: Post): Observable<boolean> {
     return this.http.put<Post>(`${this.baseUrl}api/post/accept/${p.id}`, p).pipe(
       map(res => true),

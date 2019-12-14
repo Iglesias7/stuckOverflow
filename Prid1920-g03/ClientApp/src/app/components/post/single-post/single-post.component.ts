@@ -18,8 +18,6 @@ import { Subscription } from 'rxjs';
 
 export class SinglePostListComponent implements OnInit {
     currentUser: User;
-    // post: Post;
-    postUser: any;
     numComments: number;
     responseBody = "";
     id = this.route.snapshot.params['id'];
@@ -33,13 +31,9 @@ export class SinglePostListComponent implements OnInit {
     public ngOnInit() {
         this.postSubsription = this.postService.postSubject.subscribe(post => {
             this.post = post;
-            this.postUser = post.postUser;
-            console.log(post)
         });
         this.postService.getRefrechPost(this.id);
     }
-
-    
 
     public reply(){
         const body = this.responseBody;
@@ -50,45 +44,9 @@ export class SinglePostListComponent implements OnInit {
 
         const post =  new Post({body, authorId, parentId, title, tags});
         const id = this.route.snapshot.params['id'];
-        this.postService.reply(post).subscribe(post =>{
+        this.postService.add(post).subscribe(post =>{
             this.postService.getRefrechPost(this.id);
         });
         this.responseBody = "";
-    }
-
-    public updateQuestion() {
-        const post = this.post;
-        const id = this.post.id;
-        // const body = this.post.body;
-        const tags = this.post.tags;
-        const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false } });
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                _.assign(post, res);
-                this.postService.update(res, id).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`la modification a échoué.`, 'Dismiss', { duration: 4000 });
-                    }else{
-                        this.snackBar.open(`la modification a réussi.`, 'Dismiss', { duration: 4000 });
-                    }
-                    this.postSubsription = this.postService.postSubject.subscribe(post => {
-                        this.post = post;
-                        this.postUser = post.postUser;
-                    });
-                    this.postService.getRefrechPost(this.id);
-                });
-            }
-        });
-    }
-
-    public deleteQuestion() {
-        const post = this.post;
-        const snackBarRef = this.snackBar.open(`Post '${post.title}' will be deleted`, 'Undo', { duration: 4000 });
-        snackBarRef.afterDismissed().subscribe(res => {
-            if (!res.dismissedByAction){
-                this.postService.delete(post).subscribe();
-                this.router.navigate(['/posts']);
-            }
-        });
     }
 }

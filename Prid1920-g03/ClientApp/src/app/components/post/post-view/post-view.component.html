@@ -17,6 +17,12 @@
                 <button *ngIf = "!isaccept && !title && !acceptedAnswerIdExist" mat-stroked-button style="color: green;" (click)="accept(5)">Accept</button>
                 <button *ngIf = "isaccept" mat-stroked-button style="color: red;" (click)="accept(NULL)">Annuler</button>
             </mat-card-subtitle>
+                <mat-card-subtitle>
+                    <button mat-raised-button style="background-color: darkcyan; color: white;" (click)="update()">update
+                        Question</button>
+                    <button mat-raised-button style="background-color: red; color: white;" (click)="delete()">delete
+                        Question</button><br><br>
+            </mat-card-subtitle>
                 
         </mat-card-header>
         <mat-card style="margin-left: 80%; margin-bottom: 20px; box-shadow: none;  position: inherit;">

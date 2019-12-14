@@ -23,8 +23,9 @@ export class UserService {
 
 
 
-  public update(m: User): Observable<boolean> {
-    return this.http.put<User>(`${this.baseUrl}api/user/${m.id}`, m).pipe(
+  public update(m: User, id: number): Observable<boolean> {
+    console.log(m, " + " +id)
+    return this.http.put<User>(`${this.baseUrl}api/user/${id}`, m).pipe(
       map(res => true),
       catchError(err => {
         console.error(err);
@@ -84,16 +85,5 @@ export class UserService {
       })
     );
   }
-
-  getMembersWithRelationship(pseudo: string) {
-    return this.http.get<IFriend[]>(`${this.baseUrl}api/user/rels/${pseudo}`);
-  }
-
-  follow(follower: string, followee: string) {
-    return this.http.post(`${this.baseUrl}api/user/follow`, { follower, followee });
-  }
   
-  unfollow(follower: string, followee: string) {
-    return this.http.post(`${this.baseUrl}api/user/unfollow`, { follower, followee });
-  }
 }

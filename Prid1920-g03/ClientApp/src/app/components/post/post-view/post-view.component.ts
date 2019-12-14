@@ -31,6 +31,8 @@ export class PostViewComponent {
     @Input() body: string;
     @Input() timestamp: number;
     @Input() id: number;
+    @Input() post: Post;
+    @Input() response: Post;
 
 
     constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
@@ -80,6 +82,8 @@ export class PostViewComponent {
                         this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
                     }
                     this.postService.getRefrechPost(this.id);
+                    
+
                 });
             }
         });
@@ -122,5 +126,49 @@ export class PostViewComponent {
             this.postService.accept(post).subscribe();
             this.postService.getRefrechPost(id);
         // }
+    }
+
+
+    public update() {
+        const post = this.post;
+        const id = this.post.id;
+        var isQuestion = false;
+        if(post.title != null)
+            isQuestion = true;
+        // const body = this.post.body;
+        const tags = this.post.tags;
+        const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false, isQuestion } });
+        dlg.beforeClose().subscribe(res => {
+            if (res) {
+                _.assign(post, res);
+                this.postService.update(res, id).subscribe(res => {
+                    if (!res) {
+                        this.snackBar.open(`la modification a échoué.`, 'Dismiss', { duration: 4000 });
+                    }else{
+                        this.snackBar.open(`la modification a réussi.`, 'Dismiss', { duration: 4000 });
+                    }
+                  
+                    this.postService.getRefrechPost(this.id);
+                });
+            }
+        });
+    }
+
+    public delete() {
+        const post = this.post;
+        var snackBarRef;
+        if(post.title != null)
+             snackBarRef = this.snackBar.open(`Post '${post.title}' will be deleted`, 'Undo', { duration: 4000 });
+        else
+            snackBarRef = this.snackBar.open(`Your response will be deleted`, 'Undo', { duration: 4000 });
+
+        snackBarRef.afterDismissed().subscribe(res => {
+            if (!res.dismissedByAction){
+                this.postService.delete(post).subscribe();
+                if(post.title != null)
+                    this.router.navigate(['/posts']);
+                this.postService.getRefrechPost(this.id);
+            }
+        });
     }
 }

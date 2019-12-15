@@ -8,34 +8,50 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
     selector: 'app-userCard',
-    templateUrl: './postlist.component.html',
-    styleUrls: ['./postlist.component.css'],
+    templateUrl: './postlistbytag.component.html',
+    styleUrls: ['./postlistbytag.component.css'],
 })
 
-export class PostListComponent implements OnInit, OnDestroy {
+export class PostListByTagComponent implements OnInit, OnDestroy {
     
-    posts: Post[] = [];
-    postsBackup: Post[] = [];
+    posts: any;
+    postsBackup: any;
     postsSubsription: Subscription;
     demo: string = null;
     researchByTag: boolean = false;
 
+    
     constructor(private filterService: FilterService,private route: ActivatedRoute,private postService: PostService, public dialog: MatDialog,
-        public snackBar: MatSnackBar) {}
+        public snackBar: MatSnackBar) {
+            this.getElem();
+        }
 
-    ngOnInit() {
-        this.postsSubsription = this.postService.postsSubject.subscribe(
-          posts => {
+
+
+    
+    ngOnInit(): void  {
+        this.getElem();
+    }
+
+    
+
+    public getElem(){
+        const name = this.route.snapshot.params['name'];
+        this.postService.getPostsByTagName(name).subscribe(posts => {
             this.posts = posts;
             this.postsBackup = _.cloneDeep(posts);
-          }
-        );
-        
+            console.log(posts);         
+            if(!posts){
+                this.researchByTag = true;
+            }
+        });
         this.postService.getPosts();
         this.postService.emitPost();
     }
+
 
     
 
@@ -88,7 +104,13 @@ export class PostListComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(){
+    ngOnDestroy(): void{
         this.postsSubsription.unsubscribe();
     }
+
+
+
+
+
+
 }

@@ -15,6 +15,7 @@ import { RelationshipsComponent } from '../components/relationships/relationship
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
 import { TagListComponent } from '../components/tags/taglist/taglist.component';
+import { PostListByTagComponent } from '../components/post/postlistbytag/postlistbytag.component';
 
 
 const appRoutes: Routes = [
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
   { path: 'posts', component: PostListComponent },
   { path: 'single-post/:id', component: SinglePostListComponent },
   {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent},
+  {path: 'signup', component: SignupComponent}, 
+  {path: 'postlistbytag/:name', component: PostListByTagComponent},
   { path: 'tags', component: TagListComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }

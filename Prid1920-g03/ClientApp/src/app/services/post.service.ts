@@ -47,6 +47,12 @@ export class PostService {
     );
   }
 
+  public getPostsByTagName(name: string){
+    return this.http.get<Post>(`${this.baseUrl}api/post/getbytagname/${name}`).pipe(
+      map(m => !m ? null : new Post(m))
+    );
+  }
+
   public reply(p: Post): Observable<boolean> {
     return this.http.post<Post>(`${this.baseUrl}api/post`, p).pipe(
       map(res => true),

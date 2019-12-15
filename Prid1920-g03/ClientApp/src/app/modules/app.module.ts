@@ -34,6 +34,7 @@ import { MarkdownModule, MarkedOptions  } from 'ngx-markdown';
 import { TagListComponent } from '../components/tags/taglist/taglist.component'
 import { EditCommentComponent } from '../components/comment/edit-comment.component'
 import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component';
+import { PostListByTagComponent } from '../components/post/postlistbytag/postlistbytag.component';
 
 
 
@@ -63,7 +64,8 @@ import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component
     PostViewComponent,
     EditTagComponent,
     EditPostComponent,
-    EditCommentComponent
+    EditCommentComponent,
+    PostListByTagComponent
     
   ],
   entryComponents: [EditUserComponent, EditPostComponent, EditCommentComponent,  EditTagComponent],

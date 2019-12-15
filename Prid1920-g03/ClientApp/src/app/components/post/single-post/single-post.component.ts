@@ -21,6 +21,8 @@ export class SinglePostListComponent implements OnInit {
     postUser: any;
     numComments: number;
     responseBody = "";
+    
+
 
     constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
         this.currentUser = this.postService.currentUser;
@@ -36,7 +38,7 @@ export class SinglePostListComponent implements OnInit {
         this.postService.getPostById(+id).subscribe(post => {
             this.post = post;
             this.postUser = post.postUser;
-            console.log(post)
+            console.log(post);
         });
     }
 

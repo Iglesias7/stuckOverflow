@@ -44,6 +44,8 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
+        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<PostDTO>> GetOnePost(int id) {
 
@@ -52,6 +54,20 @@ namespace Prid1920_g03.Controllers
                return NotFound();
            }
             return post.ToDTO();
+        }
+
+        [HttpGet("getbytagname/{name}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetByTagName(string name){
+            var tag = (from t in model.Tags where t.Name == name select t).FirstOrDefault();
+            if(tag == null)
+                return NotFound();
+            var posts = (from p in model.Posts
+                         where p.Id ==
+                         (from t in model.PostTags where t.TagId == tag.Id select t.PostId).FirstOrDefault()
+                         select p);
+            if(posts == null)
+                return NotFound();
+            return (await posts.ToListAsync()).ToDTO();
         }
 
         [HttpPost]
@@ -83,7 +99,9 @@ namespace Prid1920_g03.Controllers
                     var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title && p.Body == data.Body && p.Timestamp == newDateTime);
                     var newPostTag = new PostTag(){
                         PostId = post.Id,
-                        TagId = tag.Id
+                        TagId = tag.Id,
+                        Post = post,
+                        Tag = tag
                     };
 
                     model.PostTags.Add(newPostTag);

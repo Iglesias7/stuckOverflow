@@ -1,0 +1,75 @@
+<mat-toolbar style="background-color: skyblue; margin-top: 50px;">
+    <mat-toolbar-row>
+        <span style="text-align: center; margin-left: 300px;">All questions</span>
+        <span class="example-spacer"></span>
+    </mat-toolbar-row>
+</mat-toolbar><br><br>
+<button mat-raised-button style="background-color: skyblue; color: white;" (click) = "addQuestion()">Post Question</button><br><br>
+<mat-accordion style=" background-color: transparent; box-shadow: none; margin-top: -20px;">
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Filtre
+            </mat-panel-title>
+            <mat-panel-description>
+                Clicker ici pour effectuer votre filtre
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row">
+            <div class="col-sm-12">
+                <mat-form-field>
+                    <input matInput (keyup)="filterChanged($event.target.value)" [(ngModel)] = "demo" placeholder="Filter" appSetFocus>
+                </mat-form-field>
+            </div>
+        </div>
+        
+        <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style" style=" position: inherit;">
+            <mat-button-toggle style="background-color: black; color: white; font-weight: bolder; position: inherit;" (click) = "newest()">newest</mat-button-toggle>
+            <mat-button-toggle style="background-color: darksalmon; color: white; font-weight: bolder; position: inherit;" (click) = "votefilter()">votes </mat-button-toggle>
+            <mat-button-toggle style="background-color: darkorange; color: white; font-weight: bolder; position: inherit;" (click) = "tagunanswered()" >unanswered </mat-button-toggle>
+            <mat-button-toggle style="background-color: darkturquoise; color: white; font-weight: bolder; position: inherit;" (click) = "tagfilter()">tag</mat-button-toggle>
+        </mat-button-toggle-group>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<div class=" card-container" *ngFor="let question of posts" style="margin-top: 20px; box-shadow: none;">
+    <mat-card class="example-cad ecard">
+        <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
+            <mat-card-subtitle style="text-align: center;">
+                {{ question.voteState }}<br> Votes</mat-card-subtitle><br>
+            <mat-card-subtitle style="text-align: center;">{{ question.numResponse! || '&nbsp;' }}<br> answers
+            </mat-card-subtitle>
+        </mat-card>
+        <mat-card-header>
+            <mat-card-title><a class="nav-link text-dar" [routerLink]='["/single-post/"+question.id]'>{{ question.title || '&nbsp;' }}</a></mat-card-title>
+            <mat-card-subtitle>
+                <div style="display: inline-block;position: inherit;" *ngFor="let tag of question.tags">
+                    <button  matTooltip="Tag"
+                        aria-label="Tag"
+                        style="margin-right: 3px; border: none;  color: skyblue; background-color: black; position: inherit;">{{ tag }}</button>
+                </div>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card class="example-card" style="margin-left: 80%; box-shadow: none; position: inherit;">
+            <mat-card-subtitle>
+                <span mat-raised-button matTooltip="Date du post"
+                    matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" style=" font-size: 10px"
+                    class="example-button">
+                    asked at {{question.timestamp | date:'dd/MM/yyyy'}}
+                </span>
+            </mat-card-subtitle>
+            <mat-card-header>
+                <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
+                    [style.background-image]="'url(' + (question.postUser.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                </div>
+                <mat-card-title style=" font-size: 10px">{{question.postUser.firstName!}}{{ '&nbsp;' }}{{question.postUser.lastName!}}</mat-card-title>
+                <mat-card-subtitle>
+                    <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
+                        aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
+                        {{question.postUser.reputation }}
+                    </span>
+                </mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </mat-card>
+</div>

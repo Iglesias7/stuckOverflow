@@ -24,9 +24,6 @@ namespace Prid1920_g03.Models
                 // Posts = user.Posts.ToDTO(),
                 // Comments = user.Comments.ToDTO(),
                 // Votes = user.Votes.ToDTO(),
-
-                Followers = user.Followers.Select(f => f.Id).ToList(),
-                Followees = user.Followees.Select(f => f.Id).ToList()
             };
         }
 
@@ -41,6 +38,7 @@ namespace Prid1920_g03.Models
                 Title = post.Title,
                 Body = post.Body,
                 Timestamp = post.Timestamp,
+                AcceptedAnswerIdExist = post.AcceptedAnswerIdExist,
 
                 AuthorId = post.AuthorId,
                 AcceptedAnswerId = post.AcceptedAnswerId,

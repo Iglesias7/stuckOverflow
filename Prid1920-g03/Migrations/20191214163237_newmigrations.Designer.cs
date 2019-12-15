@@ -9,8 +9,8 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191204211404_seedData")]
-    partial class seedData
+    [Migration("20191214163237_newmigrations")]
+    partial class newmigrations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,19 +42,6 @@ namespace Prid1920_g03.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Prid1920_g03.Models.Follow", b =>
-                {
-                    b.Property<int>("FollowerPseudo");
-
-                    b.Property<int>("FolloweePseudo");
-
-                    b.HasKey("FollowerPseudo", "FolloweePseudo");
-
-                    b.HasIndex("FolloweePseudo");
-
-                    b.ToTable("Follows");
-                });
-
             modelBuilder.Entity("Prid1920_g03.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -64,8 +51,7 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<int>("AuthorId");
 
-                    b.Property<string>("Body")
-                        .IsRequired();
+                    b.Property<string>("Body");
 
                     b.Property<int?>("ParentId");
 
@@ -176,19 +162,6 @@ namespace Prid1920_g03.Migrations
                     b.HasOne("Prid1920_g03.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Prid1920_g03.Models.Follow", b =>
-                {
-                    b.HasOne("Prid1920_g03.Models.User", "Followee")
-                        .WithMany("FollowersFollows")
-                        .HasForeignKey("FolloweePseudo")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Prid1920_g03.Models.User", "Follower")
-                        .WithMany("FolloweesFollows")
-                        .HasForeignKey("FollowerPseudo")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

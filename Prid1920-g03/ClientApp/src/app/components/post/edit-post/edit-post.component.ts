@@ -16,18 +16,20 @@ import { PostService } from 'src/app/services/post.service';
 
 
 export class EditPostComponent {
+
     
     public editPostForm: FormGroup;
     public ctlTitle: FormControl;
     public ctlBody: FormControl;
     public questionBody: string = "";
     public isNew: boolean;
+    public isQuestion: boolean;
     public tags: any[];
     checkBox: boolean = false;
     
 
     constructor(public dialogRef: MatDialogRef<EditPostComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { post: Post; tags: any[], isNew: boolean; },
+        @Inject(MAT_DIALOG_DATA) public data: { post: Post; tags: any[], isNew: boolean, isQuestion: boolean; },
         private formBuilder: FormBuilder,
         private tagService: TagService,
         private postService: PostService
@@ -37,41 +39,35 @@ export class EditPostComponent {
         
         this.editPostForm = this.formBuilder.group({
             title: this.ctlTitle,
-            body: this.ctlBody
+            body: this.ctlBody,
         });
 
         this.isNew = data.isNew;
-        // if(this.isNew == false){
-        //     this.questionBody = data.post.body;
-        // }
+        this.isQuestion = data.isQuestion;
         this.editPostForm.patchValue(data.post);
-
-        this.tagService.getAllTags().subscribe(tags => {
-            this.tags = tags;
-            
-            if(this.isNew == false){
-                data.tags.forEach(t => {
-                    this.tags.forEach(ts => {
-                        if(ts.name == t){
-                            ts.isChecked = true;
-                        }   
+        if(this.isQuestion == true)
+            this.tagService.getAllTags().subscribe(tags => {
+                this.tags = tags;
+                
+                if(this.isNew == false){
+                    data.tags.forEach(t => {
+                        this.tags.forEach(ts => {
+                            if(ts.name == t){
+                                ts.isChecked = true;
+                            }   
+                        });
                     });
-                });
-            }
-            
-        });
+                }
+                
+            });
     }
+
 
     update() {
         const data = this.editPostForm.value;
-        // data.id = data.post.id;
-        // console.log(" le body est: " + this.questionBody)
-        // data.body = this.questionBody;
-        // data.parentId = null;
         data.authorId = this.postService.currentUser.id;
-   
-        data.lstags = this.tags.filter(t=>t.isChecked == true).map(m=>m.name);
-        
+        if(this.isQuestion == true)
+            data.lstags = this.tags.filter(t=>t.isChecked == true).map(m=>m.name);
          
         this.dialogRef.close(data);
     }

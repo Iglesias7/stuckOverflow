@@ -68,8 +68,6 @@ export class EditUserComponent implements OnDestroy {
         this.pictureChanged = false;
     }
 
-    
-
     validateBirthDate(): any {
         return (ctl: FormControl) => {
             const date = new Date(ctl.value);

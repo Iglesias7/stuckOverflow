@@ -48,7 +48,6 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
                 this.researchByTag = true;
             }
         });
-        this.postService.getPosts();
         this.postService.emitPost();
     }
 
@@ -92,11 +91,9 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
                 this.postService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
                         this.postService.emitPost();
                     }else{
                         this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getPosts();
                         this.postService.emitPost();
                     }
                 });

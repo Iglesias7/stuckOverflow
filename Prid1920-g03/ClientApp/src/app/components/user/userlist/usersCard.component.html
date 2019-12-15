@@ -14,19 +14,17 @@
           <mat-card-title>{{user.pseudo}}</mat-card-title>
           <mat-card-subtitle>{{user.firstName || '&nbsp;' }}</mat-card-subtitle>
           <mat-card-subtitle>{{user.lastName || '&nbsp;' }}</mat-card-subtitle>
+          <mat-card-subtitle>{{user.birthDate | date:'dd/MM/yyyy'}}</mat-card-subtitle>
+          <mat-card-subtitle>{{user.email || '&nbsp;' }}</mat-card-subtitle>
+          <mat-card-subtitle>Réputation: {{user.reputation || '0' }}</mat-card-subtitle>
         </mat-card-header>
-          <!-- <img mat-card-image [src]="(user.picturePath || 'uploads/unknown-user.jpg')" alt="Photo of a Shiba Inu"> -->
-        <mat-card-content class="card-content">
-          <p>{{user.birthDate | date:'dd/MM/yyyy'}}</p>
-          <p>{{user.email || '&nbsp;' }}</p>
-          <p> Réputation: {{user.reputation || '0' }}</p>
-        </mat-card-content>
+       
         <mat-card-actions class="card-buttons">
-            <button mat-icon-button tabindex="-1">
-                <mat-icon (click)="edit(row)">edit</mat-icon>
+            <button mat-icon-button >
+                <mat-icon style="color: green" (click)="edit(user)">edit</mat-icon>
             </button>
-            <button mat-icon-button tabindex="-1">
-                <mat-icon (click)="delete(row)">delete</mat-icon>
+            <button mat-icon-button >
+                <mat-icon *ngIf="user.pseudo != currentUser.pseudo" style="color: red" (click)="delete(user)">delete</mat-icon>
             </button>
         </mat-card-actions>
       </mat-card>

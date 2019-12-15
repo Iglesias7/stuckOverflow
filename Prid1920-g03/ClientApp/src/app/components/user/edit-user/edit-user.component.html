@@ -2,9 +2,9 @@
     <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' user'}}</h1>
     <mat-tab-group mat-stretch-tabs dynamicHeight>
         <mat-tab label="General Data">
-            <div class="form">
+            <div class="form"  >
                 <mat-form-field>
-                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required [readonly]="!isNew">
+                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required >
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is
                         {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
@@ -24,8 +24,15 @@
                 <mat-form-field>
                     <input matInput placeholder="LastName" [formControl]="ctlLastName">
                 </mat-form-field>
+                
+            </div>
+        </mat-tab>
+        <mat-tab label="lastData">
+            <div class="form">
                 <mat-form-field>
-                    <input matInput placeholder="Email" [formControl]="ctlEmail">
+                    <input matInput placeholder="Email" [formControl]="ctlEmail" [readonly]="!isNew">
+                    <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed')">this email is already used 
+                    </mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput placeholder="BirthDate" [formControl]="ctlBirthDate" type="date">

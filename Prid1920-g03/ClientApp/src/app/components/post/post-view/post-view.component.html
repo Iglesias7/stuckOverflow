@@ -5,13 +5,25 @@
                                             <mat-icon (click) = "upDown(id, -1)" style="color: red;">thumb_down</mat-icon>
                                     </span>
             </mat-card-subtitle><br>
+            <mat-icon *ngIf = "isaccept" mat-stroked-button style="color: green;">done_outline</mat-icon>
         </mat-card>
         <mat-card-header>
                 <mat-card-subtitle><markdown >{{ body! || '&nbsp;' }}</markdown></mat-card-subtitle>
-                <mat-card-subtitle><div style="display: inline-block;" *ngFor="let tag of tags">
+                <mat-card-subtitle>
+                    <div style="display: inline-block;" *ngFor="let tag of tags">
                     <button  matTooltip="Tag"
                         style="margin-right: 3px; border: none;  position: inherit; color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
-                </div></mat-card-subtitle>
+                    </div>
+                <button *ngIf = "!isaccept && !title && !acceptedAnswerIdExist" mat-stroked-button style="color: green;" (click)="accept(5)">Accept</button>
+                <button *ngIf = "isaccept" mat-stroked-button style="color: red;" (click)="accept(NULL)">Annuler</button>
+            </mat-card-subtitle>
+                <mat-card-subtitle>
+                    <button mat-raised-button style="background-color: darkcyan; color: white;" (click)="update()">update
+                        Question</button>
+                    <button mat-raised-button style="background-color: red; color: white;" (click)="delete()">delete
+                        Question</button><br><br>
+            </mat-card-subtitle>
+                
         </mat-card-header>
         <mat-card style="margin-left: 80%; margin-bottom: 20px; box-shadow: none;  position: inherit;">
             <mat-card-subtitle>

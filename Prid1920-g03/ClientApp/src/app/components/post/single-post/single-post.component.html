@@ -5,12 +5,8 @@
 </mat-toolbar><br><br>
 
 <i style="color: green; display: inline;">asked at {{ post.timestamp! | date: 'short' }}</i><br><br>
-<button mat-raised-button style="background-color: darkcyan; color: white;" (click)="updateQuestion()">update
-    Question</button>
-<button mat-raised-button style="background-color: red; color: white;" (click)="deleteQuestion()">delete
-    Question</button><br><br>
 
-<app-post-view [id]="post.id" [body]="post.body" [timestamp]="post.timestamp" [tags]="post.tags"
+<app-post-view [post] = "post" [id]="post.id" [id]="post.id" [body]="post.body" [timestamp]="post.timestamp" [tags]="post.tags" [title]="true" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
     [voteState]="post.voteState" [postUser]="post.postUser" [numComments]="post.numComments" [comments]="post.comments">
 </app-post-view>
 
@@ -23,7 +19,7 @@
 
 <div class="card-container" *ngFor="let response of post.responses">
     <div *ngIf="response.acceptedAnswerId != null">
-        <app-post-view [id]="response.id" [body]="response.body" [timestamp]="response.timestamp" [tags]="response.tags"
+        <app-post-view [post] = "response" [id]="response.id" [body]="response.body" [isaccept] = "true" [timestamp]="response.timestamp" [tags]="response.tags" [title]="false" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
             [voteState]="response.voteState" [postUser]="response.postUser" [numComments]="response.numComments" [comments]="response.comments">
         </app-post-view>
     </div>
@@ -31,8 +27,8 @@
 
 <div class="row card-container" *ngFor="let response of post.responses">
     <div *ngIf="response.acceptedAnswerId == null">
-            <app-post-view [id]="response.id" [body]="response.body" [timestamp]="response.timestamp" [tags]="response.tags"
-            [voteState]="response.voteState" [postUser]="response.postUser!" [numComments]="response.numComments" [comments]="response.comments">
+            <app-post-view [post] = "response" [id]="response.id" [body]="response.body" [timestamp]="response.timestamp" [tags]="response.tags" [title]="false" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
+            [voteState]="response.voteState" [postUser]="response.postUser!" [isaccept] = "false" [numComments]="response.numComments" [comments]="response.comments">
         </app-post-view>
     </div>
 </div><br><br><br>

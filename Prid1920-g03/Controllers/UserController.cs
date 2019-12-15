@@ -81,16 +81,18 @@ namespace Prid1920_g03.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, UserDTO userDTO)
         {
-            if (id != userDTO.Id)
-                return BadRequest();
-            var user = await _context.Users.FindAsync(id);
-
+           
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == userDTO.Email);
             if (user == null)
                 return NotFound();
 
+            user.Pseudo = userDTO.Pseudo;
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.BirthDate = userDTO.BirthDate;
+            // user.Email = userDTO.Email;
+            user.Role = userDTO.Role;
+
             var res = await _context.SaveChangesAsyncWithValidation();
             if (!res.IsEmpty)
                 return BadRequest(res);
@@ -250,69 +252,6 @@ namespace Prid1920_g03.Controllers
             }
             return Ok();
         }
-
-
-        [HttpGet("rels/{pseudo}")]
-        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsersWithRelationship(string pseudo)
-        {
-            var friends = await _context.Users.ToListAsync();
-            var friendsDTO = new List<object>();
-            foreach (var friend in friends)
-            {
-                var isFollower = friend.Followees.Where(f => f.Pseudo == pseudo).Count() > 0;
-                var isFollowee = friend.Followers.Where(f => f.Pseudo == pseudo).Count() > 0;
-                var isMutual = isFollower && isFollowee;
-                var rel = "none";
-                if (friend.Pseudo == pseudo)
-                    rel = "self";
-                else if (isMutual)
-                    rel = "mutual";
-                else if (isFollower)
-                    rel = "follower";
-                else if (isFollowee)
-                    rel = "followee";
-
-                friendsDTO.Add(new
-                {
-                    Pseudo = friend.Pseudo,
-                    LastName = friend.LastName,
-                    FirstName = friend.FirstName,
-                    Email = friend.Email,
-                    Reputation = friend.Reputation,
-                    Role = friend.Role,
-                    PicturePath = friend.PicturePath,
-                    Relationship = rel
-                });
-            }
-            return Ok(friendsDTO);
-        }
-
-        [HttpPost("follow")]
-        public async Task<IActionResult> Follow([FromBody] dynamic body) {
-            var follower = (int)body.follower;
-            var followee = (int)body.followee;
-            var rel = await _context.Follows.Where(f => f.Follower.Id == follower && f.Followee.Id == followee).SingleOrDefaultAsync();
-            
-            if (rel == null) {
-                _context.Add(new Follow { FollowerPseudo = follower, FolloweePseudo = followee });
-                await _context.SaveChangesAsync();
-            }
-            return Ok();
-        }
-
-        [HttpPost("unfollow")]
-        public async Task<IActionResult> UnFollow([FromBody] dynamic body) {
-            var follower = (int)body.follower;
-            var followee = (int)body.followee;
-            var rel = await _context.Follows.Where(f => f.Follower.Id == follower && f.Followee.Id == followee).SingleOrDefaultAsync();
-            
-            if (rel != null) {
-                _context.Remove(rel);
-                await _context.SaveChangesAsync();
-            }
-            return Ok();
-        }
-
     }
 
 }

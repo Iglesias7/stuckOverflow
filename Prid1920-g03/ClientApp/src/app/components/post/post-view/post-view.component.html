@@ -14,18 +14,16 @@
                     <button  matTooltip="Tag"
                         style="margin-right: 3px; border: none;  position: inherit; color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
                     </div>
-                <button *ngIf = "!isaccept && !title && !acceptedAnswerIdExist" mat-stroked-button style="color: green;" (click)="accept(5)">Accept</button>
-                <button *ngIf = "isaccept" mat-stroked-button style="color: red;" (click)="accept(NULL)">Annuler</button>
+                <button *ngIf = "currentUser?.id == Author?.id && !isaccept && !title && !acceptedAnswerIdExist" mat-stroked-button style="color: green;" (click)="accept(5)">Accept</button>
+                <button *ngIf = "currentUser?.id == Author?.id && isaccept" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
             </mat-card-subtitle>
-                <mat-card-subtitle>
-                    <button mat-raised-button style="background-color: darkcyan; color: white;" (click)="update()">update
-                        Question</button>
-                    <button mat-raised-button style="background-color: red; color: white;" (click)="delete()">delete
-                        Question</button><br><br>
-            </mat-card-subtitle>
+              
                 
         </mat-card-header>
         <mat-card style="margin-left: 80%; margin-bottom: 20px; box-shadow: none;  position: inherit;">
+                <div style="display: inline;">
+                    <button *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == user.id" mat-raised-button style="color: darkcyan;" (click)="update()"><mat-icon>create</mat-icon></button>
+                    <button *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == user.id"  mat-raised-button style="color: red; " (click)="delete()"><mat-icon>delete_sweep</mat-icon></button><br><br></div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
                         matTooltipClass="example-tooltip-red" 
@@ -38,16 +36,16 @@
             <mat-card-header>
                 <div mat-card-avatar [style.background-size]="'cover'" 
                                         style="width: 25px; height: 25px;"
-                                        [style.background-image]="'url(' + (postUser!.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                                        [style.background-image]="'url(' + (user?.picturePath || 'uploads/unknown-user.jpg') + ')'">
                 </div>
-                <mat-card-title style=" font-size: 10px">{{postUser?.firstName!}}{{ '&nbsp;' }}{{postUser?.lastName!}}</mat-card-title>
+                <mat-card-title style=" font-size: 10px">{{user?.firstName!}}{{ '&nbsp;' }}{{user?.lastName!}}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" 
                                             matTooltipClass="example-tooltip-red"
                                             aria-label="Button that shows a red tooltip" 
                                             style=" font-size: 10px" 
                                             class="example-button">
-                        {{postUser?.reputation! }}
+                        {{user?.reputation! }}
                     </span>
                 </mat-card-subtitle>
             </mat-card-header>

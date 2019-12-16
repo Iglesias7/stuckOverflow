@@ -18,7 +18,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     posts: Post[] = [];
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
-    // demo: string = null;
 
     constructor(private filterService: FilterService,private postService: PostService, public dialog: MatDialog,
         public snackBar: MatSnackBar) {}
@@ -36,28 +35,28 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     newest(){
         this.filterService.getNewest();
-        this.postService.emitPost();
+        this.postService.emitAllPosts();
     }
 
     tagfilter(){
         this.filterService.getTagfilter();
-        this.postService.emitPost();
+        this.postService.emitAllPosts();
     }
 
     tagunanswered(){
         this.filterService.getUnanswered();
-        this.postService.emitPost();
+        this.postService.emitAllPosts();
     }
 
     votefilter(){
         this.filterService.getHightVote();
-        this.postService.emitPost();
+        this.postService.emitAllPosts();
     }
 
     filterChanged(filter: string) {
         const lFilter = filter.toLowerCase();
         this.posts = _.filter(this.postsBackup, m => {
-            const str = (m.postUser.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
+            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
     }

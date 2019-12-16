@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { PostService } from 'src/app/services/post.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-userCard',
@@ -20,7 +21,8 @@ export class EditCommentComponent {
     constructor(public dialogRef: MatDialogRef<EditCommentComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { comment: Comment; isNew: boolean; },
         private formBuilder: FormBuilder,
-        private postService: PostService
+        private postService: PostService,
+        private auth: AuthenticationService
     ) {
         this.ctlBody = this.formBuilder.control('', [Validators.required]);
         
@@ -34,7 +36,7 @@ export class EditCommentComponent {
 
     update() {
         const data = this.editCommentForm.value;
-        data.authorId = this.postService.currentUser.id;
+        data.authorId = this.auth.currentUser.id;
         this.dialogRef.close(data);
     }
 

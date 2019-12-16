@@ -11,7 +11,7 @@ import { Vote } from "./vote";
       acceptedAnswerId: number;
       acceptedAnswerIdExist: boolean;
 
-      postUser: any;
+      user: any;
       numResponse: number;
       numVote: number;
       numComments: number;
@@ -34,7 +34,7 @@ import { Vote } from "./vote";
           this.parentId = data.parentId;
           this.acceptedAnswerId = data.acceptedAnswerId;          
           
-          this.postUser = data.postUser;
+          this.user = data.user;
           this.numResponse = data.numResponse,
           this.voteState = data.voteState,
           this.numVote = data.numVote,

@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -42,6 +42,20 @@ namespace Prid1920_g03.Controllers
                         select p;
 
             return (await itemList.ToListAsync()).ToDTO();
+        }
+
+        [HttpGet("get-responses/{id}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GetResponsesById(int id) {
+
+            var post = await model.Posts.FindAsync(id);
+            if(post == null){
+               return NotFound();
+           }
+
+            var itemList = (from p in post.Responses
+                        select p).AsEnumerable().OrderByDescending(p => p.VoteState);
+
+            return ( itemList).ToDTO();
         }
 
         [HttpGet("{id}")]
@@ -95,20 +109,36 @@ namespace Prid1920_g03.Controllers
             return CreatedAtAction(nameof(GetOnePost), new {id = newPost.Id }, newPost.ToDTO());
         }
 
-
+        
         [HttpPut("accept/{id}")]
         public async Task<ActionResult<PostDTO>> AcceptPost(int id, PostDTO data){
 
-            var user = await model.Users.FindAsync(data.AuthorId);
-            if(user == null){
+            var authorResponse = await model.Users.FindAsync(data.AuthorId);
+            if(authorResponse == null){
                 return BadRequest();
             }
 
             var post = await model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-           
-            post.AcceptedAnswerId = data.AcceptedAnswerId;
+
+            var question = await model.Posts.FindAsync(post.ParentId);
+            if(question == null){
+                return BadRequest();
+            }
+
+            if(User.Identity.Name == question.User.Pseudo){
+                post.AcceptedAnswerId = data.AcceptedAnswerId;
+                if(data.AcceptedAnswerId == null){
+                    post.User.Reputation =  post.User.Reputation - 15;
+                    question.User.Reputation = question.User.Reputation - 2;
+                }else{
+                    post.User.Reputation =  post.User.Reputation + 15;
+                    question.User.Reputation = question.User.Reputation + 2;
+                }
+                
+            }
+            
 
             await model.SaveChangesAsyncWithValidation();
 
@@ -129,8 +159,8 @@ namespace Prid1920_g03.Controllers
         //        return NotFound();
         //    }
 
-        //    if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
-        //         return NotFound();
+           if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
             var comments = (from c in model.Comments where c.PostId == post.Id select c);
             var votes = (from v in model.Votes where v.PostId == post.Id select v);
             var responses = (from r in model.Posts where r.ParentId == post.Id select r);
@@ -172,8 +202,8 @@ namespace Prid1920_g03.Controllers
             if(user == null  )
                 return NotFound();
 
-            // if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-            //     return NotFound("You are not the owner of this post !");
+            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
+                return NotFound("You are not the owner of this post !");
 
             post.Title = data.Title;
             post.Body = data.Body;

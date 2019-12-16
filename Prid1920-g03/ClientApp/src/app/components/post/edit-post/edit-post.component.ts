@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { Post } from 'src/app/models/post';
 import { TagService } from 'src/app/services/tag.service';
 import { PostService } from 'src/app/services/post.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-userCard',
@@ -32,7 +33,9 @@ export class EditPostComponent {
         @Inject(MAT_DIALOG_DATA) public data: { post: Post; tags: any[], isNew: boolean, isQuestion: boolean; },
         private formBuilder: FormBuilder,
         private tagService: TagService,
-        private postService: PostService
+        private postService: PostService,
+        private auth: AuthenticationService
+
     ) {
         this.ctlTitle = this.formBuilder.control('', [Validators.required]);
         this.ctlBody = this.formBuilder.control('', [Validators.required]);
@@ -65,7 +68,7 @@ export class EditPostComponent {
 
     update() {
         const data = this.editPostForm.value;
-        data.authorId = this.postService.currentUser.id;
+        data.authorId = this.auth.currentUser.id;
         if(this.isQuestion == true)
             data.lstags = this.tags.filter(t=>t.isChecked == true).map(m=>m.name);
          

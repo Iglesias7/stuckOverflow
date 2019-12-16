@@ -15,7 +15,7 @@ export class FilterService {
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
-      this.postService.emitPost();
+      this.postService.emitAllPosts();
     });
   }
 
@@ -24,7 +24,7 @@ export class FilterService {
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
-      this.postService.emitPost();
+      this.postService.emitAllPosts();
     });
   }
 
@@ -33,7 +33,7 @@ export class FilterService {
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
-      this.postService.emitPost();
+      this.postService.emitAllPosts();
     });
   }
 
@@ -42,7 +42,7 @@ export class FilterService {
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
-      this.postService.emitPost();
+      this.postService.emitAllPosts();
     });
   }
 }

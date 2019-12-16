@@ -21,9 +21,7 @@ namespace Prid1920_g03.Models
                 Role = user.Role,
                 Token = user.Token,
 
-                // Posts = user.Posts.ToDTO(),
-                // Comments = user.Comments.ToDTO(),
-                // Votes = user.Votes.ToDTO(),
+                
             };
         }
 
@@ -48,7 +46,7 @@ namespace Prid1920_g03.Models
                 NumVote = post.NumVote,
                 HightVote = post.HightVote,
                 NumComments = post.NumComment,
-                PostUser = post.User.ToDTO(),
+                User = post.User.ToDTO(),
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),

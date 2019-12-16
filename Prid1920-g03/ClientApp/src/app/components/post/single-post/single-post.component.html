@@ -1,34 +1,34 @@
 <mat-toolbar style="background-color: skyblue; margin-top: 50px;">
     <mat-toolbar-row>
-        <span style="text-align: center; margin-left: 300px;">{{ post.title! }}</span>
+        <span style="text-align: center; margin-left: 300px;">{{ post?.title! }}</span>
     </mat-toolbar-row>
 </mat-toolbar><br><br>
 
-<i style="color: green; display: inline;">asked at {{ post.timestamp! | date: 'short' }}</i><br><br>
+<i style="color: green; display: inline;">asked at {{ post?.timestamp! | date: 'short' }}</i><br><br>
 
-<app-post-view [post] = "post" [id]="post.id" [id]="post.id" [body]="post.body" [timestamp]="post.timestamp" [tags]="post.tags" [title]="true" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
-    [voteState]="post.voteState" [postUser]="post.postUser" [numComments]="post.numComments" [comments]="post.comments">
+<app-post-view [post] = "post" [Author] = "post?.user!" [id]="post?.id" [body]="post?.body" [timestamp]="post?.timestamp" [tags]="post?.tags" [title]="true" [acceptedAnswerIdExist]="post?.acceptedAnswerIdExist"
+    [voteState]="post?.voteState" [user]="post?.user!" [numComments]="post?.numComments" [comments]="post?.comments">
 </app-post-view>
 
 <mat-toolbar style="background-color: rgb(65, 155, 87); margin-top: 50px;">
     <mat-toolbar-row>
-        <span style="text-align: center; margin-left: 300px;">{{ post.numResponse }}{{ '&nbsp;' }} Answers for your</span>
+        <span style="text-align: center; margin-left: 300px;">{{ post?.numResponse }}{{ '&nbsp;' }} Answers for your</span>
     </mat-toolbar-row>
 </mat-toolbar><br><br>
 
 
-<div class="card-container" *ngFor="let response of post.responses">
+<div class="card-container" *ngFor="let response of responses">
     <div *ngIf="response.acceptedAnswerId != null">
-        <app-post-view [post] = "response" [id]="response.id" [body]="response.body" [isaccept] = "true" [timestamp]="response.timestamp" [tags]="response.tags" [title]="false" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
-            [voteState]="response.voteState" [postUser]="response.postUser" [numComments]="response.numComments" [comments]="response.comments">
+        <app-post-view [post] = "response" [Author] = "post?.user!" [id]="response?.id" [body]="response?.body" [isaccept] = "true" [timestamp]="response?.timestamp" [tags]="response?.tags" [title]="false" [acceptedAnswerIdExist]="post?.acceptedAnswerIdExist"
+            [voteState]="response?.voteState" [user]="response?.user!" [numComments]="response?.numComments" [comments]="response?.comments">
         </app-post-view>
     </div>
 </div><br><br>
 
-<div class="row card-container" *ngFor="let response of post.responses">
+<div class="row card-container" *ngFor="let response of responses">
     <div *ngIf="response.acceptedAnswerId == null">
-            <app-post-view [post] = "response" [id]="response.id" [body]="response.body" [timestamp]="response.timestamp" [tags]="response.tags" [title]="false" [acceptedAnswerIdExist]="post.acceptedAnswerIdExist"
-            [voteState]="response.voteState" [postUser]="response.postUser!" [isaccept] = "false" [numComments]="response.numComments" [comments]="response.comments">
+            <app-post-view [post] = "response" [Author] = "post?.user!" [id]="response?.id" [body]="response?.body" [timestamp]="response?.timestamp" [tags]="response?.tags" [title]="false" [acceptedAnswerIdExist]="post?.acceptedAnswerIdExist"
+            [voteState]="response?.voteState" [user]="response?.user!" [isaccept] = "false" [numComments]="response?.numComments" [comments]="response?.comments">
         </app-post-view>
     </div>
 </div><br><br><br>

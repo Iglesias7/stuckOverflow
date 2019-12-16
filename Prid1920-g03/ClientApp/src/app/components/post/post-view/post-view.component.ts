@@ -10,6 +10,8 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { EditCommentComponent } from '../../comment/edit-comment.component';
 import { VoteService } from 'src/app/services/vote.service';
 import { CommentService } from 'src/app/services/Comment.service';
+import { SinglePostListComponent } from '../single-post/single-post.component';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-post-view',
@@ -20,7 +22,7 @@ import { CommentService } from 'src/app/services/Comment.service';
 export class PostViewComponent {
     currentUser: User;
 
-    @Input() postUser: any;
+    @Input() user: any;
     @Input() comments: any[];
     @Input() isaccept: boolean;
     @Input() title: boolean;
@@ -32,11 +34,13 @@ export class PostViewComponent {
     @Input() timestamp: number;
     @Input() id: number;
     @Input() post: Post;
+    @Input() Author: User;
     @Input() response: Post;
 
 
-    constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
-        this.currentUser = this.postService.currentUser;
+    constructor(private auth: AuthenticationService, private sp: SinglePostListComponent, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
+        this.currentUser = this.auth.currentUser;
+        console.log(this.currentUser)
     }
 
     public upDown(postId: number,  upDown: number){
@@ -56,14 +60,14 @@ export class PostViewComponent {
                         if (!res.dismissedByAction){
                             this.voteService.deleteVote(vote).subscribe();
                         }
-                        this.postService.getRefrechPost(this.id);
+                        this.sp.ngOnInit();
                     });
                 }
             });
 
             if(!res){
                 this.voteService.upDown(newVote).subscribe(p => {
-                    this.postService.getRefrechPost(this.id);
+                    this.sp.ngOnInit();
                 });
                 
             }
@@ -80,10 +84,8 @@ export class PostViewComponent {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
                     }else{
                         this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
+                        this.sp.refrech();
                     }
-                    this.postService.getRefrechPost(this.id);
-                    
-
                 });
             }
         });
@@ -99,8 +101,8 @@ export class PostViewComponent {
                         this.snackBar.open(`There was an error at the server. The comment has not been update! Please try again.`, 'Dismiss', { duration: 4000 });
                     }else{
                         this.snackBar.open(`update comment successfully`, 'Dismiss', { duration: 4000 });
+                        this.sp.refrech();
                     }
-                    this.postService.getRefrechPost(this.id);
                 });
             }
         });
@@ -112,20 +114,24 @@ export class PostViewComponent {
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction){
                 this.commentService.delete(id).subscribe();
+                this.sp.refrech();
             }
-            this.postService.getRefrechPost(this.id);
+            
         });
     }
 
     public accept(acceptedAnswerId: any){
         const id = this.id;
-        const authorId = this.postUser.id;
+        const authorId = this.user.id;
         const post = new Post({id, acceptedAnswerId, authorId});
        
-        // if(this.postUser.id == this.currentUser.id){
+        if(this.Author.id == this.currentUser.id){
             this.postService.accept(post).subscribe();
-            this.postService.getRefrechPost(id);
-        // }
+            
+            this.sp.refrech();
+        }
+
+        
     }
 
 
@@ -146,9 +152,9 @@ export class PostViewComponent {
                         this.snackBar.open(`la modification a échoué.`, 'Dismiss', { duration: 4000 });
                     }else{
                         this.snackBar.open(`la modification a réussi.`, 'Dismiss', { duration: 4000 });
+                        this.sp.refrech();
                     }
                   
-                    this.postService.getRefrechPost(this.id);
                 });
             }
         });
@@ -167,8 +173,8 @@ export class PostViewComponent {
                 this.postService.delete(post).subscribe();
                 if(post.title != null)
                     this.router.navigate(['/posts']);
-                this.postService.getRefrechPost(this.id);
             }
+            this.sp.refrech();
         });
     }
 }

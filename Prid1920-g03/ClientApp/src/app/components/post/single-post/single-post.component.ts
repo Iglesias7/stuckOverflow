@@ -9,6 +9,7 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { VoteService } from 'src/app/services/vote.service';
 import { CommentService } from 'src/app/services/Comment.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-userCard',
@@ -23,16 +24,28 @@ export class SinglePostListComponent implements OnInit {
     id = this.route.snapshot.params['id'];
     post: Post;
     postSubsription: Subscription;
+    
+    responses: Post[];
+    responsesSubsription: Subscription;
 
-    constructor(private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
-        this.currentUser = this.postService.currentUser;
+    constructor(private auth: AuthenticationService, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
+        this.currentUser = this.auth.currentUser;
     }
 
     public ngOnInit() {
+        this.refrech();
+    }
+
+    public refrech(){
         this.postSubsription = this.postService.postSubject.subscribe(post => {
             this.post = post;
         });
+        this.responsesSubsription = this.postService.responsesSubject.subscribe(responses => {
+            this.responses = responses;
+        });
+
         this.postService.getRefrechPost(this.id);
+        this.postService.emitAllResponses();
     }
 
     public reply(){
@@ -46,6 +59,7 @@ export class SinglePostListComponent implements OnInit {
         const id = this.route.snapshot.params['id'];
         this.postService.add(post).subscribe(post =>{
             this.postService.getRefrechPost(this.id);
+            this.postService.emitAllResponses();
         });
         this.responseBody = "";
     }

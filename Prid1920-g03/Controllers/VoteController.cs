@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -38,6 +38,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
 
             var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == data.AuthorId && p.PostId == data.PostId);
+            var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
 
             Vote newVote = new Vote()
             {
@@ -47,8 +48,22 @@ namespace Prid1920_g03.Controllers
             };
 
             if(vote != null){
+                if(vote.UpDown == 1){
+                    post.User.Reputation -= 10; 
+                }else{
+                    post.User.Reputation += 2; 
+                    user.Reputation += 1;
+                }
                 model.Votes.Remove(vote);
             }
+
+            if(data.UpDown == 1){
+                post.User.Reputation += 10; 
+            }else{
+                post.User.Reputation -= 2; 
+                user.Reputation -= 1;
+            }
+            
 
             model.Votes.Add(newVote);
 
@@ -62,10 +77,18 @@ namespace Prid1920_g03.Controllers
         public async Task<IActionResult> DeleteVote(int id)
         {
             var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
-
+            var post = await model.Posts.FindAsync(id);
+            if(post == null)
+                return NotFound();
             var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == user.Id && p.PostId == id);
 
             if(vote != null){
+                if(vote.UpDown == 1){
+                    post.User.Reputation -= 10; 
+                }else{
+                    post.User.Reputation += 2; 
+                    user.Reputation += 1;
+                }
                 model.Votes.Remove(vote);
             }else{
                 return BadRequest();

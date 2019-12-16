@@ -26,30 +26,30 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     
     constructor(private filterService: FilterService,private route: ActivatedRoute,private postService: PostService, public dialog: MatDialog,
         public snackBar: MatSnackBar) {
-            this.getElem();
+            // this.getElem();
         }
 
 
 
     
     ngOnInit(): void  {
-        this.getElem();
+        // this.getElem();
     }
 
     
 
-    public getElem(){
-        const name = this.route.snapshot.params['name'];
-        this.postService.getPostsByTagName(name).subscribe(posts => {
-            this.posts = posts;
-            this.postsBackup = _.cloneDeep(posts);
-            console.log(posts);         
-            if(!posts){
-                this.researchByTag = true;
-            }
-        });
-        this.postService.emitPost();
-    }
+    // public getElem(){
+    //     const name = this.route.snapshot.params['name'];
+    //     this.postService.getPostsByTagName(name).subscribe(posts => {
+    //         this.posts = posts;
+    //         this.postsBackup = _.cloneDeep(posts);
+    //         console.log(posts);         
+    //         if(!posts){
+    //             this.researchByTag = true;
+    //         }
+    //     });
+    //     this.postService.emitPost();
+    // }
 
 
     

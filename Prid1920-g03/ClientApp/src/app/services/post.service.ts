@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, IFriend } from '../models/user';
+import { User } from '../models/user';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Post } from '../models/post';
@@ -15,19 +15,22 @@ export class PostService {
   posts: Post[] = [];
   postsSubject = new Subject<Post[]>();
 
+  responses: Post[] = [];
+  responsesSubject = new Subject<Post[]>();
+
   post: Post;
   postSubject = new Subject<Post>();
-
-  public currentUser: User;
     
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
     // this.getRefrechAllPosts();
-    const data = JSON.parse(sessionStorage.getItem('currentUser'));
-      this.currentUser = data ? new User(data) : null;
   }
 
   public emitAllPosts(){
-    this.postsSubject.next(this.posts);
+    this.postsSubject.next(this.posts.slice());
+  }
+  
+  public emitAllResponses(){
+    this.responsesSubject.next(this.responses.slice());
   }
 
   public emitPost(){
@@ -44,6 +47,11 @@ export class PostService {
   public getRefrechPost(id: number){
     this.getPostById(id).subscribe(post => {
       this.post = post;
+      this.getResponseById(id).subscribe(response =>{
+        console.log(response)
+        this.responses = response;
+        this.emitAllResponses();
+      })
       this.emitPost();
     }); 
   }
@@ -64,6 +72,12 @@ export class PostService {
     return this.http.get<Post>(`${this.baseUrl}api/post/${id}`).pipe(
       map(m => !m ? null : new Post(m)),
       catchError(err => of(null))
+    );
+  }
+
+  public getResponseById(id: number) {
+    return this.http.get<Post[]>(`${this.baseUrl}api/post/get-responses/${id}`).pipe(
+      map(res => res.map(m => new Post(m)))
     );
   }
 

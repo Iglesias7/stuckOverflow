@@ -1,17 +1,17 @@
 <form id="editPostForm" class="form" [formGroup]="editPostForm" novalidate>
     <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' post'}}</h1>
     <mat-tab-group mat-stretch-tabs dynamicHeight>
-        <mat-tab label="General Data">
+        <mat-tab *ngIf = "isQuestion" label="Title">
             <div class="form">
                 <mat-form-field > 
-                    <input matInput placeholder="Title" [formControl]="ctlTitle" [readonly] = "!isQuestion" required>
+                    <input matInput placeholder="Title" [formControl]="ctlTitle" required>
                     <span *ngIf = "isQuestion"><mat-error  class="field-error" *ngIf="ctlTitle.hasError('required')">Required</mat-error> </span>
                 </mat-form-field>
-
-                <simplemde [formControl]="ctlBody"></simplemde>
             </div>
         </mat-tab>
-        
+        <mat-tab  label="Body">
+            <simplemde [formControl]="ctlBody"></simplemde>
+        </mat-tab>
         <mat-tab *ngIf = "isQuestion" label="Choice tag(s)">
             <div *ngFor="let tag of tags" style="padding: 10px;">
                 <mat-checkbox (click) = "checkedd(tag.name)" [checked] = "tag.isChecked" >{{ tag.name }}</mat-checkbox>

@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User, IFriend } from '../models/user';
+import { User } from '../models/user';
 import { map, flatMap, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 

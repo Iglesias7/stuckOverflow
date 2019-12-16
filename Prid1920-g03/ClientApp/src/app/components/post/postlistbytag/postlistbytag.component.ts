@@ -8,58 +8,76 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
     selector: 'app-userCard',
-    templateUrl: './postlist.component.html',
-    styleUrls: ['./postlist.component.css'],
+    templateUrl: './postlistbytag.component.html',
+    styleUrls: ['./postlistbytag.component.css'],
 })
 
-export class PostListComponent implements OnInit, OnDestroy {
+export class PostListByTagComponent implements OnInit, OnDestroy {
     
-    posts: Post[] = [];
-    postsBackup: Post[] = [];
+    posts: any;
+    postsBackup: any;
     postsSubsription: Subscription;
+    demo: string = null;
+    researchByTag: boolean = false;
 
+    
     constructor(private filterService: FilterService,private route: ActivatedRoute,private postService: PostService, public dialog: MatDialog,
-        public snackBar: MatSnackBar) {}
+        public snackBar: MatSnackBar) {
+            // this.getElem();
+        }
 
-    ngOnInit() {
-        this.postsSubsription = this.postService.postsSubject.subscribe(
-          posts => {
-            this.posts = posts;
-            this.postsBackup = _.cloneDeep(posts);
-          }
-        );
-        
-        this.postService.getRefrechAllPosts();
+
+
+    
+    ngOnInit(): void  {
+        // this.getElem();
     }
+
+    
+
+    // public getElem(){
+    //     const name = this.route.snapshot.params['name'];
+    //     this.postService.getPostsByTagName(name).subscribe(posts => {
+    //         this.posts = posts;
+    //         this.postsBackup = _.cloneDeep(posts);
+    //         console.log(posts);         
+    //         if(!posts){
+    //             this.researchByTag = true;
+    //         }
+    //     });
+    //     this.postService.emitPost();
+    // }
+
 
     
 
     newest(){
         this.filterService.getNewest();
-        this.postService.emitAllPosts();
+        this.postService.emitPost();
     }
 
     tagfilter(){
         this.filterService.getTagfilter();
-        this.postService.emitAllPosts();
+        this.postService.emitPost();
     }
 
     tagunanswered(){
         this.filterService.getUnanswered();
-        this.postService.emitAllPosts();
+        this.postService.emitPost();
     }
 
     votefilter(){
         this.filterService.getHightVote();
-        this.postService.emitAllPosts();
+        this.postService.emitPost();
     }
 
     filterChanged(filter: string) {
         const lFilter = filter.toLowerCase();
         this.posts = _.filter(this.postsBackup, m => {
-            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
+            const str = (m.postUser.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
     }
@@ -73,17 +91,23 @@ export class PostListComponent implements OnInit, OnDestroy {
                 this.postService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getRefrechAllPosts();
+                        this.postService.emitPost();
                     }else{
                         this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getRefrechAllPosts();
+                        this.postService.emitPost();
                     }
                 });
             }
         });
     }
 
-    ngOnDestroy(){
+    ngOnDestroy(): void{
         this.postsSubsription.unsubscribe();
     }
+
+
+
+
+
+
 }

@@ -27,7 +27,10 @@
     <mat-card matSort *ngFor="let tag of tags" >
         <mat-card-header>
             <mat-card-title>
-                    <button mat-button >{{tag.name}}</button>
+                    <!-- <button mat-button >{{tag.name}}</button> -->
+                    <a class="nav-link text-dar" [routerLink]='["/postlistbytag/"+tag.name]'>
+                        {{tag.name}}
+                    </a>
                 </mat-card-title>
         </mat-card-header> 
          <mat-card-actions> 

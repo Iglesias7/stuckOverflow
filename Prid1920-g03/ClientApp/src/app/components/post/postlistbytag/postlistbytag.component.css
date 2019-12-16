@@ -1,0 +1,27 @@
+h1{
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.ecard{
+    border-bottom: 3px solid orange;
+    width: 100%;
+    position: inherit;
+}
+
+.example-button {
+    margin-top: 16px;
+    cursor: pointer;
+}
+  
+  .example-tooltip-red {
+    background: black;
+  }
+
+  .example-icon {
+    padding: 0 14px;
+  }
+  
+  .example-spacer {
+    flex: 1 1 auto;
+  }

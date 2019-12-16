@@ -62,6 +62,12 @@ export class PostService {
     );
   }
 
+  public getPostsByTagName(name: string){
+    return this.http.get<Post>(`${this.baseUrl}api/post/getbytagname/${name}`).pipe(
+      map(m => !m ? null : new Post(m))
+    );
+  }
+
   public getPostById(id: number) {
     return this.http.get<Post>(`${this.baseUrl}api/post/${id}`).pipe(
       map(m => !m ? null : new Post(m)),

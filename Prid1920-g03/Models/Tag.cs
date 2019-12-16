@@ -13,6 +13,18 @@ namespace Prid1920_g03.Models {
        public string Name {get; set;}
 
         public virtual IList<PostTag> PostTags { get; set; } = new List<PostTag>();
+
+        [NotMapped]
+        public int NbXPosts {
+            get{
+                var nb = 0;
+                foreach (var item in PostTags)
+                {
+                    nb++;
+                }
+                return nb;
+            }
+        }
        
     }
 }

@@ -105,6 +105,13 @@ namespace Prid1920_g03.Controllers
                     };
 
                     model.PostTags.Add(newPostTag);
+                    // var ptg = (from pt in model.PostTags where pt.PostId == post.Id && pt.TagId == tag.Id select pt).FirstOrDefault();
+                    // if(ptg != null){
+                    //     tag.PostTags.Add(ptg);
+                    //     post.LsPostTags.Add(ptg);
+                    // } 
+                    tag.PostTags.Add(newPostTag);
+                    post.LsPostTags.Add(newPostTag);             
                 }
             }
 

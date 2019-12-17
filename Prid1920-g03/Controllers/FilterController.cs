@@ -42,7 +42,7 @@ namespace Prid1920_g03.Controllers
         [HttpGet("tagfilter")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter() {
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (from i in p.LsPostTags where i.PostId == p.Id  select i).Count() != 0
+                        where p.Title != (null) && (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0
                         orderby p.Timestamp descending
                         select p;
             return (await itemList.ToListAsync()).ToDTO();

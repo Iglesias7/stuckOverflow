@@ -12,6 +12,7 @@ import { Vote } from "./vote";
       acceptedAnswerIdExist: boolean;
 
       user: any;
+      postParent: any;
       numResponse: number;
       numVote: number;
       numComments: number;
@@ -28,7 +29,6 @@ import { Vote } from "./vote";
           this.title = data.title;
           this.body = data.body;
           this.timestamp = data.timestamp;
-          this.acceptedAnswerIdExist = data.acceptedAnswerIdExist;
           
           this.authorId = data.authorId;
           this.parentId = data.parentId;
@@ -42,7 +42,7 @@ import { Vote } from "./vote";
 
           this.comments = data.comments;
           this.responses = data.replies;
-          this.tags = data.lsTags;
+          this.tags = data.tags;
           this.votes = data.votes;
         }
       }

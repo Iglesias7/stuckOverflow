@@ -1,70 +1,92 @@
 <mat-card style="box-shadow: none; position: inherit; width: 100%;">
         <mat-card style="float: left; box-shadow: none;">
-            <mat-card-subtitle style="text-align: center;">
-                {{ voteState! }}<br> <span>	<mat-icon (click) = "upDown(id, 1)" style="color: green; margin-right: 8px;">thumb_up</mat-icon>
-                                            <mat-icon (click) = "upDown(id, -1)" style="color: red;">thumb_down</mat-icon>
-                                    </span>
-            </mat-card-subtitle><br>
-            <mat-icon *ngIf = "isaccept" mat-stroked-button style="color: green;">done_outline</mat-icon>
+            <mat-card-subtitle style="text-align: center; ">
+                {{ post?.voteState! }}<br> 
+                <span>	
+                    <mat-icon (click) = "upDown(post.id, 1)" style="color: green; margin-right: 8px; cursor: pointer;">thumb_up</mat-icon>
+                    <mat-icon (click) = "upDown(post.id, -1)" style="color: red; cursor: pointer;">thumb_down</mat-icon>
+                </span>
+            </mat-card-subtitle>
+            <mat-icon *ngIf = "post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: green; font-weight: bolder;">done_outline</mat-icon>
         </mat-card>
         <mat-card-header>
-                <mat-card-subtitle><markdown >{{ body! || '&nbsp;' }}</markdown></mat-card-subtitle>
+                <mat-card-subtitle><markdown [data]="post?.body"></markdown></mat-card-subtitle>
                 <mat-card-subtitle>
-                    <div style="display: inline-block;" *ngFor="let tag of tags">
-                    <button  matTooltip="Tag"
-                        style="margin-right: 3px; border: none;  position: inherit; color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
-                    </div>
-                <button *ngIf = "currentUser?.id == Author?.id && !isaccept && !title && !acceptedAnswerIdExist" mat-stroked-button style="color: green;" (click)="accept(5)">Accept</button>
-                <button *ngIf = "currentUser?.id == Author?.id && isaccept" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
+                    <mat-chip-list style="display: inline-block;" *ngFor="let tag of post?.tags">
+                        <mat-chip  style="margin-right: 3px; border: none; margin-right: 10px; position: inherit; color: white; background-color: orange;">
+                            {{ tag }}
+                        </mat-chip>
+                    </mat-chip-list>
+                    
+                <button *ngIf = "postParent?.acceptedAnswerId! == null && post?.title == null" mat-stroked-button style="color: green;" (click)="accept(post.id)">Accept</button>
+                <button *ngIf = "post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
             </mat-card-subtitle>
-              
                 
         </mat-card-header>
-        <mat-card style="margin-left: 80%; margin-bottom: 20px; box-shadow: none;  position: inherit;">
+        <mat-card style="margin-left: 80%; box-shadow: none;  position: inherit;">
                 <div style="display: inline;">
-                    <button *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == user.id" mat-raised-button style="color: darkcyan;" (click)="update()"><mat-icon>create</mat-icon></button>
-                    <button *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == user.id"  mat-raised-button style="color: red; " (click)="delete()"><mat-icon>delete_sweep</mat-icon></button><br><br></div>
+                    <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" (click)="update()">create</mat-icon>
+                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id">delete_sweep</mat-icon><br><br>
+                </div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
                         matTooltipClass="example-tooltip-red" 
                         aria-label="Button that shows a red tooltip" 
                         style=" font-size: 10px"
+                        style="color: orange"
                         class="example-button">
-                    asked at {{timestamp | date:'dd/MM/yyyy'}}
+                    asked at {{post?.timestamp | date:'dd/MM/yyyy'}}
                 </span>
             </mat-card-subtitle>
             <mat-card-header>
                 <div mat-card-avatar [style.background-size]="'cover'" 
                                         style="width: 25px; height: 25px;"
-                                        [style.background-image]="'url(' + (user?.picturePath || 'uploads/unknown-user.jpg') + ')'">
+                                        [style.background-image]="'url(' + (post?.user.picturePath || 'uploads/unknown-user.jpg') + ')'">
                 </div>
-                <mat-card-title style=" font-size: 10px">{{user?.firstName!}}{{ '&nbsp;' }}{{user?.lastName!}}</mat-card-title>
+                <mat-card-title style=" font-size: 10px;">{{post?.user.firstName!}}{{ '&nbsp;' }}{{post?.user.lastName!}}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" 
                                             matTooltipClass="example-tooltip-red"
                                             aria-label="Button that shows a red tooltip" 
                                             style=" font-size: 10px" 
                                             class="example-button">
-                        {{user?.reputation! }}
+                        <mat-icon style="color: darkgreen; font-size: 12px; margin-right: 5px;">fiber_manual_record</mat-icon><span style="font-size: 12px;">{{post?.user.reputation! }}</span>
                     </span>
                 </mat-card-subtitle>
             </mat-card-header>
-        </mat-card><br><br><br>
-        <mat-expansion-panel *ngIf = "numComments" style="width: 100%; margin-bottom: 15px; box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        </mat-card>
+        <mat-expansion-panel *ngIf = "post?.numComments" style="width: 100%;box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                        {{ numComments }} {{ '&nbsp;' }} Commentaire(s)
+                        {{ post?.numComments }} {{ '&nbsp;' }} Commentaire(s)
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <div *ngFor="let comment of comments">
-                <i style="color: rgb(65, 76, 80); padding: 8px; width: 100%;">{{ comment.body }}-----<span style="color: darkblue;">{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}</span>--asked at {{ comment.timestamp | date: 'short' }}</i><br><br>
-                <button  mat-stroked-button style="color: darkcyan; position: inherit;" (click)="editComment(comment)">Edit Comment</button>
-                <button  mat-stroked-button style="color: red; position: inherit;" (click)="deleteComment(comment)">Delete Comment</button>
-                <mat-divider></mat-divider><br>
-                
+            <div style="margin: 15px;" >
+                <section>
+                    <div class="container" style="text-align: center">
+                        <div class="row"  style="text-align: center" >
+                            <div class="col-lg-12" *ngFor="let comment of post?.comments" style="text-align: center">
+                                <div class="wrap">
+                                    <div >
+                                        <h5><span style="color: rgb(182, 182, 248);">*****{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}*****</span></h5>
+                                        <h6 > <span>comment at {{ comment.timestamp | date: 'short' }}</span></h6>
+                                        <p>
+                                            <i>{{ comment.body }}</i>
+                                        </p>
+                                        <div>
+                                            <mat-icon matTooltip="Edit this comment" matTooltipClass="example-tooltip-red" style="color: darkcyan; position: inherit; margin-right: 30px; font-size: 29px; cursor: pointer" (click)="editComment(comment)">create</mat-icon>
+                                            <mat-icon matTooltip="Delete this comment" matTooltipClass="example-tooltip-red" style="color: red; position: inherit; font-size: 29px; cursor: pointer" (click)="deleteComment(comment)">clear</mat-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <mat-icon matTooltip="Add your comment" matTooltipClass="example-tooltip-red" style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" (click)="addComment()">insert_comment</mat-icon>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <button mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment()">Add Comment</button>
         </mat-expansion-panel>
-        <button *ngIf = "!numComments" mat-stroked-button style="color: skyblue; position: inherit;" (click)="addComment()">Add Comment</button>
-        
+        <mat-icon matTooltip="Add your comment" matTooltipClass="example-tooltip-red"  *ngIf = "!post?.numComments" style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" (click)="addComment()">insert_comment</mat-icon>
     </mat-card>

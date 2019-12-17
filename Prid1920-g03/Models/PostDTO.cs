@@ -11,12 +11,13 @@ namespace Prid1920_g03.Models
         public string Body { get; set; }
         public DateTime Timestamp { get; set; }
         public int? AcceptedAnswerId { get; set; }
-        public Boolean AcceptedAnswerIdExist {get; set;}
+        // public Boolean AcceptedAnswerIdExist {get; set;}
 
         public int AuthorId { get; set; }
         public int? ParentId { get; set; }
 
         public UserDTO User { get; set; }
+        public PostDTO PostParent { get; set; }
         public int NumResponse { get; set; }
         public int NumVote { get; set; }
         public int NumComments { get; set; }
@@ -26,6 +27,6 @@ namespace Prid1920_g03.Models
         public IList<CommentDTO> Comments { get; set; }
         public IList<VoteDTO> Votes { get; set; }
         public IList<PostDTO> Replies { get; set; }
-        public IEnumerable<string> LsTags { get; set; }
+        public IEnumerable<string> Tags { get; set; }
     }
 }

@@ -4,17 +4,18 @@
         <mat-tab *ngIf = "isQuestion" label="Title">
             <div class="form">
                 <mat-form-field > 
-                    <input matInput placeholder="Title" [formControl]="ctlTitle" required>
+                    <input matInput placeholder="Title" [formControl]="ctlTitle" appSetFocus required>
                     <span *ngIf = "isQuestion"><mat-error  class="field-error" *ngIf="ctlTitle.hasError('required')">Required</mat-error> </span>
                 </mat-form-field>
+                <simplemde [formControl]="ctlBody"></simplemde>
             </div>
         </mat-tab>
         <mat-tab  label="Body">
-            <simplemde [formControl]="ctlBody"></simplemde>
+            <!-- <simplemde [formControl]="ctlBody"></simplemde> -->
         </mat-tab>
         <mat-tab *ngIf = "isQuestion" label="Choice tag(s)">
-            <div *ngFor="let tag of tags" style="padding: 10px;">
-                <mat-checkbox (click) = "checkedd(tag.name)" [checked] = "tag.isChecked" >{{ tag.name }}</mat-checkbox>
+            <div *ngFor="let tag of editPostForm.controls.tagForms.controls; let i = index" style="padding: 10px;" formArrayName = "tagForms">
+                <mat-checkbox [formControlName] = "i" >{{ tags[i].name }}</mat-checkbox>
             </div>
         </mat-tab>
     </mat-tab-group>

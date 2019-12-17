@@ -5,3 +5,35 @@
   .example-spacer {
     flex: 1 1 auto;
   }
+
+  section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #f1f4fa;
+}
+
+.wrap {
+    display: flex;
+    background: white;
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 7px 7px 30px -5px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.wrap:hover {
+    background-color: darkblue;
+    color: white;
+}
+
+h5 {
+    margin: 0.1rem;
+}
+
+ p {
+    margin: 0.1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    line-height: 25px;
+}

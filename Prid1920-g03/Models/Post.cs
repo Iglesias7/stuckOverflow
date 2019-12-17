@@ -25,6 +25,7 @@ namespace Prid1920_g03.Models
         public int? AcceptedAnswerId { get; set; }
         
         public virtual Post PostParent { get; set; }
+        public virtual Post AcceptedAnswer { get; set; }
         public virtual User User { get; set; }
         public virtual IList<Post> Responses { get; set; } = new List<Post>();
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
@@ -32,10 +33,10 @@ namespace Prid1920_g03.Models
        
 
 
-        public virtual IList<PostTag> LsPostTags { get; set; } = new List<PostTag>();
+        public virtual IList<PostTag> PostTags { get; set; } = new List<PostTag>();
 
         [NotMapped]
-        public IEnumerable<Tag> Tags { get => LsPostTags.Select(t => t.Tag); }
+        public IEnumerable<Tag> Tags { get => PostTags.Select(t => t.Tag); }
 
         [NotMapped]
         public int NumResponse
@@ -55,13 +56,6 @@ namespace Prid1920_g03.Models
             get
             {
                 return Votes.Sum(r => r.UpDown);
-
-                // int nb = 0;
-                // foreach(Vote v in Votes)
-                // {
-                //     nb += v.UpDown; 
-                // }
-                // return nb;
             }
         }
 
@@ -90,10 +84,7 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                return(
-                    from v in Votes
-                    select v
-                ).Count();
+                return(from v in Votes select v ).Count();
             }
         }
 
@@ -102,27 +93,24 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                return(
-                    from c in Comments
-                    select c
-                ).Count();
+                return(from c in Comments select c).Count();
             }
         }
 
-        [NotMapped]
-        public Boolean AcceptedAnswerIdExist
-        {
-            get
-            {
-               Boolean q = false;
-               foreach(Post r in Responses)
-                {
-                    if(r.AcceptedAnswerId != null)
-                        q = true;
-                }
-                return q;
-            }
-        }
+        // [NotMapped]
+        // public Boolean AcceptedAnswerIdExist
+        // {
+        //     get
+        //     {
+        //        Boolean q = false;
+        //        foreach(Post r in Responses)
+        //         {
+        //             if(r.AcceptedAnswerId != null)
+        //                 q = true;
+        //         }
+        //         return q;
+        //     }
+        // }
         
     }
 }

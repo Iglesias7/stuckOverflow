@@ -48,7 +48,6 @@ export class PostService {
     this.getPostById(id).subscribe(post => {
       this.post = post;
       this.getResponseById(id).subscribe(response =>{
-        console.log(response)
         this.responses = response;
         this.emitAllResponses();
       })
@@ -83,6 +82,7 @@ export class PostService {
 
   
   public accept(p: Post): Observable<boolean> {
+    console.log("response accepted: " + p.acceptedAnswerId)
     return this.http.put<Post>(`${this.baseUrl}api/post/accept/${p.id}`, p).pipe(
       map(res => true),
       catchError(err => {
@@ -104,7 +104,6 @@ export class PostService {
   }
 
   public update(p: Post, id:number): Observable<boolean> {
-    console.log(p)
     return this.http.put<Post>(`${this.baseUrl}api/post/${id}`, p).pipe(
       map(res => true),
       catchError(err => {

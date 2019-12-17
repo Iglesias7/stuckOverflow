@@ -29,7 +29,7 @@ export class SignupComponent {
         private router: Router,
         private authenticationService: AuthenticationService,
     ) {
-        this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
+        this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[A-Za-z][A-Za-z0-9_]*")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);

@@ -21,7 +21,9 @@ export class SinglePostListComponent implements OnInit {
     currentUser: User;
     numComments: number;
     responseBody = "";
+    
     id = this.route.snapshot.params['id'];
+
     post: Post;
     postSubsription: Subscription;
     
@@ -56,7 +58,6 @@ export class SinglePostListComponent implements OnInit {
         const tags = null;
 
         const post =  new Post({body, authorId, parentId, title, tags});
-        const id = this.route.snapshot.params['id'];
         this.postService.add(post).subscribe(post =>{
             this.postService.getRefrechPost(this.id);
             this.postService.emitAllResponses();

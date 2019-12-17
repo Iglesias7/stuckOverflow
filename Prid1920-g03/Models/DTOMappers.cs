@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Prid1920_g03.Models 
+namespace Prid1920_g03.Models
 {
     public static class DTOMappers {
 
@@ -21,7 +21,7 @@ namespace Prid1920_g03.Models
                 Role = user.Role,
                 Token = user.Token,
 
-                
+
             };
         }
 
@@ -36,7 +36,7 @@ namespace Prid1920_g03.Models
                 Title = post.Title,
                 Body = post.Body,
                 Timestamp = post.Timestamp,
-                AcceptedAnswerIdExist = post.AcceptedAnswerIdExist,
+                // AcceptedAnswerIdExist = post.AcceptedAnswerIdExist,
 
                 AuthorId = post.AuthorId,
                 AcceptedAnswerId = post.AcceptedAnswerId,
@@ -47,12 +47,24 @@ namespace Prid1920_g03.Models
                 HightVote = post.HightVote,
                 NumComments = post.NumComment,
                 User = post.User.ToDTO(),
+                // PostParent = post.PostParent.ParentToDTO(),
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),
-                LsTags = post.Tags.Select(t => t.Name).ToList()
+                Tags = post.Tags.Select(t => t.Name).ToList()
             };
         }
+        // public static PostDTO ParentToDTO(this Post post) {
+        //     return new PostDTO {
+        //         Id = post.Id,
+        //         Title = post.Title,
+        //         Body = post.Body,
+        //         Timestamp = post.Timestamp,
+
+        //         AcceptedAnswerId = post.AcceptedAnswerId,
+        //         User = post.User.ToDTO()
+        //     };
+        // }
 
         public static List<PostDTO> ToDTO(this IEnumerable<Post> posts) {
             return posts.Select(p => p.ToDTO()).ToList();
@@ -67,7 +79,7 @@ namespace Prid1920_g03.Models
 
                 PostId = comment.PostId,
                 AuthorId = comment.AuthorId,
-                
+
             };
         }
 
@@ -81,7 +93,7 @@ namespace Prid1920_g03.Models
 
                 AuthorId = vote.AuthorId,
                 PostId = vote.PostId,
-                
+
             };
         }
 

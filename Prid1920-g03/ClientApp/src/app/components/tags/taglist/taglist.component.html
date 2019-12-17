@@ -27,18 +27,21 @@
     <mat-card matSort *ngFor="let tag of tags" >
         <mat-card-header>
             <mat-card-title>
-                    <!-- <button mat-button >{{tag.name}}</button> -->
-                    <a class="nav-link text-dar" [routerLink]='["/postlistbytag/"+tag.name]'>
-                        {{tag.name}}
-                    </a>
+                <p class="card_title">
+                        <a class="nav-link" [routerLink]='["/posts/tagged/"+tag.name]'>
+                            {{tag.name}}</a>
+                            <a>x {{tag.nbXPosts}}</a>
+                             
+                </p>
+ 
                 </mat-card-title>
         </mat-card-header> 
          <mat-card-actions> 
-            <button mat-icon-button tabindex="1" *ngIf="currentUser && isAdmin">
-                <mat-icon type="submit" (click)="edit(tag)">edit</mat-icon>
+            <button mat-icon-button>
+                <mat-icon *ngIf="currentUser && isAdmin" style="color: green" (click)="edit(tag)">edit</mat-icon>
             </button>
-            <button mat-icon-button tabindex="-1" *ngIf="currentUser && isAdmin">
-                <mat-icon type="submit" (click)="delete(tag)">delete</mat-icon>
+            <button mat-icon-button >
+                <mat-icon  *ngIf="currentUser && isAdmin" style="color: red" (click)="delete(tag)">delete</mat-icon>
             </button>
         </mat-card-actions>  
     </mat-card>

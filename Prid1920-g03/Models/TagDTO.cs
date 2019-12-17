@@ -8,6 +8,7 @@ namespace Prid1920_g03.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int NbXPosts {get; set; }
 
     }
 }

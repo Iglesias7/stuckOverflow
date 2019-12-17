@@ -106,6 +106,7 @@ namespace Prid1920_g03.Models
              return new TagDTO {
                  Id = tag.Id,
                  Name = tag.Name,
+                 NbXPosts = tag.NbXPosts,
              };
          }
 

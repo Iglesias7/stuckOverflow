@@ -63,5 +63,19 @@
     
     border-width: 0.5px;
     background-color: lightcyan;
-    border-radius: 1px;
+    border-radius: 4px;
+}
+
+.card-content {
+    padding-top: 5px;
+    font-size: 13px;
+}
+
+.nav-link:hover {
+    background-color: darkcyan;
+    color: white;
+}
+
+.tooltip-class {
+    font-size: 15px;
 }

@@ -38,6 +38,9 @@ export class TagListComponent implements AfterViewInit {
     refresh() {
         this.tagService.getAllTags().subscribe(tags => {
             this.tags = tags;
+            tags.forEach(element => {
+               console.log(element.body); 
+            });
             this.tagsBackup = _.cloneDeep(tags);
         });
     }

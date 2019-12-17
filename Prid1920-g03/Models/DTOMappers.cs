@@ -95,6 +95,7 @@ namespace Prid1920_g03.Models
                  Id = tag.Id,
                  Name = tag.Name,
                  NbXPosts = tag.NbXPosts,
+                 Body = tag.Body,
              };
          }
 

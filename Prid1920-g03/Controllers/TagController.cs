@@ -44,22 +44,6 @@ namespace Prid1920_g03.Controllers
         }
 
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<TagDTO>> GetTagsByPost(int id)
-        // {
-        //     var tagrs = null;
-        //     await model.PostTags.ForEachAsync(pt => {
-        //         if(pt.PostId.Equals(id)){
-                    
-        //             this.GetAllTags.ForEachAsync(t => {
-        //                 if(t.Id.Equals(pt)){
-                            
-        //                 }
-        //             });
-        //         });
-        //     return  (await model.PostTags.ForEachAsync(t => t.Id.Equals(id)).ToListAsync()).ToDTO();
-        //     }
-        // }
         
         [Authorized(Role.Admin)]
         [HttpPost]
@@ -83,6 +67,8 @@ namespace Prid1920_g03.Controllers
 
         }
 
+        
+
         [Authorized(Role.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTag(int id)
@@ -97,7 +83,7 @@ namespace Prid1920_g03.Controllers
             return NoContent();
         }
 
-        //[Authorized(Role.Admin)]
+        [Authorized(Role.Admin)]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditTag(int id, TagDTO data)
         {

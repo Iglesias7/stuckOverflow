@@ -4,6 +4,7 @@
     name: string;
     nbXPosts: number;
     isChecked: boolean;
+    body: string;
     
     constructor(data: any) {
       if(data) {
@@ -11,6 +12,7 @@
         this.name = data.name;
         this.nbXPosts = data.nbXPosts;
         this.isChecked = false;
+        this.body = data.body;
       }
     }
   }

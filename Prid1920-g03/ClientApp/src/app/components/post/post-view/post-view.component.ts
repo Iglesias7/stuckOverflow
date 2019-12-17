@@ -21,55 +21,41 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 
 export class PostViewComponent {
     currentUser: User;
-
-    @Input() user: any;
-    @Input() comments: any[];
-    @Input() isaccept: boolean;
-    @Input() title: boolean;
-    @Input() acceptedAnswerIdExist: boolean;
-    @Input() tags: string[];
-    @Input() numComments: number;
-    @Input() voteState: string;
-    @Input() body: string;
-    @Input() timestamp: number;
-    @Input() id: number;
+    id = this.route.snapshot.params['id'];
     @Input() post: Post;
-    @Input() Author: User;
-    @Input() response: Post;
-
-
+    postParent: Post;
+    
     constructor(private auth: AuthenticationService, private sp: SinglePostListComponent, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
         this.currentUser = this.auth.currentUser;
-        console.log(this.currentUser)
+        this.postService.getPostById(this.id).subscribe(post => {
+            this.postParent = post;
+        })
     }
 
     public upDown(postId: number,  upDown: number){
-        
         const authorId = this.currentUser.id;
-
         const newVote = new Vote({upDown, authorId, postId});
-
+        
         this.postService.getPostById(+postId).subscribe(post => {
             var res = false;
             post.votes.forEach(vote => {
-                
                 if(vote.authorId == authorId && vote.postId == postId && vote.upDown == upDown){
                     res = true;
                     const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
                     snackBarRef.afterDismissed().subscribe(res => {
                         if (!res.dismissedByAction){
-                            this.voteService.deleteVote(vote).subscribe();
+                            this.voteService.deleteVote(vote).subscribe(vote => {
+                                this.sp.refrech();
+                            });
                         }
-                        this.sp.ngOnInit();
                     });
                 }
             });
 
             if(!res){
                 this.voteService.upDown(newVote).subscribe(p => {
-                    this.sp.ngOnInit();
+                    this.sp.refrech();
                 });
-                
             }
         });
     }
@@ -79,7 +65,7 @@ export class PostViewComponent {
         const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: true } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
-                this.commentService.add(this.id, res).subscribe(res => {
+                this.commentService.add(this.post.id, res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
                     }else{
@@ -116,24 +102,21 @@ export class PostViewComponent {
                 this.commentService.delete(id).subscribe();
                 this.sp.refrech();
             }
-            
         });
     }
 
     public accept(acceptedAnswerId: any){
-        const id = this.id;
-        const authorId = this.user.id;
-        const post = new Post({id, acceptedAnswerId, authorId});
-       
-        if(this.Author.id == this.currentUser.id){
-            this.postService.accept(post).subscribe();
-            
-            this.sp.refrech();
+        const id = this.post.id;
+        const parentId = this.post.parentId;
+        const post = new Post({id, acceptedAnswerId, parentId});
+        console.log("on n est pas entré")
+        if(this.postParent.user.id == this.currentUser.id){
+            this.postService.accept(post).subscribe(post =>{
+                console.log("on est entré")
+                this.sp.refrech();
+            });
         }
-
-        
     }
-
 
     public update() {
         const post = this.post;
@@ -141,7 +124,6 @@ export class PostViewComponent {
         var isQuestion = false;
         if(post.title != null)
             isQuestion = true;
-        // const body = this.post.body;
         const tags = this.post.tags;
         const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false, isQuestion } });
         dlg.beforeClose().subscribe(res => {
@@ -154,7 +136,6 @@ export class PostViewComponent {
                         this.snackBar.open(`la modification a réussi.`, 'Dismiss', { duration: 4000 });
                         this.sp.refrech();
                     }
-                  
                 });
             }
         });

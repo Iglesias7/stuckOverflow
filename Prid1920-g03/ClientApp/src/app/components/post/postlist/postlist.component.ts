@@ -66,10 +66,10 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     public addQuestion() {
         const post = new Post({});
-        const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true } });
+        
+        const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true, isQuestion: true } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
-                console.log(" ici res: " + res.body)
                 this.postService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });

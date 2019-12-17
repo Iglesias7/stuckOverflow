@@ -9,8 +9,8 @@ using Prid1920_g03.Models;
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    [Migration("20191204133502_vote")]
-    partial class vote
+    [Migration("20191216202753_accept")]
+    partial class accept
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,19 +42,6 @@ namespace Prid1920_g03.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Prid1920_g03.Models.Follow", b =>
-                {
-                    b.Property<int>("FollowerPseudo");
-
-                    b.Property<int>("FolloweePseudo");
-
-                    b.HasKey("FollowerPseudo", "FolloweePseudo");
-
-                    b.HasIndex("FolloweePseudo");
-
-                    b.ToTable("Follows");
-                });
-
             modelBuilder.Entity("Prid1920_g03.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -64,8 +51,7 @@ namespace Prid1920_g03.Migrations
 
                     b.Property<int>("AuthorId");
 
-                    b.Property<string>("Body")
-                        .IsRequired();
+                    b.Property<string>("Body");
 
                     b.Property<int?>("ParentId");
 
@@ -75,9 +61,9 @@ namespace Prid1920_g03.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("AcceptedAnswerId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
                 });
@@ -179,36 +165,23 @@ namespace Prid1920_g03.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("Prid1920_g03.Models.Follow", b =>
-                {
-                    b.HasOne("Prid1920_g03.Models.User", "Followee")
-                        .WithMany("FollowersFollows")
-                        .HasForeignKey("FolloweePseudo")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Prid1920_g03.Models.User", "Follower")
-                        .WithMany("FolloweesFollows")
-                        .HasForeignKey("FollowerPseudo")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
             modelBuilder.Entity("Prid1920_g03.Models.Post", b =>
                 {
+                    b.HasOne("Prid1920_g03.Models.Post", "PostParent")
+                        .WithMany("Responses")
+                        .HasForeignKey("AcceptedAnswerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Prid1920_g03.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Prid1920_g03.Models.Post", "PostParent")
-                        .WithMany("Responses")
-                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Prid1920_g03.Models.PostTag", b =>
                 {
                     b.HasOne("Prid1920_g03.Models.Post", "Post")
-                        .WithMany("LsPostTags")
+                        .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict);
 

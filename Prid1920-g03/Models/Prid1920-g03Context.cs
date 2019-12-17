@@ -60,6 +60,12 @@ namespace Prid1920_g03.Models
                     .HasForeignKey(f => f.ParentId)
                     .OnDelete(DeleteBehavior.Restrict);
                     
+                modelBuilder.Entity<Post>()
+                    .HasOne<Post>(f => f.AcceptedAnswer)
+                    .WithMany()
+                    .HasForeignKey(f => f.AcceptedAnswerId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                    
                 // Vote.User (1) <--> User.Votes (*)
                 modelBuilder.Entity<Vote>()
                     .HasOne<User>(c => c.User)                  
@@ -77,7 +83,7 @@ namespace Prid1920_g03.Models
                 // PostTag.Post (1) <--> Post.LsPostTags (*)
                 modelBuilder.Entity<PostTag>()
                     .HasOne<Post>(p => p.Post)
-                    .WithMany(m => m.LsPostTags)
+                    .WithMany(m => m.PostTags)
                     .HasForeignKey(f => f.PostId)
                     .OnDelete(DeleteBehavior.Restrict);
                 

@@ -67,20 +67,17 @@ export class LoginComponent implements OnInit {
         // on s'arrête si le formulaire n'est pas valide
         if (this.loginForm.invalid) return;
         this.loading = true;
-        console.log('ok');
         this.authenticationService.login(this.f.pseudo.value, this.f.password.value)
 
             .subscribe(
   // si login est ok, on navigue vers la page demandée
                 data => {
-                    console.log('loggedin', data);
                     this.router.navigate([this.returnUrl]);
                 },
                 // en cas d'erreurs, on reste sur la page et on les affiche
                 error => {
                     const errors = error.error.errors;
                     for (let field in errors) {
-                        console.log(field);
                         this.loginForm.get(field.toLowerCase()).setErrors({ custom: errors[field] })
                     }
                     this.loading = false;

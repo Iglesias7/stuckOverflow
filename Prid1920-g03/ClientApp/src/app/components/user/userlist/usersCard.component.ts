@@ -78,8 +78,10 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
         const snackBarRef = this.snackBar.open(`User '${user.pseudo}' will be deleted`, 'Undo', { duration: 4000 });
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
-                this.userService.delete(user).subscribe();
-            this.refresh();
+                this.userService.delete(user).subscribe(t => {
+                    this.refresh();
+                });
+            
         });
     }
 

@@ -29,7 +29,7 @@ namespace Prid1920_g03.Controllers
             this.model = _model;
         }
         
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddVote(VoteDTO data)
         {
@@ -38,7 +38,10 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
 
             var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == data.AuthorId && p.PostId == data.PostId);
+            
             var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
+            if(user == null)
+                return NotFound();
 
             Vote newVote = new Vote()
             {
@@ -46,17 +49,18 @@ namespace Prid1920_g03.Controllers
                 AuthorId = data.AuthorId,
                 PostId = data.PostId
             };
-
+            
             if(vote != null){
+                model.Votes.Remove(vote);
                 if(vote.UpDown == 1){
                     post.User.Reputation -= 10; 
                 }else{
                     post.User.Reputation += 2; 
                     user.Reputation += 1;
                 }
-                model.Votes.Remove(vote);
             }
 
+            model.Votes.Add(newVote);
             if(data.UpDown == 1){
                 post.User.Reputation += 10; 
             }else{
@@ -64,9 +68,6 @@ namespace Prid1920_g03.Controllers
                 user.Reputation -= 1;
             }
             
-
-            model.Votes.Add(newVote);
-
             await model.SaveChangesAsyncWithValidation();
 
             return NoContent();
@@ -83,13 +84,13 @@ namespace Prid1920_g03.Controllers
             var vote = await model.Votes.SingleOrDefaultAsync(p => p.AuthorId == user.Id && p.PostId == id);
 
             if(vote != null){
+                model.Votes.Remove(vote);
                 if(vote.UpDown == 1){
                     post.User.Reputation -= 10; 
                 }else{
                     post.User.Reputation += 2; 
                     user.Reputation += 1;
                 }
-                model.Votes.Remove(vote);
             }else{
                 return BadRequest();
             }

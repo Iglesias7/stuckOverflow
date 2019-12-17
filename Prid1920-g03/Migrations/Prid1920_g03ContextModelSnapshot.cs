@@ -59,9 +59,9 @@ namespace Prid1920_g03.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("AcceptedAnswerId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
                 });
@@ -165,21 +165,21 @@ namespace Prid1920_g03.Migrations
 
             modelBuilder.Entity("Prid1920_g03.Models.Post", b =>
                 {
+                    b.HasOne("Prid1920_g03.Models.Post", "PostParent")
+                        .WithMany("Responses")
+                        .HasForeignKey("AcceptedAnswerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Prid1920_g03.Models.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Prid1920_g03.Models.Post", "PostParent")
-                        .WithMany("Responses")
-                        .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Prid1920_g03.Models.PostTag", b =>
                 {
                     b.HasOne("Prid1920_g03.Models.Post", "Post")
-                        .WithMany("LsPostTags")
+                        .WithMany("PostTags")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Restrict);
 

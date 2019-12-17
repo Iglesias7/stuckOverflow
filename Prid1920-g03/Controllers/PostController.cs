@@ -141,13 +141,10 @@ namespace Prid1920_g03.Controllers
             if(post == null)
                 return NotFound();
 
-
             // var authorResponse = await model.Users.FindAsync(data.AuthorId);
             // if(authorResponse == null){
             //     return BadRequest();
             // }
-
-            
 
             var question = await model.Posts.FindAsync(post.ParentId);
             if(question == null){

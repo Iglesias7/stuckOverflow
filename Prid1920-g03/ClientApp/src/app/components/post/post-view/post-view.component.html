@@ -12,10 +12,12 @@
         <mat-card-header>
                 <mat-card-subtitle><markdown [data]="post?.body"></markdown></mat-card-subtitle>
                 <mat-card-subtitle>
-                    <div style="display: inline-block;" *ngFor="let tag of post?.tags">
-                    <button  matTooltip="Tag"
-                        style="margin-right: 3px; border: none;  position: inherit; color: rgb(3, 54, 75); background-color: skyblue;">{{ tag }}</button>
-                    </div>
+                    <mat-chip-list style="display: inline-block;" *ngFor="let tag of post?.tags">
+                        <mat-chip  style="margin-right: 3px; border: none; margin-right: 10px; position: inherit; color: white; background-color: orange;">
+                            {{ tag }}
+                        </mat-chip>
+                    </mat-chip-list>
+                    
                 <button *ngIf = "postParent?.acceptedAnswerId! == null && post?.title == null" mat-stroked-button style="color: green;" (click)="accept(post.id)">Accept</button>
                 <button *ngIf = "post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
             </mat-card-subtitle>
@@ -31,6 +33,7 @@
                         matTooltipClass="example-tooltip-red" 
                         aria-label="Button that shows a red tooltip" 
                         style=" font-size: 10px"
+                        style="color: orange"
                         class="example-button">
                     asked at {{post?.timestamp | date:'dd/MM/yyyy'}}
                 </span>
@@ -40,7 +43,7 @@
                                         style="width: 25px; height: 25px;"
                                         [style.background-image]="'url(' + (post?.user.picturePath || 'uploads/unknown-user.jpg') + ')'">
                 </div>
-                <mat-card-title style=" font-size: 10px">{{post?.user.firstName!}}{{ '&nbsp;' }}{{post?.user.lastName!}}</mat-card-title>
+                <mat-card-title style=" font-size: 10px;">{{post?.user.firstName!}}{{ '&nbsp;' }}{{post?.user.lastName!}}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" 
                                             matTooltipClass="example-tooltip-red"

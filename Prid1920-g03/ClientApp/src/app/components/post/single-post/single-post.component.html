@@ -1,14 +1,15 @@
-<mat-toolbar style="background-color: skyblue; margin-top: 50px;  margin-bottom: 50px">
+<mat-icon style="margin: 30px; color: orange; font-size: 50px; cursor: pointer;" [routerLink]='["/posts"]'>keyboard_return</mat-icon>
+<mat-toolbar style="background-color: orange; margin-top: 20px;  margin-bottom: 50px">
     <mat-toolbar-row>
         <span style="text-align: center; margin-left: 300px;">{{ post?.title! }}</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
-<i style="color: green; display: inline; margin-bottom: 50px;">asked at {{ post?.timestamp! | date: 'short' }}</i>
+<i style="color: orange; display: inline; margin-bottom: 50px;">asked at {{ post?.timestamp! | date: 'short' }}</i>
 
 <app-post-view [post] = "post" ></app-post-view>
 
-<mat-toolbar style="background-color: rgb(65, 155, 87); margin-top: 50px; margin-bottom: 50px">
+<mat-toolbar style="background-color: darkkhaki; margin-top: 50px; margin-bottom: 50px">
     <mat-toolbar-row>
         <span style="text-align: center; margin-left: 300px;">{{ post?.numResponse }}{{ '&nbsp;' }} Answers for your</span>
     </mat-toolbar-row>

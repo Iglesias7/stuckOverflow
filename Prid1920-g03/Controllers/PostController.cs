@@ -109,6 +109,7 @@ namespace Prid1920_g03.Controllers
                 foreach(var t in data.Tags){
                     var tag = await model.Tags.SingleOrDefaultAsync(p => p.Name == t);
                     var post = await model.Posts.SingleOrDefaultAsync(p => p.Title == data.Title && p.Body == data.Body && p.Timestamp == newDateTime);
+                    
                     var newPostTag = new PostTag(){
                         PostId = post.Id,
                         TagId = tag.Id,
@@ -117,13 +118,9 @@ namespace Prid1920_g03.Controllers
                     };
 
                     model.PostTags.Add(newPostTag);
-                    // var ptg = (from pt in model.PostTags where pt.PostId == post.Id && pt.TagId == tag.Id select pt).FirstOrDefault();
-                    // if(ptg != null){
-                    //     tag.PostTags.Add(ptg);
-                    //     post.LsPostTags.Add(ptg);
-                    // } 
+                   
                     tag.PostTags.Add(newPostTag);
-                    post.LsPostTags.Add(newPostTag);             
+                    post.PostTags.Add(newPostTag);             
                 }
             }
 

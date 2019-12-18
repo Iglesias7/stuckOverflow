@@ -60,7 +60,7 @@ namespace Prid1920_g03.Controllers
             var newUser = new User()
             {
                 Pseudo = data.Pseudo,
-                Password = data.Password,
+                Password = TokenHelper.GetPasswordHash(data.Password),
                 LastName = data.LastName,
                 FirstName = data.FirstName,
                 BirthDate = data.BirthDate,
@@ -90,13 +90,8 @@ namespace Prid1920_g03.Controllers
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.BirthDate = userDTO.BirthDate;
-            // user.Email = userDTO.Email;
             user.Role = userDTO.Role;
-
-            var res = await _context.SaveChangesAsyncWithValidation();
-            if (!res.IsEmpty)
-                return BadRequest(res);
-
+            
             if (!string.IsNullOrWhiteSpace(userDTO.PicturePath))
                 // On ajoute un timestamp à la fin de l'url pour générer un URL différent quand on change d'image
                 // car sinon l'image ne se rafraîchit pas parce que l'url ne change pas et le browser la prend dans la cache.
@@ -105,7 +100,11 @@ namespace Prid1920_g03.Controllers
                 user.PicturePath = null;
 
             if (userDTO.Password != null)
-                user.Password = userDTO.Password;
+                user.Password = TokenHelper.GetPasswordHash(userDTO.Password);
+
+            var res = await _context.SaveChangesAsyncWithValidation();
+            if (!res.IsEmpty)
+                return BadRequest(res);
 
             return NoContent();
         }

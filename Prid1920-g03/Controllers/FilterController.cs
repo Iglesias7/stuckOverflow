@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -32,7 +32,7 @@ namespace Prid1920_g03.Controllers
         [HttpGet("newest")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest() {
             var itemList = from p in model.Posts
-                        where p.Title != (null)
+                        where p.Title != null 
                         orderby p.Timestamp descending
                         select p;
 
@@ -42,9 +42,12 @@ namespace Prid1920_g03.Controllers
         [HttpGet("tagfilter")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter() {
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0
+                        where p.Title != null && p.PostTags.Count() > 0  
+                        // (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0 
+                        
                         orderby p.Timestamp descending
                         select p;
+
             return (await itemList.ToListAsync()).ToDTO();
         }
 
@@ -52,7 +55,7 @@ namespace Prid1920_g03.Controllers
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered () {
 
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (from r in p.Responses where r.AcceptedAnswerId == null select r).Count() == (from r in p.Responses select r).Count()
+                        where p.Title != (null) && (from r in p.Responses where r.AcceptedAnswerId == null select r).Count() == (from r in p.Responses select r).Count() 
                         orderby p.Timestamp descending
                         select p;
 
@@ -62,11 +65,9 @@ namespace Prid1920_g03.Controllers
         [HttpGet("votefilter")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtVotefilter () {
 
-            var itemList =  (from p in model.Posts
-                        where p.Title != (null)
-                        select p).AsEnumerable().OrderByDescending(p => p.HightVote);
+            var querry = model.Posts.Where(p => p.ParentId == null).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
 
-            return (itemList).ToDTO();
+            return (querry).ToDTO();
         }
 
     }

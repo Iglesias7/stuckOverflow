@@ -54,7 +54,7 @@ namespace Prid1920_g03.Controllers
 
            IEnumerable<Post> query = post.Responses.OrderByDescending(p => p.Id == post.AcceptedAnswerId).ThenByDescending(p => p.VoteState);
 
-            return ( query).ToDTO();
+            return (query).ToDTO();
         }
 
 

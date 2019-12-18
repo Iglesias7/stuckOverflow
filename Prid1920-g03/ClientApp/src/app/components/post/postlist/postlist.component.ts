@@ -19,6 +19,7 @@ export class PostListComponent implements OnInit, OnDestroy {
     posts: Post[] = [];
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
+    filter: string;
 
     constructor(private filterService: FilterService,private route: ActivatedRoute,private postService: PostService, public dialog: MatDialog,
         public snackBar: MatSnackBar) {}
@@ -30,11 +31,8 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.postsBackup = _.cloneDeep(posts);
           }
         );
-        
         this.postService.getRefrechAllPosts();
     }
-
-    
 
     newest(){
         this.filterService.getNewest();
@@ -83,7 +81,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy(){
+    public ngOnDestroy(){
         this.postsSubsription.unsubscribe();
     }
 }

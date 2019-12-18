@@ -17,6 +17,7 @@ export class EditPostComponent {
     public editPostForm: FormGroup;
     public ctlTitle: FormControl;
     public ctlBody: FormControl;
+    // d = this.ctlBody;
     public isNew: boolean;
     public isQuestion: boolean;
     public tags: any[];

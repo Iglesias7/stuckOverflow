@@ -1,7 +1,7 @@
 <form id="editForm" class="form" [formGroup]="editForm" novalidate>
     <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' user'}}</h1>
     <mat-tab-group mat-stretch-tabs dynamicHeight>
-        <mat-tab label="General Data">
+        <mat-tab label="First Data">
             <div class="form"  >
                 <mat-form-field>
                     <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required >
@@ -27,7 +27,7 @@
                 
             </div>
         </mat-tab>
-        <mat-tab label="lastData">
+        <mat-tab label="Last Data">
             <div class="form">
                 <mat-form-field>
                     <input matInput placeholder="Email" [formControl]="ctlEmail" [readonly]="!isNew">

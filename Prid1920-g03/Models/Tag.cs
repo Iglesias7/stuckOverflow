@@ -52,6 +52,36 @@ namespace Prid1920_g03.Models {
                 return PostTags.Count();
             }
         }
+
+        [NotMapped]
+        public DateTime Timestamp {get
+        {
+            var date = new DateTime();
+            if(Name == "angular"){
+                date = new DateTime(2019,4,18,9,0,0);
+            }
+            else if(Name == "typescript"){
+                date = new DateTime(2019,7,28,15,35,30);
+            }
+            else if(Name == "csharp"){
+                date = new DateTime(2019,9,20,11,45,20);
+
+            }
+            else if(Name == "EntityFramework Core"){
+                date = new DateTime(2019,5,15,19,55,11);
+            }
+            else if(Name == "dotnet core"){
+                date = new DateTime(2019,11,30,6,0,0);
+            }
+            else if(Name ==  "mysql"){
+                date = new DateTime(2009,12,18,1,52,0);
+            }
+            else {
+                date = DateTime.Now;
+            }
+            return date;
+        }
+        }
        
     }
 }

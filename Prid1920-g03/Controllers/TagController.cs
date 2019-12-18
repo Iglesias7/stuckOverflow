@@ -39,9 +39,16 @@ namespace Prid1920_g03.Controllers
             var tags = from tg in model.Tags
             orderby tg.PostTags.Count() descending
             select tg;
-
             return  (await tags.ToListAsync()).ToDTO();
 
+        }
+
+        [HttpGet("getbytimestamp")]
+        public async Task<ActionResult<IEnumerable<TagDTO>>> GetByTimestamp(){
+            var tags = from tg in model.Tags
+            orderby tg.Timestamp.Month descending
+            select tg;
+            return  (await tags.ToListAsync()).ToDTO();
         }
         
         [HttpGet("{id}")]

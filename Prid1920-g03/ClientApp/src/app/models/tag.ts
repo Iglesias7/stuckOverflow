@@ -5,6 +5,7 @@
     nbXPosts: number;
     isChecked: boolean;
     body: string;
+    timestamp: string;
     
     constructor(data: any) {
       if(data) {
@@ -13,6 +14,7 @@
         this.nbXPosts = data.nbXPosts;
         this.isChecked = false;
         this.body = data.body;
+        this.timestamp = data.timestamp;
       }
     }
   }

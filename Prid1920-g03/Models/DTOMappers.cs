@@ -108,6 +108,7 @@ namespace Prid1920_g03.Models
                  Name = tag.Name,
                  NbXPosts = tag.NbXPosts,
                  Body = tag.Body,
+                 Timestamp = tag.Timestamp,
              };
          }
 

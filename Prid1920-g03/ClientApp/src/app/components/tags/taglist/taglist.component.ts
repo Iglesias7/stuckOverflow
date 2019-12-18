@@ -121,6 +121,12 @@ export class TagListComponent implements AfterViewInit {
     }
 
     newfilter(){
-
+        this.tagService.getByTimestamp().subscribe(tags => {
+            this.tags = tags;
+            tags.forEach(element => {
+               console.log(element.body); 
+            });
+            this.tagsBackup = _.cloneDeep(tags);
+        });
     }
 }

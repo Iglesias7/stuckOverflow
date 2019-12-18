@@ -10,6 +10,7 @@ namespace Prid1920_g03.Models
         public string Name { get; set; }
         public int NbXPosts {get; set; }
         public string Body {get; set; }
+        public DateTime Timestamp {get; set; }
 
     }
 }

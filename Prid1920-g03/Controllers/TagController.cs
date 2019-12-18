@@ -33,6 +33,16 @@ namespace Prid1920_g03.Controllers
         {
             return (await this.model.Tags.ToListAsync()).ToDTO();
         }
+
+        [HttpGet("tagsbynbposts")]
+        public async Task<ActionResult<IEnumerable<TagDTO>>> GetByNbPosts(){
+            var tags = from tg in model.Tags
+            orderby tg.PostTags.Count() descending
+            select tg;
+
+            return  (await tags.ToListAsync()).ToDTO();
+
+        }
         
         [HttpGet("{id}")]
         public async Task<ActionResult<TagDTO>> GetOne(int id)
@@ -42,9 +52,7 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             return tag.ToDTO();
         }
-
-
-        
+     
         [Authorized(Role.Admin)]
         [HttpPost]
         public async Task<ActionResult<TagDTO>> AddTag(TagDTO data){

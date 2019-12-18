@@ -105,13 +105,19 @@ export class TagListComponent implements AfterViewInit {
 
 
     popularfilter(){
-
+        this.tagService.getByNbPosts().subscribe(tags => {
+            this.tags = tags;
+            tags.forEach(element => {
+               console.log(element.body); 
+            });
+            this.tagsBackup = _.cloneDeep(tags);
+        });
     }
 
 
 
     namefilter(){
-
+        this.refresh();
     }
 
     newfilter(){

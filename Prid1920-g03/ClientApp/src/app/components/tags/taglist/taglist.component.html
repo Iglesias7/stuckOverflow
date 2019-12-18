@@ -15,9 +15,9 @@
                 </div>
         </div>
         <mat-button-toggle-group class="toggle" appearance="legacy" name="fontStyle" aria-label="Font Style" style=" position: inherit;">
-                <mat-button-toggle class="popular">Popular</mat-button-toggle>
-                <mat-button-toggle class="Name">Name</mat-button-toggle>
-                <mat-button-toggle class="New">New</mat-button-toggle>
+                <mat-button-toggle class="popular" (click)="popularfilter()">Popular</mat-button-toggle>
+                <mat-button-toggle class="Name" (click)="namefilter()">Name</mat-button-toggle>
+                <mat-button-toggle class="New" (clik)="newfilter()">New</mat-button-toggle>
         </mat-button-toggle-group>
 
 </div><br><br>

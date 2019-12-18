@@ -30,6 +30,12 @@ export class TagService {
         );
     }
 
+    getByNbPosts() {
+        return this.http.get<Tag[]>(`${this.baseUrl}api/tag/tagsbynbposts`).pipe(
+            map(res => res.map(m => new Tag(m)))
+        );
+    }
+
     getTagByName(name: string) {
         return this.http.get<Tag[]>(`${this.baseUrl}api/tag/getTagByName/${name}`).pipe(
             map(res => res.map(m => new Tag(m)))

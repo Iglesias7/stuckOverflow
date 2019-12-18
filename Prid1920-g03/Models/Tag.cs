@@ -48,13 +48,8 @@ namespace Prid1920_g03.Models {
 
         [NotMapped]
         public int NbXPosts {
-            get{
-                var nb = 0;
-                foreach (var item in PostTags)
-                {
-                    nb++;
-                }
-                return nb;
+            get{             
+                return PostTags.Count();
             }
         }
        

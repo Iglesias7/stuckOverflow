@@ -125,7 +125,7 @@ export class PostViewComponent {
         if(post.title != null)
             isQuestion = true;
         const tags = this.post.tags;
-        const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false, isQuestion } });
+        const dlg = this.dialog.open(EditPostComponent, { data: { post, tags, isNew: false, isQuestion }, height: "500px" });
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 _.assign(post, res);

@@ -17,7 +17,6 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -82,6 +81,7 @@ namespace Prid1920_g03.Controllers
             return (await posts.ToListAsync()).ToDTO();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
 

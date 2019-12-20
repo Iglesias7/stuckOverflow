@@ -10,8 +10,8 @@ export class FilterService {
  
   constructor(private postService: PostService, private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
 
-  public getNewest() {
-    this.http.get<Post[]>(`${this.baseUrl}api/filter/newest`).pipe(
+  public getNewest(filter: string = "") {
+  this.http.get<Post[]>(`${this.baseUrl}api/filter/newest/${filter}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
@@ -19,8 +19,8 @@ export class FilterService {
     });
   }
 
-  public getTagfilter() {
-    this.http.get<Post[]>(`${this.baseUrl}api/filter/tagfilter`).pipe(
+  public getTagfilter(filter: string = "") {
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/tagfilter/${filter}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
@@ -28,8 +28,17 @@ export class FilterService {
     });
   }
 
-  public getUnanswered() {
-    this.http.get<Post[]>(`${this.baseUrl}api/filter/unanswered`).pipe(
+  public getUnanswered(filter: string = "") {
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/unanswered/${filter}`).pipe(
+      map(res => res.map(m => new Post(m)))
+    ).subscribe(posts => {
+      this.postService.posts = posts;
+      this.postService.emitAllPosts();
+    });
+  }
+
+  public getall(filter: string = "") {
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/getall/${filter}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { MatTableState } from "../helpers/mattable.state";
+import { MatListPostState } from "../helpers/matListPost.state";
 
 
 @Injectable({ providedIn: 'root' })
 export class StateService {
-    public userListState = new MatTableState('pseudo', 'asc', 5);
+    public postListState = new MatListPostState(4);
 }

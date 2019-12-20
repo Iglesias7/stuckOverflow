@@ -4,7 +4,7 @@
         <span class="example-spacer"></span>
     </mat-toolbar-row>
 </mat-toolbar><br><br>
-<button mat-raised-button style="background-color: darkblue; color: white;" (click) = "addQuestion()">Post Question</button><br><br>
+<button *ngIf = "currentUser" mat-raised-button style="background-color: darkblue; color: white;" (click) = "addQuestion()">Post Question</button><br><br>
 <mat-accordion style=" background-color: transparent; box-shadow: none; margin-top: -20px;">
     <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
@@ -23,6 +23,7 @@
             </div>
         </div>
         <mat-button-toggle-group appearance="legacy" name="fontStyle" aria-label="Font Style" style=" position: inherit;">
+            <mat-button-toggle style="background-color: rgb(236, 236, 20); color: white; font-weight: bolder; position: inherit;" (click) = "getall()">getAll</mat-button-toggle>
             <mat-button-toggle style="background-color: darkgreen; color: white; font-weight: bolder; position: inherit;" (click) = "newest()">newest</mat-button-toggle>
             <mat-button-toggle style="background-color: darksalmon; color: white; font-weight: bolder; position: inherit;" (click) = "votefilter()">votes </mat-button-toggle>
             <mat-button-toggle style="background-color: darkturquoise; color: white; font-weight: bolder; position: inherit;" (click) = "tagunanswered()" >unanswered </mat-button-toggle>
@@ -51,7 +52,7 @@
                 <span mat-raised-button matTooltip="Date du post"
                     matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" style=" font-size: 10px; color: darkgreen"
                     class="example-button">
-                    asked at {{question.timestamp | date:'dd/MM/yyyy'}}
+                    asked at {{question.timestamp | timeAgo}}
                 </span>
             </mat-card-subtitle>
             <mat-card-header>
@@ -68,4 +69,6 @@
             </mat-card-header>
         </mat-card>
     </mat-card>
+    
 </div>
+<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>

@@ -7,7 +7,6 @@ import { UserService } from '../../../services/user.service';
 import { StateService } from 'src/app/services/state.service';
 import { MatTableState } from 'src/app/helpers/mattable.state';
 import { EditUserComponent } from '../edit-user/edit-user.component';
-import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-userCard',
@@ -16,7 +15,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 
 export class UserCardComponent implements AfterViewInit, OnDestroy {
-    currentUser: User;
+    
     users: User[] = [];
     usersBackup: User[] = [];
 
@@ -25,11 +24,9 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
 
     constructor(private userService: UserService,
                 private stateService: StateService,
-                private authServise: AuthenticationService,
                 public dialog: MatDialog,
                 public snackBar: MatSnackBar
         ) {
-            this.currentUser = this.authServise.currentUser;
             }
 
     ngAfterViewInit(): void {
@@ -57,17 +54,15 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
     
     // appelée quand on clique sur le bouton "edit" d'un membre
     edit(user: User) {
-        
         const dlg = this.dialog.open(EditUserComponent, { data: { user, isNew: false } });
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 _.assign(user, res);
-                this.userService.update(res, user.id).subscribe(res => {
+                this.userService.update(res, res.id).subscribe(res => {
                     if (!res) {
-                        this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 4000 });
+                        this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
                         this.refresh();
                     }
-                    this.refresh();
                 });
             }
         });
@@ -75,13 +70,10 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
 
     // appelée quand on clique sur le bouton "delete" d'un membre
     delete(user: User) {
-        const snackBarRef = this.snackBar.open(`User '${user.pseudo}' will be deleted`, 'Undo', { duration: 4000 });
+        const snackBarRef = this.snackBar.open(`User '${user.pseudo}' will be deleted`, 'Undo', { duration: 10000 });
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
-                this.userService.delete(user).subscribe(t => {
-                    this.refresh();
-                });
-            
+                this.userService.delete(user).subscribe();
         });
     }
 
@@ -94,8 +86,8 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
                 this.userService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The member has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.refresh();
                     }
-                    this.refresh();
                 });
             }
         });

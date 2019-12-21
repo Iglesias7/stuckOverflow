@@ -133,18 +133,9 @@ namespace Prid1920_g03.Controllers
         [HttpPut("accept/{id}")]
         public async Task<ActionResult<PostDTO>> AcceptPost(int id, PostDTO data){
 
-            // var postParent = await model.Posts.FindAsync(data.ParentId);
-            // if(postParent == null)
-            //     return NotFound();
-
             var post = await model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-
-            // var authorResponse = await model.Users.FindAsync(data.AuthorId);
-            // if(authorResponse == null){
-            //     return BadRequest();
-            // }
 
             var question = await model.Posts.FindAsync(post.ParentId);
             if(question == null){
@@ -160,9 +151,7 @@ namespace Prid1920_g03.Controllers
                     post.User.Reputation =  post.User.Reputation + 15;
                     question.User.Reputation = question.User.Reputation + 2;
                 }
-                
             }
-            
 
             await model.SaveChangesAsyncWithValidation();
 
@@ -172,27 +161,31 @@ namespace Prid1920_g03.Controllers
         /*Only the owner of a post or an administrator
         can execute this action */
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePost(int id)
         {
-
            var post = await model.Posts.FindAsync(id);
-           var user = await model.Users.FindAsync(post.AuthorId);
+           if(post == null){
+               return NotFound();
+           }
 
-        //    if(post == null){
-        //        return NotFound();
-        //    }
+           var user = await model.Users.FindAsync(post.AuthorId);
+           if(user == null){
+               return NotFound();
+           }
 
            if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
+                
             var comments = (from c in model.Comments where c.PostId == post.Id select c);
             var votes = (from v in model.Votes where v.PostId == post.Id select v);
             var responses = (from r in model.Posts where r.ParentId == post.Id select r);
             var postTags = (from pt in model.PostTags where pt.PostId == post.Id select pt);
 
-            foreach(var c in comments)
-                if(c != null)
-                    model.Comments.Remove(c);
+            // foreach(var c in comments)
+            //     if(c != null)
+                    model.Comments.RemoveRange(comments);
             foreach(var v in votes )
                 if(v != null)
                     model.Votes.Remove(v);

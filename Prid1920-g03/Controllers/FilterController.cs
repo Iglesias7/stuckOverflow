@@ -28,7 +28,7 @@ namespace Prid1920_g03.Controllers
             this.model = _model;
         }
 
-        [HttpGet("newest/")]
+        [HttpGet("newest")]
         [HttpGet("newest/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest(string filter = "") {
             var itemList = from p in model.Posts
@@ -42,7 +42,7 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("tagfilter/")]
+        [HttpGet("tagfilter")]
         [HttpGet("tagfilter/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter(string filter = "") {
             var itemList = from p in model.Posts
@@ -55,7 +55,7 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("unanswered/")]
+        [HttpGet("unanswered")]
         [HttpGet("unanswered/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered (string filter = "") {
 
@@ -68,7 +68,7 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
-        [HttpGet("getall/")]
+        [HttpGet("getall")]
         [HttpGet("getall/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtAll (string filter = "") {
 
@@ -80,20 +80,12 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
-        // public List<Post> Votefilter () {
-        //     var querry = model.Posts.AsEnumerable().OrderByDescending(p => p.HightVote);
-        //     return querry;
-        // }
-
         [HttpGet("votefilter")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtVotefilter () {
-            var filter = model.Posts.Where(p => p.ParentId == null).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
-            var questions = model.Posts.Where(p => filter.Contains(p));
-            // var itemList = from p in filter
-            //         where p.ParentId == null  
-            //         select p;            
-
-            return (await questions.ToListAsync()).ToDTO();
+        [HttpGet("votefilter/{filter}")]
+        public ActionResult<IEnumerable<PostDTO>> GEtVotefilter (string filter = "") {
+            var query = model.Posts.Where(p => p.ParentId == null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter))).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
+                  
+            return query.ToDTO();
         }
 
     }

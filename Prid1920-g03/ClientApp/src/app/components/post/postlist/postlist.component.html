@@ -35,7 +35,7 @@
 <div class=" card-container" *ngFor="let question of posts" style="margin-top: 20px; box-shadow: none;">
     <mat-card class="example-cad ecard">
         <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
-            <mat-card-subtitle style="text-align: center; color: darksalmon;">{{ question.voteState }}<br> Votes</mat-card-subtitle><br>
+            <mat-card-subtitle style="text-align: center; color: darksalmon;">{{ question.hightVote }}<br> HightVote</mat-card-subtitle><br>
             <mat-card-subtitle style="text-align: center; color: darkturquoise">{{ question.numResponse! || '&nbsp;' }}<br> answers
             </mat-card-subtitle>
         </mat-card>

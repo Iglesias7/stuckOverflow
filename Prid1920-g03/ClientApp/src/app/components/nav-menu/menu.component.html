@@ -3,7 +3,7 @@
         <a  [routerLink]='["/"]' [routerLinkActive]='["link-activee"]' [routerLinkActiveOptions]='{ exact: true }' class="bt-menu"><mat-icon class="bt-menu-i">home</mat-icon>Home</a>
         <h5 style="color: orange">Public</h5>
         <a  [routerLink]='["/posts"]' [routerLinkActive]='["link-activee"]' class="bt-menu"><mat-icon class="bt-menu-i">public</mat-icon> Stuck overflow</a>
-        <a   [routerLinkActive]='["link-activee"]' class="bt-menu" [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</a>
+        <button *ngIf="authenticationService.currentUser.roleAsString == 'Admin'" (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
         <a   [routerLinkActive]='["link-activee"]' class="bt-menu" [routerLink]='["/tags"]'><mat-icon class="bt-menu-i">list_alt</mat-icon> Tags</a>
     </div>
 </div>

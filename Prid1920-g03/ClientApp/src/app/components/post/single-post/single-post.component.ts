@@ -30,9 +30,14 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     responses: Post[];
     responsesSubsription: Subscription;
 
-    constructor(private auth: AuthenticationService, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
-        this.currentUser = this.auth.currentUser;
-    }
+    constructor(private auth: AuthenticationService, 
+                private postService: PostService,
+                private route: ActivatedRoute,
+                public dialog: MatDialog, 
+                public snackBar: MatSnackBar,
+         ) {
+            this.currentUser = this.auth.currentUser;
+        }
 
     public ngOnInit() {
         this.refrech();

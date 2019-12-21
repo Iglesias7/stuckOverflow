@@ -23,14 +23,26 @@ export class PostViewComponent {
     currentUser: User;
     id = this.route.snapshot.params['id'];
     @Input() post: Post;
+    @Input() responses: Post[];
+    @Input() comments: Comment[];
     postParent: Post;
     
-    constructor(private auth: AuthenticationService, private sp: SinglePostListComponent, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
-        this.currentUser = this.auth.currentUser;
-        this.postService.getPostById(this.id).subscribe(post => {
-            this.postParent = post;
-        })
-    }
+    constructor(private auth: AuthenticationService, 
+                private sp: SinglePostListComponent, 
+                private commentService: CommentService, 
+                private voteService: VoteService,
+                private postService: PostService, 
+                private route: ActivatedRoute,
+                public dialog: MatDialog,
+                public snackBar: MatSnackBar,
+                private router: Router
+        ) {
+            this.currentUser = this.auth.currentUser;
+            this.postService.getPostById(this.id).subscribe(post => {
+                this.postParent = post;
+            })
+            console.log(this.post)
+        }
 
     public upDown(postId: number,  upDown: number){
         const authorId = this.currentUser.id;
@@ -154,8 +166,13 @@ export class PostViewComponent {
                 this.postService.delete(post).subscribe();
                 if(post.title != null)
                     this.router.navigate(['/posts']);
+                else{
+                    this.sp.refrech();
+                }
+            }else{
+                this.sp.refrech();
             }
-            this.sp.refrech();
+            
         });
     }
 }

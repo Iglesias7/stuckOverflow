@@ -26,7 +26,7 @@
         <mat-card style="margin-left: 80%; box-shadow: none;  position: inherit;">
                 <div style="display: inline;">
                     <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" (click)="update()">create</mat-icon>
-                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.responses == null && post?.comments == null)">delete_sweep</mat-icon><br><br>
+                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0)">delete_sweep</mat-icon><br><br>
                 </div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
@@ -69,7 +69,7 @@
                                 <div class="wrap">
                                     <div >
                                         <h5><span style="color: rgb(182, 182, 248);">*****{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}*****</span></h5>
-                                        <h6 > <span>comment at {{ comment.timestamp | date: 'short' }}</span></h6>
+                                        <h6 > <span>comment at {{ comment.timestamp | timeAgo }}</span></h6>
                                         <p>
                                             <i>{{ comment.body }}</i>
                                         </p>

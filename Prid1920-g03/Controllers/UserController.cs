@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -37,7 +37,7 @@ namespace Prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [Authorize]
+        [Authorized(Role.Admin)]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
@@ -47,7 +47,7 @@ namespace Prid1920_g03.Controllers
             return user.ToDTO();
         }
 
-        [Authorize]
+        [Authorized(Role.Admin)]
         [HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO data)
         {
@@ -57,6 +57,10 @@ namespace Prid1920_g03.Controllers
                 var err = new ValidationErrors().Add("Pseudo already in use", nameof(user.Id));
                 return BadRequest(err);
             }
+
+            if(!User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+
             var newUser = new User()
             {
                 Pseudo = data.Pseudo,
@@ -84,6 +88,9 @@ namespace Prid1920_g03.Controllers
            
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == userDTO.Email);
             if (user == null)
+                return NotFound();
+
+            if(!User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
 
             user.Pseudo = userDTO.Pseudo;
@@ -120,13 +127,16 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             }
 
+            if(!User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+                
             // Suppression en cascade des relations avec ce membre
             var comments = (from c in _context.Comments where c.User.Id == user.Id select c);
             var votes = (from v in _context.Votes where v.User.Id == user.Id select v);
             var posts = (from p in _context.Posts where p.Id == user.Id select p);
             if(comments != null)
                 foreach(var c in comments)
-                    _context.Remove(c);    
+                    _context.RemoveRange(c);    
             if(votes != null)
                 foreach(var v in votes)
                     _context.Votes.Remove(v);
@@ -187,7 +197,6 @@ namespace Prid1920_g03.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult<UserDTO>> Signup(UserDTO data)
         {
-
             return await this.PostUser(data);
         }
 

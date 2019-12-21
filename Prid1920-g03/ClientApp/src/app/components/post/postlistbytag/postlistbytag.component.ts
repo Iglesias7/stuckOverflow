@@ -70,7 +70,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     }
 
     votefilter(){
-        this.filterService.getHightVote();
+        this.filterService.getHightVote(this.demo);
         this.postService.emitPost();
     }
 

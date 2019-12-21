@@ -5,9 +5,9 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<i style="color: orange; display: inline; margin-bottom: 50px;">asked at {{ post?.timestamp! | date: 'short' }}</i>
+<i style="color: orange; display: inline; margin-bottom: 50px;">asked at {{ post?.timestamp! | timeAgo }}</i>
 
-<app-post-view [post] = "post" ></app-post-view>
+<app-post-view [post] = "post" [responses] = "post?.responses" [comments] = "post?.comments" ></app-post-view>
 
 <mat-toolbar style="background-color: darkkhaki; margin-top: 50px; margin-bottom: 50px">
     <mat-toolbar-row>
@@ -16,7 +16,7 @@
 </mat-toolbar>
 
 <div class="card-container" *ngFor="let response of responses">
-    <app-post-view [post] = "response" ></app-post-view>
+    <app-post-view [post] = "response" [responses] = "response?.responses" [comments] = "response?.comments" ></app-post-view>
     <mat-divider style=" margin: 30px; font-weight: bold;"></mat-divider>
 </div>
 

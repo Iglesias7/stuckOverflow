@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatSnackBar} from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -7,6 +7,10 @@ import { Subscription } from 'rxjs';
 import { EditPostComponent } from '../edit-post/edit-post.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { ActivatedRoute } from '@angular/router';
+import { User } from 'src/app/models/user';
+import { MatListPostState } from 'src/app/helpers/matListPost.state';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { StateService } from 'src/app/services/state.service';
 
 
 @Component({
@@ -17,55 +21,75 @@ import { ActivatedRoute } from '@angular/router';
 
 export class PostListByTagComponent implements OnInit, OnDestroy {
     
-    posts: any;
-    postsBackup: any;
+    currentUser: User;
+    posts: Post[] = [];
+    postsBackup: Post[] = [];
     postsSubsription: Subscription;
-    demo: string = null;
     researchByTag: boolean = false;
 
+    dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>(this.posts);
+    filter: string;
+    state: MatListPostState;
     
-    constructor(private filterService: FilterService,private route: ActivatedRoute,private postService: PostService, public dialog: MatDialog,
-        public snackBar: MatSnackBar) {
-            // this.getElem();
+    constructor(private auth: AuthenticationService,
+        private filterService: FilterService,
+        private route: ActivatedRoute,
+        private postService: PostService, 
+        public dialog: MatDialog,
+        public snackBar: MatSnackBar,
+        private stateService: StateService,
+        ) {
+            this.currentUser = this.auth.currentUser;
+            this.state = this.stateService.postListState;
         }
 
 
 
     
     ngOnInit(): void  {
-        // this.getElem();
+        this.getElem();
     }
 
     
 
-    // public getElem(){
-    //     const name = this.route.snapshot.params['name'];
-    //     this.postService.getPostsByTagName(name).subscribe(posts => {
-    //         this.posts = posts;
-    //         this.postsBackup = _.cloneDeep(posts);
-    //         console.log(posts);         
-    //         if(!posts){
-    //             this.researchByTag = true;
-    //         }
-    //     });
-    //     this.postService.emitPost();
-    // }
+    public getElem(){
+        const name = this.route.snapshot.params['name'];
+        // this.postService.getPostsByTagName(name).subscribe(posts => {
+        //     this.posts = posts;
+        //     this.postsBackup = _.cloneDeep(posts);
+        //     console.log(posts);         
+        //     if(!posts){
+        //         this.researchByTag = true;
+        //     }
+        // });
+        // this.postService.emitPost();
+
+        this.postsSubsription = this.postService.postsSubject.subscribe(
+            posts => {
+              this.posts = posts;
+              this.postsBackup = _.cloneDeep(posts);
+            }
+        );
+        this.postService.getRefrechPostsByTagName(name);
+
+
+    }
 
 
     
 
     newest(){
-        this.filterService.getNewest(this.demo);
+        this.filterService.getNewest(this.filter);
         this.postService.emitPost();
     }
 
     tagfilter(){
-        this.filterService.getTagfilter(this.demo);
+        this.filterService.getTagfilter(this.filter);
         this.postService.emitPost();
     }
 
     tagunanswered(){
-        this.filterService.getUnanswered(this.demo);
+        this.filterService.getUnanswered(this.filter);
         this.postService.emitPost();
     }
 
@@ -77,7 +101,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     filterChanged(filter: string) {
         const lFilter = filter.toLowerCase();
         this.posts = _.filter(this.postsBackup, m => {
-            const str = (m.postUser.pseudo + ' ' + m.tags + ' ' + m.comments).toLowerCase();
+            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
     }

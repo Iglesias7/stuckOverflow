@@ -17,6 +17,7 @@ import { Vote } from "./vote";
       numVote: number;
       numComments: number;
       voteState: number;
+      hightVote: number;
       
       comments: (string | Comment)[];
       responses: (string | Post)[];
@@ -36,6 +37,7 @@ import { Vote } from "./vote";
           
           this.user = data.user;
           this.numResponse = data.numResponse,
+          this.hightVote = data.hightVote,
           this.voteState = data.voteState,
           this.numVote = data.numVote,
           this.numComments = data.numComments,

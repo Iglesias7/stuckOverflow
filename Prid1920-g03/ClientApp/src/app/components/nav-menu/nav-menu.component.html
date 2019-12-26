@@ -1,18 +1,15 @@
 <header >
   <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3' style="border-top: 7px solid orange; width: 100%;">
-      <div *ngIf="!currentUser">
+      <div>
         <button mat-button [matMenuTriggerFor]="menu" (click) = "readonly = !readonly"><mat-icon>{{ readonly ? " close " : " menu "}}</mat-icon></button>
         <mat-menu #menu="matMenu">
           <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/"]' [routerLinkActive]='["link-activee"]' [routerLinkActiveOptions]='{ exact: true }' class="bt-menu"><mat-icon class="bt-menu-i">home</mat-icon>Home</button>
           <h4 style="color: orange">Public</h4>
           <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/posts"]' [routerLinkActive]='["link-activee"]' class="bt-menu"><mat-icon class="bt-menu-i">public</mat-icon> Stuck overflow</button>
-          <button (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
+          <button *ngIf="currentUser && isAdmin" (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
           <button   [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/tags"]'><mat-icon class="bt-menu-i">list_alt</mat-icon> Tags</button>
-          <button (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/UsersCard"]'><mat-icon class="bt-menu-i">people_outline</mat-icon>UsersCard</button>
-          <button (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/friends"]'><mat-icon class="bt-menu-i">pan_tool</mat-icon>Friends</button>
         </mat-menu>
       </div>
-      
       <img style="margin-right: 10px;" src="assets/pictures/logo.PNG" width="35"/>
       <a class="navbar-brand text-dar" [routerLink]='["/"]'>Stuck <span style="font-weight: bolder;">overflow</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"

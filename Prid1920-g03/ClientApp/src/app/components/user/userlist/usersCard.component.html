@@ -21,10 +21,10 @@
        
         <mat-card-actions class="card-buttons">
             <button mat-icon-button >
-                <mat-icon style="color: green" (click)="edit(user)">edit</mat-icon>
+                <mat-icon *ngIf="currentUser && currentUser.roleAsString == 'Admin'" style="color: green" (click)="edit(user)">edit</mat-icon>
             </button>
             <button mat-icon-button >
-                <mat-icon *ngIf="user.pseudo != currentUser.pseudo" style="color: red" (click)="delete(user)">delete</mat-icon>
+                <mat-icon *ngIf="currentUser && currentUser.roleAsString == 'Admin' && user.pseudo != currentUser.pseudo" style="color: red" (click)="delete(user)">delete</mat-icon>
             </button>
         </mat-card-actions>
       </mat-card>
@@ -35,6 +35,6 @@
 
 <div class="row mt-3">
     <div class="col-12">
-        <button mat-raised-button (click)="create()">New User</button>
+        <button *ngIf="currentUser && currentUser.roleAsString == 'Admin'" mat-raised-button (click)="create()">New User</button>
     </div>
 </div>

@@ -11,11 +11,7 @@ import { MenuComponent } from '../components/nav-menu/menu.component';
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/auth/login/login.component';
 import { SignupComponent } from '../components/auth/signup/signup.component';
-import { CounterComponent } from '../components/count/counter/counter.component';
-import { UserListComponent } from '../components/user/userlist/userlist.component';
 import { UnknownComponent } from '../components/unknown/unknown.component';
-import { CounterStatelessComponent } from '../components/count/counter-stateless/counter-stateless.component';
-import { CounterParentComponent } from '../components/count/counter-stateless/counter-parent.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
 import { SharedModule } from './shared.module';
 import { EditUserComponent } from '../components/user/edit-user/edit-user.component';
@@ -33,6 +29,7 @@ import { TagListComponent } from '../components/tags/taglist/taglist.component'
 import { EditCommentComponent } from '../components/comment/edit-comment.component'
 import { EditTagComponent } from '../components/tags/edit-tag/edit-tag.component';
 import { PostListByTagComponent } from '../components/post/postlistbytag/postlistbytag.component';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 
 
@@ -42,14 +39,10 @@ import { PostListByTagComponent } from '../components/post/postlistbytag/postlis
     NavMenuComponent,
     MenuComponent,
     HomeComponent,
-    CounterComponent,
     LoginComponent,
-    UserListComponent,
     UnknownComponent,
     RestrictedComponent,
     SignupComponent,
-    CounterStatelessComponent,
-    CounterParentComponent,
     SetFocusDirective,
     EditUserComponent,
     UserCardComponent,
@@ -61,7 +54,8 @@ import { PostListByTagComponent } from '../components/post/postlistbytag/postlis
     EditTagComponent,
     EditPostComponent,
     EditCommentComponent,
-    PostListByTagComponent
+    PostListByTagComponent,
+    TimeAgoPipe
     
   ],
   entryComponents: [EditUserComponent, EditPostComponent, EditCommentComponent,  EditTagComponent],

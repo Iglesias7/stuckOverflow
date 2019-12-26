@@ -55,22 +55,22 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     
 
     newest(){
-        this.filterService.getNewest();
+        this.filterService.getNewest(this.demo);
         this.postService.emitPost();
     }
 
     tagfilter(){
-        this.filterService.getTagfilter();
+        this.filterService.getTagfilter(this.demo);
         this.postService.emitPost();
     }
 
     tagunanswered(){
-        this.filterService.getUnanswered();
+        this.filterService.getUnanswered(this.demo);
         this.postService.emitPost();
     }
 
     votefilter(){
-        this.filterService.getHightVote();
+        this.filterService.getHightVote(this.demo);
         this.postService.emitPost();
     }
 

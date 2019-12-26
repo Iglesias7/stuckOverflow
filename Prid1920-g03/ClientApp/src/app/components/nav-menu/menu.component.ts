@@ -11,11 +11,14 @@ import { Router } from '@angular/router';
 
 export class MenuComponent {
     isExpanded = false;
+    currentUser: User;
 
     constructor(
       private router: Router,
       private authenticationService: AuthenticationService
-    ) { }
+    ) { 
+      this.currentUser = this.authenticationService.currentUser;
+    }
 
     collapse() {
       this.isExpanded = false;
@@ -25,13 +28,14 @@ export class MenuComponent {
       this.isExpanded = !this.isExpanded;
     }
 
-    get currentUser() {
-      return this.authenticationService.currentUser;
-    }
+    // get currentUser() {
+    //   return this.authenticationService.currentUser;
+    // }
     
     get isAdmin() {
       return this.currentUser && this.currentUser.role === Role.Admin;
     }
+    
     logout() {
       this.authenticationService.logout();
       this.router.navigate(['/login']);

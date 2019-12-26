@@ -17,7 +17,6 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
 
@@ -30,9 +29,13 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet("newest")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest() {
+        [HttpGet("newest/{filter}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest(string filter = "") {
             var itemList = from p in model.Posts
-                        where p.Title != (null)
+                        where p.Title != null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)
+                        // || (from t in p.Tags where t.Name.Contains(filter) select t).SingleOrDefault() 
+                        // || (from c in p.Comments where c.Body.Contains(filter) select c)
+                        )
                         orderby p.Timestamp descending
                         select p;
 
@@ -40,19 +43,37 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet("tagfilter")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter() {
+        [HttpGet("tagfilter/{filter}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter(string filter = "") {
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0
+                        where p.Title != null && p.PostTags.Count() > 0  && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter))
+                        // (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0 
+                        
                         orderby p.Timestamp descending
                         select p;
+
             return (await itemList.ToListAsync()).ToDTO();
         }
 
         [HttpGet("unanswered")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered () {
+        [HttpGet("unanswered/{filter}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered (string filter = "") {
 
             var itemList = from p in model.Posts
                         where p.Title != (null) && (from r in p.Responses where r.AcceptedAnswerId == null select r).Count() == (from r in p.Responses select r).Count()
+                         && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)) 
+                        orderby p.Timestamp descending
+                        select p;
+
+            return (await itemList.ToListAsync()).ToDTO();
+        }
+
+        [HttpGet("getall")]
+        [HttpGet("getall/{filter}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtAll (string filter = "") {
+
+            var itemList = from p in model.Posts
+                        where p.Title != (null) && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)) 
                         orderby p.Timestamp descending
                         select p;
 
@@ -60,13 +81,11 @@ namespace Prid1920_g03.Controllers
         }
 
         [HttpGet("votefilter")]
-        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtVotefilter () {
-
-            var itemList =  (from p in model.Posts
-                        where p.Title != (null)
-                        select p).AsEnumerable().OrderByDescending(p => p.HightVote);
-
-            return (itemList).ToDTO();
+        [HttpGet("votefilter/{filter}")]
+        public ActionResult<IEnumerable<PostDTO>> GEtVotefilter (string filter = "") {
+            var query = model.Posts.Where(p => p.ParentId == null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter))).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
+                  
+            return query.ToDTO();
         }
 
     }

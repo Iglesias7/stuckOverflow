@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
@@ -17,7 +17,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
     styleUrls: ['./single-post.component.css'],
 })
 
-export class SinglePostListComponent implements OnInit {
+export class SinglePostListComponent implements OnInit, OnDestroy  {
     currentUser: User;
     numComments: number;
     responseBody = "";
@@ -30,9 +30,14 @@ export class SinglePostListComponent implements OnInit {
     responses: Post[];
     responsesSubsription: Subscription;
 
-    constructor(private auth: AuthenticationService, private commentService: CommentService, private voteService: VoteService,private postService: PostService, private route: ActivatedRoute,public dialog: MatDialog, public snackBar: MatSnackBar,private router: Router) {
-        this.currentUser = this.auth.currentUser;
-    }
+    constructor(private auth: AuthenticationService, 
+                private postService: PostService,
+                private route: ActivatedRoute,
+                public dialog: MatDialog, 
+                public snackBar: MatSnackBar,
+         ) {
+            this.currentUser = this.auth.currentUser;
+        }
 
     public ngOnInit() {
         this.refrech();
@@ -63,5 +68,10 @@ export class SinglePostListComponent implements OnInit {
             this.postService.emitAllResponses();
         });
         this.responseBody = "";
+    }
+
+    public ngOnDestroy(){
+        this.postSubsription.unsubscribe();
+        this.responsesSubsription.unsubscribe();
     }
 }

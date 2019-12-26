@@ -64,18 +64,18 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                int nb = 0;
-                foreach(Post r in Responses)
-                {
-                    if(r.VoteState > nb)
-                        nb = r.VoteState; 
-                }
+                // int nb = 0;
+                // foreach(Post r in Responses)
+                // {
+                //     if(r.VoteState > nb)
+                //         nb = r.VoteState; 
+                // }
 
-                if(this.VoteState > nb)
-                        nb = this.VoteState;
-                return nb;
+                // if(this.VoteState > nb)
+                //         nb = this.VoteState;
+                // return nb;
 
-                // return Responses.Max(x => x.VoteState);
+                return Math.Max(VoteState, Responses.Count > 0 ? Responses.Max(r => r.VoteState) : VoteState);
             }        
         }
 

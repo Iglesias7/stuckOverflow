@@ -18,15 +18,15 @@
                         </mat-chip>
                     </mat-chip-list>
                     
-                <button *ngIf = "postParent?.acceptedAnswerId! == null && post?.title == null" mat-stroked-button style="color: green;" (click)="accept(post.id)">Accept</button>
-                <button *ngIf = "post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
+                <button *ngIf = "postParent?.authorId == currentUser.id && postParent?.acceptedAnswerId! == null && post?.title == null" mat-stroked-button style="color: green;" (click)="accept(post.id)">Accept</button>
+                <button *ngIf = "postParent?.authorId == currentUser.id && post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
             </mat-card-subtitle>
                 
         </mat-card-header>
         <mat-card style="margin-left: 80%; box-shadow: none;  position: inherit;">
                 <div style="display: inline;">
-                    <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" (click)="update()">create</mat-icon>
-                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id">delete_sweep</mat-icon><br><br>
+                    <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" (click)="update()">create</mat-icon>
+                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0)">delete_sweep</mat-icon><br><br>
                 </div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
@@ -35,7 +35,7 @@
                         style=" font-size: 10px"
                         style="color: orange"
                         class="example-button">
-                    asked at {{post?.timestamp | date:'dd/MM/yyyy'}}
+                    asked at {{post?.timestamp | timeAgo}}
                 </span>
             </mat-card-subtitle>
             <mat-card-header>
@@ -69,7 +69,7 @@
                                 <div class="wrap">
                                     <div >
                                         <h5><span style="color: rgb(182, 182, 248);">*****{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}*****</span></h5>
-                                        <h6 > <span>comment at {{ comment.timestamp | date: 'short' }}</span></h6>
+                                        <h6 > <span>comment at {{ comment.timestamp | timeAgo }}</span></h6>
                                         <p>
                                             <i>{{ comment.body }}</i>
                                         </p>

@@ -24,7 +24,6 @@ export class UserService {
 
 
   public update(m: User, id: number): Observable<boolean> {
-    console.log(m, " + " +id)
     return this.http.put<User>(`${this.baseUrl}api/user/${id}`, m).pipe(
       map(res => true),
       catchError(err => {

@@ -17,7 +17,7 @@ using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -37,7 +37,7 @@ namespace Prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [Authorize]
+        [Authorized(Role.Admin)]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetOne(int id)
         {
@@ -47,7 +47,7 @@ namespace Prid1920_g03.Controllers
             return user.ToDTO();
         }
 
-        [Authorize]
+        [Authorized(Role.Admin)]
         [HttpPost]
         public async Task<ActionResult<UserDTO>> PostUser(UserDTO data)
         {
@@ -57,10 +57,14 @@ namespace Prid1920_g03.Controllers
                 var err = new ValidationErrors().Add("Pseudo already in use", nameof(user.Id));
                 return BadRequest(err);
             }
+
+            if(!User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+
             var newUser = new User()
             {
                 Pseudo = data.Pseudo,
-                Password = data.Password,
+                Password = TokenHelper.GetPasswordHash(data.Password),
                 LastName = data.LastName,
                 FirstName = data.FirstName,
                 BirthDate = data.BirthDate,
@@ -86,17 +90,15 @@ namespace Prid1920_g03.Controllers
             if (user == null)
                 return NotFound();
 
+            if(!User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+
             user.Pseudo = userDTO.Pseudo;
             user.FirstName = userDTO.FirstName;
             user.LastName = userDTO.LastName;
             user.BirthDate = userDTO.BirthDate;
-            // user.Email = userDTO.Email;
             user.Role = userDTO.Role;
-
-            var res = await _context.SaveChangesAsyncWithValidation();
-            if (!res.IsEmpty)
-                return BadRequest(res);
-
+            
             if (!string.IsNullOrWhiteSpace(userDTO.PicturePath))
                 // On ajoute un timestamp à la fin de l'url pour générer un URL différent quand on change d'image
                 // car sinon l'image ne se rafraîchit pas parce que l'url ne change pas et le browser la prend dans la cache.
@@ -105,7 +107,11 @@ namespace Prid1920_g03.Controllers
                 user.PicturePath = null;
 
             if (userDTO.Password != null)
-                user.Password = userDTO.Password;
+                user.Password = TokenHelper.GetPasswordHash(userDTO.Password);
+
+            var res = await _context.SaveChangesAsyncWithValidation();
+            if (!res.IsEmpty)
+                return BadRequest(res);
 
             return NoContent();
         }
@@ -121,13 +127,16 @@ namespace Prid1920_g03.Controllers
                 return NotFound();
             }
 
+            if(!User.IsInRole(Role.Admin.ToString()))
+                return NotFound();
+                
             // Suppression en cascade des relations avec ce membre
             var comments = (from c in _context.Comments where c.User.Id == user.Id select c);
             var votes = (from v in _context.Votes where v.User.Id == user.Id select v);
             var posts = (from p in _context.Posts where p.Id == user.Id select p);
             if(comments != null)
                 foreach(var c in comments)
-                    _context.Remove(c);    
+                    _context.RemoveRange(c);    
             if(votes != null)
                 foreach(var v in votes)
                     _context.Votes.Remove(v);
@@ -188,7 +197,6 @@ namespace Prid1920_g03.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult<UserDTO>> Signup(UserDTO data)
         {
-
             return await this.PostUser(data);
         }
 

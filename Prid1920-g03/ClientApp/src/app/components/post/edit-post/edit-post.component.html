@@ -7,12 +7,13 @@
                     <input matInput placeholder="Title" [formControl]="ctlTitle" appSetFocus required>
                     <span *ngIf = "isQuestion"><mat-error  class="field-error" *ngIf="ctlTitle.hasError('required')">Required</mat-error> </span>
                 </mat-form-field>
-                <simplemde [formControl]="ctlBody"></simplemde>
+                <simplemde [formControl]="ctlBody" ></simplemde>
             </div>
         </mat-tab>
-        <mat-tab  label="Body">
-            <!-- <simplemde [formControl]="ctlBody"></simplemde> -->
+        <mat-tab  *ngIf = "!isQuestion"  label="Body">
+            <simplemde [formControl]="ctlBody" ></simplemde>
         </mat-tab>
+
         <mat-tab *ngIf = "isQuestion" label="Choice tag(s)">
             <div *ngFor="let tag of editPostForm.controls.tagForms.controls; let i = index" style="padding: 10px;" formArrayName = "tagForms">
                 <mat-checkbox [formControlName] = "i" >{{ tags[i].name }}</mat-checkbox>

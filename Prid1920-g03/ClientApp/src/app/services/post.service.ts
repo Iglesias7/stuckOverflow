@@ -44,6 +44,14 @@ export class PostService {
     }); 
   }
 
+  public getRefrechPostsByTagName(name: string){
+    this.getPostsByTagName(name).subscribe(posts => {
+      this.posts = posts;
+      this.emitAllPosts();
+    })
+
+  }
+
   public getRefrechPost(id: number){
     this.getPostById(id).subscribe(post => {
       this.post = post;
@@ -62,8 +70,8 @@ export class PostService {
   }
 
   public getPostsByTagName(name: string){
-    return this.http.get<Post>(`${this.baseUrl}api/post/getbytagname/${name}`).pipe(
-      map(m => !m ? null : new Post(m))
+    return this.http.get<Post[]>(`${this.baseUrl}api/post/getbytagname/${name}`).pipe(
+      map(res => res.map(m => new Post(m) ))
     );
   }
 

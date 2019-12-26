@@ -1,12 +1,13 @@
 import { MatTableDataSource, MatSort, MatSortHeader, MatPaginator, PageEvent } from "@angular/material";
 
 export class MatTableState {
-    
+  
     public pageIndex: number = 0;
     public pageSize: number;
     public filter: string = '';
 
-    constructor(pageSize: number) {
+    constructor( pageSize: number) {
+      
         this.pageSize = pageSize;
     }
 

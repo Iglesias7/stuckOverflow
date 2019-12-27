@@ -16,6 +16,7 @@ export class User {
     picturePath: string;
     role: Role;
     token: string;
+    refreshToken: string
 
     constructor(data: any) {
       if (data) {
@@ -31,6 +32,7 @@ export class User {
         this.picturePath = data.picturePath;
         this.role = data.role || Role.Member;
         this.token = data.token;
+        this.refreshToken = data.refreshToken;
       }
     }
     public get roleAsString(): string {

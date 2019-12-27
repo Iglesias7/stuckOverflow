@@ -24,10 +24,13 @@ namespace Prid1920_g03.Controllers
     public class UserController : ControllerBase
     {
         private readonly Prid1920_g03Context _context;
+        private readonly TokenHelper _tokenHelper;
+
 
         public UserController(Prid1920_g03Context context)
         {
             _context = context;
+            _tokenHelper = new TokenHelper(context);
         }
 
         [Authorized(Role.Admin)]
@@ -187,10 +190,32 @@ namespace Prid1920_g03.Controllers
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 user.Token = tokenHandler.WriteToken(token);
+                // Génère un refresh token et le stocke dans la table Members
+                var refreshToken = TokenHelper.GenerateRefreshToken();
+                await _tokenHelper.SaveRefreshTokenAsync(pseudo, refreshToken);
             }
             // remove password before returning
             user.Password = null;
             return user;
+        }
+
+         [AllowAnonymous]
+        [HttpPost("refresh")]
+        public async Task<ActionResult<TokensDTO>> Refresh([FromBody] TokensDTO tokens) {
+            var principal = TokenHelper.GetPrincipalFromExpiredToken(tokens.Token);
+            var pseudo = principal.Identity.Name;
+            var savedRefreshToken = await _tokenHelper.GetRefreshTokenAsync(pseudo); 
+            if (savedRefreshToken != tokens.RefreshToken)
+                throw new SecurityTokenException("Invalid refresh token");
+
+            var newToken = TokenHelper.GenerateJwtToken(principal.Claims);
+            var newRefreshToken = TokenHelper.GenerateRefreshToken();
+            await _tokenHelper.SaveRefreshTokenAsync(pseudo, newRefreshToken);
+
+            return new TokensDTO {
+                Token = newToken,
+                RefreshToken = newRefreshToken
+            };
         }
 
         [AllowAnonymous]

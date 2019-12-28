@@ -14,11 +14,8 @@ namespace Prid1920_g03.Models
         [Key]
         public int Id { get; set; }
         public string Title { get; set; }
-
         public string Body { get; set; }
-
         public DateTime Timestamp { get; set; }
-
                
         public int? ParentId { get; set; }
         public int AuthorId { get; set; } 
@@ -30,8 +27,6 @@ namespace Prid1920_g03.Models
         public virtual IList<Post> Responses { get; set; } = new List<Post>();
         public virtual IList<Comment> Comments { get; set; } = new List<Comment>();
         public virtual IList<Vote> Votes { get; set; } = new List<Vote>();
-       
-
 
         public virtual IList<PostTag> PostTags { get; set; } = new List<PostTag>();
 
@@ -43,10 +38,7 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                return(
-                    from c in Responses
-                    select c
-                ).Count();
+                return(from c in Responses select c).Count();
             }
         }
 
@@ -64,17 +56,6 @@ namespace Prid1920_g03.Models
         {
             get
             {
-                // int nb = 0;
-                // foreach(Post r in Responses)
-                // {
-                //     if(r.VoteState > nb)
-                //         nb = r.VoteState; 
-                // }
-
-                // if(this.VoteState > nb)
-                //         nb = this.VoteState;
-                // return nb;
-
                 return Math.Max(VoteState, Responses.Count > 0 ? Responses.Max(r => r.VoteState) : VoteState);
             }        
         }
@@ -96,21 +77,5 @@ namespace Prid1920_g03.Models
                 return(from c in Comments select c).Count();
             }
         }
-
-        // [NotMapped]
-        // public Boolean AcceptedAnswerIdExist
-        // {
-        //     get
-        //     {
-        //        Boolean q = false;
-        //        foreach(Post r in Responses)
-        //         {
-        //             if(r.AcceptedAnswerId != null)
-        //                 q = true;
-        //         }
-        //         return q;
-        //     }
-        // }
-        
     }
 }

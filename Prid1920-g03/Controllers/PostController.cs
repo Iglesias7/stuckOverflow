@@ -33,7 +33,6 @@ namespace Prid1920_g03.Controllers
             this.model = _model;
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetAllPosts() {
             var itemList = from p in model.Posts
@@ -102,7 +101,7 @@ namespace Prid1920_g03.Controllers
             var newDateTime = newPost.Timestamp;
 
             model.Posts.Add(newPost);
-         await model.SaveChangesAsyncWithValidation();
+            await model.SaveChangesAsyncWithValidation();
 
 
             if(data.Tags != null){
@@ -175,17 +174,18 @@ namespace Prid1920_g03.Controllers
                return NotFound();
            }
 
-           if(post.AuthorId != user.Id || !User.IsInRole(Role.Admin.ToString()))
+           if((post.AuthorId != user.Id && post.NumResponse != 0 && post.NumComment != 0) || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
-                
+
             var comments = (from c in model.Comments where c.PostId == post.Id select c);
             var votes = (from v in model.Votes where v.PostId == post.Id select v);
             var responses = (from r in model.Posts where r.ParentId == post.Id select r);
             var postTags = (from pt in model.PostTags where pt.PostId == post.Id select pt);
 
             // foreach(var c in comments)
-            //     if(c != null)
-                    model.Comments.RemoveRange(comments);
+            if(comments != null)
+                model.Comments.RemoveRange(comments);
+
             foreach(var v in votes )
                 if(v != null)
                     model.Votes.Remove(v);
@@ -207,26 +207,25 @@ namespace Prid1920_g03.Controllers
         /*Only the owner of a post or an administrator
         can execute this action */
 
-        
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditPost(int id, PostDTO data)
         {
             var user = await model.Users.FindAsync(data.AuthorId);
-           
+           if(user == null  )
+                return NotFound();
+
             var post = await model.Posts.FindAsync(id);
             if(post == null)
                 return NotFound();
-            if(user == null  )
-                return NotFound();
-
-            // if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-            //     return NotFound("You are not the owner of this post !");
+            
+            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()))
+                return NotFound("You are not the owner of this post !");
 
             post.Title = data.Title;
             post.Body = data.Body;
 
             if(data.Tags != null){
-
                 while(model.PostTags.Where(pt => pt.PostId == id).Count() != 0){
                     var postTag = await model.PostTags.FirstOrDefaultAsync(p => p.PostId == id);
                      model.PostTags.Remove(postTag);

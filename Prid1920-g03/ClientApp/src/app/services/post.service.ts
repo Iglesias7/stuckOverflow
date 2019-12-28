@@ -90,7 +90,6 @@ export class PostService {
 
   
   public accept(p: Post): Observable<boolean> {
-    console.log("response accepted: " + p.acceptedAnswerId)
     return this.http.put<Post>(`${this.baseUrl}api/post/accept/${p.id}`, p).pipe(
       map(res => true),
       catchError(err => {

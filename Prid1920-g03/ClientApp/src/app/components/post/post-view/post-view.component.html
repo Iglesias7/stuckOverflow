@@ -1,13 +1,15 @@
-<!-- <mat-card style="box-shadow: none; position: inherit; width: 100%;">
+<mat-card style="box-shadow: none; position: inherit; width: 100%;">
         <mat-card style="float: left; box-shadow: none;">
             <mat-card-subtitle style="text-align: center; ">
                 {{ post?.voteState! }}<br> 
                 <span>	
-                    <mat-icon (click) = "upDown(post.id, 1)" style="color: green; margin-right: 8px; cursor: pointer;">thumb_up</mat-icon>
-                    <mat-icon (click) = "upDown(post.id, -1)" style="color: red; cursor: pointer;">thumb_down</mat-icon>
+                    <mat-icon (click) = "upDown(post?.id, 1)" style="color: #008000; margin-right: 8px; cursor: pointer;">thumb_up</mat-icon>
+                    <mat-icon (click) = "upDown(post?.id, -1)" style="color: red; cursor: pointer;">thumb_down</mat-icon>
                 </span>
             </mat-card-subtitle>
-            <mat-icon *ngIf = "post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: green; font-weight: bolder;">done_outline</mat-icon>
+            <mat-icon *ngIf = "post?.id == postParent?.acceptedAnswerId!" 
+                      mat-stroked-button 
+                      style="color: green; font-weight: bolder;">done_outline</mat-icon>
         </mat-card>
         <mat-card-header>
                 <mat-card-subtitle><markdown [data]="post?.body"></markdown></mat-card-subtitle>
@@ -18,15 +20,25 @@
                         </mat-chip>
                     </mat-chip-list>
                     
-                <button *ngIf = "postParent?.authorId == currentUser.id && postParent?.acceptedAnswerId! == null && post?.title == null" mat-stroked-button style="color: green;" (click)="accept(post.id)">Accept</button>
-                <button *ngIf = "postParent?.authorId == currentUser.id && post?.id == postParent?.acceptedAnswerId!" mat-stroked-button style="color: red;" (click)="accept(null)">Annuler</button>
+                <button *ngIf = "currentUser && postParent?.authorId == currentUser.id && postParent?.acceptedAnswerId! == null && post?.title == null" 
+                        mat-stroked-button style="color: green;" 
+                        (click)="accept(post.id)">Accept</button>
+
+                <button *ngIf = "currentUser && postParent?.authorId == currentUser.id && post?.id == postParent?.acceptedAnswerId!" 
+                        mat-stroked-button style="color: red;" 
+                        (click)="accept(null)">Annuler</button>
             </mat-card-subtitle>
                 
         </mat-card-header>
         <mat-card style="margin-left: 80%; box-shadow: none;  position: inherit;">
                 <div style="display: inline;">
-                    <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" (click)="update()">create</mat-icon>
-                    <mat-icon style="color: red; cursor: pointer;" (click)="delete()" *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0)">delete_sweep</mat-icon><br><br>
+                    <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" 
+                              *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" 
+                              (click)="update()">create</mat-icon>
+
+                    <mat-icon style="color: red; cursor: pointer;" 
+                              (click)="delete()" 
+                              *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0)">delete_sweep</mat-icon><br><br>
                 </div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
@@ -55,7 +67,10 @@
                 </mat-card-subtitle>
             </mat-card-header>
         </mat-card>
-        <mat-expansion-panel *ngIf = "post?.numComments" style="width: 100%;box-shadow: none;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel *ngIf = "post?.numComments" 
+                            style="width: 100%;box-shadow: none;" 
+                            (opened)="panelOpenState = true" 
+                            (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                         {{ post?.numComments }} {{ '&nbsp;' }} Commentaire(s)
@@ -69,24 +84,39 @@
                                 <div class="wrap">
                                     <div >
                                         <h5><span style="color: rgb(182, 182, 248);">*****{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}*****</span></h5>
-                                        <h6 > <span>comment at {{ comment.timestamp | timeAgo }}</span></h6>
+                                        <h6> <span>comment at {{ comment.timestamp | timeAgo }}</span></h6>
                                         <p>
                                             <i>{{ comment.body }}</i>
                                         </p>
                                         <div>
-                                            <mat-icon matTooltip="Edit this comment" matTooltipClass="example-tooltip-red" style="color: darkcyan; position: inherit; margin-right: 30px; font-size: 29px; cursor: pointer" (click)="editComment(comment)">create</mat-icon>
-                                            <mat-icon matTooltip="Delete this comment" matTooltipClass="example-tooltip-red" style="color: red; position: inherit; font-size: 29px; cursor: pointer" (click)="deleteComment(comment)">clear</mat-icon>
+                                            <mat-icon matTooltip="Edit this comment" 
+                                                      matTooltipClass="example-tooltip-red" 
+                                                      *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id"
+                                                      style="color: darkcyan; position: inherit; margin-right: 30px; font-size: 29px; cursor: pointer" 
+                                                      (click)="editComment(comment)">create</mat-icon>
+
+                                            <mat-icon matTooltip="Delete this comment" 
+                                                      matTooltipClass="example-tooltip-red" 
+                                                      style="color: red; position: inherit; font-size: 29px; cursor: pointer" 
+                                                      (click)="deleteComment(comment)">clear</mat-icon>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <mat-icon matTooltip="Add your comment" matTooltipClass="example-tooltip-red" style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" (click)="addComment()">insert_comment</mat-icon>
+                            <mat-icon matTooltip="Add your comment"
+                                      matTooltipClass="example-tooltip-red" 
+                                      style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" 
+                                      (click)="addComment()">insert_comment</mat-icon>
                         </div>
                     </div>
                 </section>
             </div>
         </mat-expansion-panel>
-        <mat-icon matTooltip="Add your comment" matTooltipClass="example-tooltip-red"  *ngIf = "!post?.numComments" style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" (click)="addComment()">insert_comment</mat-icon>
-    </mat-card> -->
+        <mat-icon matTooltip="Add your comment"
+                  matTooltipClass="example-tooltip-red"  
+                  *ngIf = "!post?.numComments" 
+                  style="color: darkblue; position: inherit; margin: 15px; font-size: 39px; cursor: pointer" 
+                  (click)="addComment()">insert_comment</mat-icon>
+    </mat-card>

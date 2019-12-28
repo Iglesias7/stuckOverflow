@@ -1,9 +1,13 @@
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.IO;
+using PRID_Framework;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
@@ -85,13 +89,13 @@ namespace Prid1920_g03.Helpers
 
         public async Task<string> GetRefreshTokenAsync(string pseudo)
         {
-            var member = await _context.Users.FindAsync(pseudo);
+            var member = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
             return member?.RefreshToken;
         }
 
         public async Task SaveRefreshTokenAsync(string pseudo, string token)
         {
-            var member = await _context.Users.FindAsync(pseudo);
+            var member = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == pseudo);
             if (member != null)
             {
                 member.RefreshToken = token;

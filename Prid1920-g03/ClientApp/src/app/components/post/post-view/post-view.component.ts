@@ -23,8 +23,6 @@ export class PostViewComponent {
     currentUser: User;
     id = this.route.snapshot.params['id'];
     @Input() post: Post;
-    @Input() responses: Post[];
-    @Input() comments: Comment[];
     postParent: Post;
     
     constructor(private auth: AuthenticationService, 
@@ -41,52 +39,69 @@ export class PostViewComponent {
             this.postService.getPostById(this.id).subscribe(post => {
                 this.postParent = post;
             })
-            console.log(this.post)
         }
 
     public upDown(postId: number,  upDown: number){
-        const authorId = this.currentUser.id;
-        const newVote = new Vote({upDown, authorId, postId});
         
-        this.postService.getPostById(+postId).subscribe(post => {
-            var res = false;
-            post.votes.forEach(vote => {
-                if(vote.authorId == authorId && vote.postId == postId && vote.upDown == upDown){
-                    res = true;
-                    const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
-                    snackBarRef.afterDismissed().subscribe(res => {
-                        if (!res.dismissedByAction){
-                            this.voteService.deleteVote(vote).subscribe(vote => {
-                                this.sp.refrech();
+        if(this.currentUser){
+            const authorId = this.currentUser.id;
+            const newVote = new Vote({upDown, authorId, postId});
+
+            if(upDown === 1 && this.currentUser.reputation < 15){
+                this.snackBar.open(`Vous devez avoir au moins une réputation de 15 pour voter positivement.`, 'Dismiss', { duration: 4000 });
+            }else if(upDown === -1 && this.currentUser.reputation < 30){
+                this.snackBar.open(`Vous devez avoir au moins une réputation de 30 pour voter négativement.`, 'Dismiss', { duration: 4000 });
+            }else{
+                this.postService.getPostById(+postId).subscribe(post => {
+                    var res = false;
+                    post.votes.forEach(vote => {
+                        if(vote.authorId == authorId && vote.postId == postId && vote.upDown == upDown){
+                            res = true;
+                            const snackBarRef = this.snackBar.open(`Vous etes sur le point d'annuler votre vote.`, 'Undo', { duration: 4000 });
+                            snackBarRef.afterDismissed().subscribe(res => {
+                                if (!res.dismissedByAction){
+                                    this.voteService.deleteVote(vote).subscribe(vote => {
+                                        this.sp.refrech();
+                                    });
+                                }
                             });
+                        }
+                    });
+        
+                    if(!res){
+                        this.voteService.upDown(newVote).subscribe(p => {
+                            this.sp.refrech();
+                        });
+                    }
+                });
+            }
+            
+        }else{
+            this.snackBar.open(`Vous devez etre connecté pour voter.`, 'Dismiss', { duration: 4000 });
+        }
+        
+    }
+
+    public addComment() {
+        if(this.currentUser){
+            const comment = new Comment();
+            const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: true } });
+            dlg.beforeClose().subscribe(res => {
+                if (res) {
+                    this.commentService.add(this.post.id, res).subscribe(res => {
+                        if (!res) {
+                            this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
+                        }else{
+                            this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
+                            this.sp.refrech();
                         }
                     });
                 }
             });
-
-            if(!res){
-                this.voteService.upDown(newVote).subscribe(p => {
-                    this.sp.refrech();
-                });
-            }
-        });
-    }
-
-    public addComment() {
-        const comment = new Comment();
-        const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: true } });
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                this.commentService.add(this.post.id, res).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                    }else{
-                        this.snackBar.open(`add comment successfully`, 'Dismiss', { duration: 4000 });
-                        this.sp.refrech();
-                    }
-                });
-            }
-        });
+        }else{
+            this.snackBar.open(`Vous devez etre connecté pour ajouter votre commentaire.`, 'Dismiss', { duration: 4000 });
+        }
+        
     }
 
     public editComment(comment: any) {

@@ -179,7 +179,7 @@ namespace Prid1920_g03.Controllers
                return NotFound();
            }
 
-           if((post.AuthorId != user.Id && post.NumResponse != 0 && post.NumComment != 0) || !User.IsInRole(Role.Admin.ToString()))
+           if((User.Identity.Name != user.Pseudo  && post.NumResponse != 0 && post.NumComment != 0) || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
 
             var comments = (from c in model.Comments where c.PostId == post.Id select c);
@@ -224,7 +224,7 @@ namespace Prid1920_g03.Controllers
             if(post == null)
                 return NotFound();
             
-            if(user.Id != post.AuthorId || !User.IsInRole(Role.Admin.ToString()))
+            if(User.Identity.Name != user.Pseudo || !User.IsInRole(Role.Admin.ToString()))
                 return NotFound("You are not the owner of this post !");
 
             post.Title = data.Title;

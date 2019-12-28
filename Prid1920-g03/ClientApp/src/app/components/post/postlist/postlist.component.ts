@@ -87,22 +87,27 @@ export class PostListComponent implements OnInit, OnDestroy {
     }
 
     public addQuestion() {
-        const post = new Post({});
+        if(this.currentUser){
+            const post = new Post({});
         
-        const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true, isQuestion: true }, height: "500px" });
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                this.postService.add(res).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
-                        this.postService.getRefrechAllPosts();
-                    }else{
-                        this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
-                        this.postService.getRefrechAllPosts();
-                    }
-                });
-            }
-        });
+            const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true, isQuestion: true }, height: "500px" });
+            dlg.beforeClose().subscribe(res => {
+                if (res) {
+                    this.postService.add(res).subscribe(res => {
+                        if (!res) {
+                            this.snackBar.open(`There was an error at the server. The question has not been created! Please try again.`, 'Dismiss', { duration: 4000 });
+                            this.postService.getRefrechAllPosts();
+                        }else{
+                            this.snackBar.open(`add question successfully`, 'Dismiss', { duration: 4000 });
+                            this.postService.getRefrechAllPosts();
+                        }
+                    });
+                }
+            });
+        }else{
+            this.snackBar.open(`Vous devez etre connecté pour poster une question.`, 'Dismiss', { duration: 4000 });
+        }
+        
     }
 
     public ngOnDestroy(){

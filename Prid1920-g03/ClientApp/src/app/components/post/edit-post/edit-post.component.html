@@ -5,7 +5,7 @@
             <div class="form">
                 <mat-form-field > 
                     <input matInput placeholder="Title" [formControl]="ctlTitle" appSetFocus required>
-                    <span *ngIf = "isQuestion"><mat-error  class="field-error" *ngIf="ctlTitle.hasError('required')">Required</mat-error> </span>
+                    <mat-error  class="field-error" *ngIf="isQuestion && ctlTitle.hasError('required')">Required</mat-error>
                 </mat-form-field>
                 <simplemde [formControl]="ctlBody" ></simplemde>
             </div>
@@ -22,9 +22,18 @@
     </mat-tab-group>
     
     <div class="footer">
-        <button type="submit" mat-button form="editPostForm"
-           
-            (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
+        <button type="submit" mat-button 
+                form="editPostForm"
+                *ngIf="isQuestion"
+                [disabled]="editPostForm.pristine || editPostForm.invalid || editPostForm.pending"
+                (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
+
+        <button type="submit" mat-button 
+                form="editPostForm"
+                *ngIf="!isQuestion"
+                [disabled]="ctlBody.pristine || ctlBody.invalid || ctlBody.pending"
+                (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
+
         <button type="reset" mat-button (click)="cancel()">Cancel</button>
     </div>
 </form>

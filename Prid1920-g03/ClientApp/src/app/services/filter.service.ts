@@ -46,7 +46,7 @@ export class FilterService {
     });
   }
 
-  public getHightVote(filter: string) {
+  public getHightVote(filter: string = "") {
     this.http.get<Post[]>(`${this.baseUrl}api/filter/votefilter/${filter}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {

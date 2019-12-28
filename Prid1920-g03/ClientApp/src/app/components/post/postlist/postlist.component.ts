@@ -43,19 +43,6 @@ export class PostListComponent implements OnInit, OnDestroy {
             }
 
     ngOnInit() {
-        // lie le datasource au paginator
-        // this.dataSource.paginator = this.paginator;
-
-        // // définit le predicat qui doit être utilisé pour filtrer les membres
-        // this.dataSource.filterPredicate = (data: Post, filter: string) => {
-        //     const str = data.title + ' ' + data.user.pseudo + " " + data.tags + ' ' + data.comments;
-        //     return str.toLowerCase().includes(filter);
-        // };
-
-        // // établit les liens entre le data source et l'état de telle sorte que chaque fois que 
-        // // le tri ou la pagination est modifié l'état soit automatiquement mis à jour
-        // this.state.bind(this.dataSource);
-
         
         this.postsSubsription = this.postService.postsSubject.subscribe(
           posts => {

@@ -70,15 +70,18 @@ namespace Prid1920_g03.Controllers
         [HttpGet("getbytagname/{name}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GetByTagName(string name){
             var tag = (from t in model.Tags where t.Name == name select t).FirstOrDefault();
+
             if(tag == null)
                 return NotFound();
             var posts = (from p in model.Posts
-                         where p.Id ==
-                         (from t in model.PostTags where t.TagId == tag.Id select t.PostId).FirstOrDefault()
+                         join ptg in model.PostTags on p.Id equals ptg.PostId
+                         where ptg.TagId == tag.Id
                          select p);
             if(posts == null)
                 return NotFound();
             return (await posts.ToListAsync()).ToDTO();
+
+           
         }
 
         [Authorize]

@@ -33,12 +33,12 @@
         <mat-card style="margin-left: 80%; box-shadow: none;  position: inherit;">
                 <div style="display: inline;">
                     <mat-icon style="color: darkcyan; margin-right: 20px; cursor: pointer;" 
-                              *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id" 
+                              *ngIf = "currentUser && (currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id)" 
                               (click)="update()">create</mat-icon>
 
                     <mat-icon style="color: red; cursor: pointer;" 
                               (click)="delete()" 
-                              *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0)">delete_sweep</mat-icon><br><br>
+                              *ngIf = "currentUser && (currentUser.roleAsString == 'Admin' || (currentUser?.id == post?.user.id && post?.numResponse == 0 && post?.numComments == 0))">delete_sweep</mat-icon><br><br>
                 </div>
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
@@ -91,12 +91,13 @@
                                         <div>
                                             <mat-icon matTooltip="Edit this comment" 
                                                       matTooltipClass="example-tooltip-red" 
-                                                      *ngIf = "currentUser && currentUser.roleAsString == 'Admin' || currentUser?.id == post?.user.id"
+                                                      *ngIf = "currentUser && (currentUser.roleAsString == 'Admin' || currentUser?.id == comment.commentUser.id)"
                                                       style="color: darkcyan; position: inherit; margin-right: 30px; font-size: 29px; cursor: pointer" 
                                                       (click)="editComment(comment)">create</mat-icon>
 
                                             <mat-icon matTooltip="Delete this comment" 
                                                       matTooltipClass="example-tooltip-red" 
+                                                      *ngIf = "currentUser && (currentUser.roleAsString == 'Admin' || currentUser?.id == comment.commentUser.id)"
                                                       style="color: red; position: inherit; font-size: 29px; cursor: pointer" 
                                                       (click)="deleteComment(comment)">clear</mat-icon>
                                         </div>

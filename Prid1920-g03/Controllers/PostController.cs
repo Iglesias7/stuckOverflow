@@ -138,7 +138,7 @@ namespace Prid1920_g03.Controllers
 
             var question = await model.Posts.FindAsync(post.ParentId);
             if(question == null){
-                return BadRequest();
+                return NotFound();
             }
 
             if(User.Identity.Name == question.User.Pseudo){
@@ -150,6 +150,8 @@ namespace Prid1920_g03.Controllers
                     post.User.Reputation =  post.User.Reputation + 15;
                     question.User.Reputation = question.User.Reputation + 2;
                 }
+            }else{
+                return BadRequest();
             }
 
             await model.SaveChangesAsyncWithValidation();

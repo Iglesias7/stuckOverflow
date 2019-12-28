@@ -5,9 +5,6 @@ import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { EditPostComponent } from '../edit-post/edit-post.component';
-import { VoteService } from 'src/app/services/vote.service';
-import { CommentService } from 'src/app/services/Comment.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -34,7 +31,7 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
                 private postService: PostService,
                 private route: ActivatedRoute,
                 public dialog: MatDialog, 
-                public snackBar: MatSnackBar,
+                public snackBar: MatSnackBar
          ) {
             this.currentUser = this.auth.currentUser;
         }
@@ -50,8 +47,6 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     }
 
     public refrech(){
-        
-
         this.postService.getRefrechPost(this.id);
         this.postService.emitAllResponses();
     }

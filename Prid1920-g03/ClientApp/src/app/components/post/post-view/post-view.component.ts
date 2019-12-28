@@ -101,47 +101,51 @@ export class PostViewComponent {
         }else{
             this.snackBar.open(`Vous devez etre connecté pour ajouter votre commentaire.`, 'Dismiss', { duration: 4000 });
         }
-        
     }
 
     public editComment(comment: any) {
-        const id = comment.id;
-        const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: false } });
-        dlg.beforeClose().subscribe(res => {
-            if (res) {
-                this.commentService.update(res, id).subscribe(res => {
-                    if (!res) {
-                        this.snackBar.open(`There was an error at the server. The comment has not been update! Please try again.`, 'Dismiss', { duration: 4000 });
-                    }else{
-                        this.snackBar.open(`update comment successfully`, 'Dismiss', { duration: 4000 });
-                        this.sp.refrech();
-                    }
-                });
-            }
-        });
+        if(this.currentUser && this.currentUser.roleAsString == 'Admin' || this.currentUser.id == comment.commentUser.id){
+            const id = comment.id;
+            const dlg = this.dialog.open(EditCommentComponent, { data: { comment, isNew: false } });
+            dlg.beforeClose().subscribe(res => {
+                if (res) {
+                    this.commentService.update(res, id).subscribe(res => {
+                        if (!res) {
+                            this.snackBar.open(`There was an error at the server. The comment has not been update! Please try again.`, 'Dismiss', { duration: 4000 });
+                        }else{
+                            this.snackBar.open(`update comment successfully`, 'Dismiss', { duration: 4000 });
+                            this.sp.refrech();
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public deleteComment(comment: any) {
-        const id = comment.id;
-        const snackBarRef = this.snackBar.open(`your comment will be deleted`, 'Undo', { duration: 4000 });
-        snackBarRef.afterDismissed().subscribe(res => {
-            if (!res.dismissedByAction){
-                this.commentService.delete(id).subscribe();
-                this.sp.refrech();
-            }
-        });
+        if(this.currentUser && this.currentUser.roleAsString == 'Admin' || this.currentUser.id == comment.commentUser.id){
+            const id = comment.id;
+            const snackBarRef = this.snackBar.open(`your comment will be deleted`, 'Undo', { duration: 4000 });
+            snackBarRef.afterDismissed().subscribe(res => {
+                if (!res.dismissedByAction){
+                    this.commentService.delete(id).subscribe(()=>{
+                        this.sp.refrech();
+                    });
+                }
+            });
+        }
     }
 
     public accept(acceptedAnswerId: any){
-        const id = this.post.id;
-        const parentId = this.post.parentId;
-        const post = new Post({id, acceptedAnswerId, parentId});
-        console.log("on n est pas entré")
-        if(this.postParent.user.id == this.currentUser.id){
-            this.postService.accept(post).subscribe(post =>{
-                console.log("on est entré")
-                this.sp.refrech();
-            });
+        if(this.currentUser && this.postParent.authorId == this.currentUser.id){
+            const id = this.post.id;
+            const parentId = this.post.parentId;
+            const post = new Post({id, acceptedAnswerId, parentId});
+            if(this.postParent.user.id == this.currentUser.id){
+                this.postService.accept(post).subscribe(post =>{
+                    this.sp.refrech();
+                });
+            }
         }
     }
 
@@ -178,12 +182,12 @@ export class PostViewComponent {
 
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction){
-                this.postService.delete(post).subscribe();
-                if(post.title != null)
-                    this.router.navigate(['/posts']);
-                else{
-                    this.sp.refrech();
-                }
+                this.postService.delete(post).subscribe(() => {
+                    if(post.title != null)
+                        this.router.navigate(['/posts']);
+                    else
+                        this.sp.refrech();
+                });
             }else{
                 this.sp.refrech();
             }

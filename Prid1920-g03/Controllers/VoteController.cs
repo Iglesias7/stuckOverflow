@@ -42,6 +42,10 @@ namespace Prid1920_g03.Controllers
             var user = await model.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
             if(user == null)
                 return NotFound();
+            else if(data.UpDown == 1 && user.Reputation < 15)
+                return NotFound("Vous devez avoir au moins une réputation de 15 pour voter positivement.");
+            else if(data.UpDown == -1 && user.Reputation < 30)
+                return NotFound("Vous devez avoir au moins une réputation de 30 pour voter négativement.");
 
             Vote newVote = new Vote()
             {

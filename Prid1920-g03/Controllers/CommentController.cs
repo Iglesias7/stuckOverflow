@@ -38,6 +38,7 @@ namespace Prid1920_g03.Controllers
             return comment.ToDTO();
         }
 
+        [Authorize]
         [HttpPost("{id}")]
         public async Task<ActionResult<PostDTO>> AddComment(int id, CommentDTO data)
         {
@@ -45,9 +46,11 @@ namespace Prid1920_g03.Controllers
             var user = await model.Users.FindAsync(data.AuthorId);
             if(user == null)
                 return BadRequest();
+
             var post = await model.Posts.FindAsync(id);
             if(post == null )
                 return BadRequest();
+            
             var newComment = new Comment()
             {
                Body = data.Body,
@@ -64,43 +67,33 @@ namespace Prid1920_g03.Controllers
 
             return CreatedAtAction(nameof(GetOneComment), new {id = newComment.Id}, newComment.ToDTO());
          }
-   
 
-        /*Only the owner of a post or an administrator
-        can execute this action */
-
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditComment(int id, CommentDTO data)
         {
-            var user = await model.Users.FindAsync(data.AuthorId);
-            if(user == null)
-                return BadRequest();
 
             var comment = await model.Comments.FindAsync(id);
             if(comment == null)
                 return NotFound();
 
-          
-            // if(user.Id != comment.AuthorId || !!User.IsInRole(Role.Admin.ToString()) )
+            if(!(User.IsInRole(Role.Admin.ToString()) || comment.User.Pseudo == User.Identity.Name))
+                return BadRequest();
+
             comment.Body = data.Body;
 
             await model.SaveChangesAsyncWithValidation();
             return NoContent();
         }
 
-        /*Only the owner of a post or an administrator
-        can execute this action */
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment(int id)
         {
-            
             var comment = await model.Comments.FindAsync(id);
-            var user = await model.Users.FindAsync(comment.AuthorId);
-            if(user == null)
-                return BadRequest();
 
-            // if(com.AuthorId != data.AuthorId || !User.IsInRole(Role.Admin.ToString()) )
-            //     return BadRequest();
+            if(!(User.IsInRole(Role.Admin.ToString()) || comment.User.Pseudo == User.Identity.Name))
+                return BadRequest();
 
             model.Comments.Remove(comment);
 

@@ -5,6 +5,7 @@ import { User, Role } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
 import { StateService } from 'src/app/services/state.service';
 import { EditUserComponent } from '../edit-user/edit-user.component';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
     selector: 'app-userCard',
@@ -13,16 +14,18 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
 })
 
 export class UserCardComponent implements AfterViewInit, OnDestroy {
-    
+    currentUser: User;
     users: User[] = [];
     usersBackup: User[] = [];
     filter: string;
 
     constructor(private userService: UserService,
+                private auth: AuthenticationService,
                 private stateService: StateService,
                 public dialog: MatDialog,
                 public snackBar: MatSnackBar
         ) {
+            this.currentUser = this.auth.currentUser;
             }
 
     ngAfterViewInit(): void {

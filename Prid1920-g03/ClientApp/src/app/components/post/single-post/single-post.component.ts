@@ -5,9 +5,6 @@ import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { EditPostComponent } from '../edit-post/edit-post.component';
-import { VoteService } from 'src/app/services/vote.service';
-import { CommentService } from 'src/app/services/Comment.service';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
@@ -34,39 +31,42 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
                 private postService: PostService,
                 private route: ActivatedRoute,
                 public dialog: MatDialog, 
-                public snackBar: MatSnackBar,
+                public snackBar: MatSnackBar
          ) {
             this.currentUser = this.auth.currentUser;
         }
 
     public ngOnInit() {
-        this.refrech();
-    }
-
-    public refrech(){
         this.postSubsription = this.postService.postSubject.subscribe(post => {
             this.post = post;
         });
         this.responsesSubsription = this.postService.responsesSubject.subscribe(responses => {
             this.responses = responses;
         });
+        this.refrech();
+    }
 
+    public refrech(){
         this.postService.getRefrechPost(this.id);
         this.postService.emitAllResponses();
     }
 
     public reply(){
-        const body = this.responseBody;
-        const parentId = this.post.id;
-        const authorId = this.currentUser.id;
-        const title = null;
-        const tags = null;
+        if(this.currentUser){
+            const body = this.responseBody;
+            const parentId = this.post.id;
+            const authorId = this.currentUser.id;
+            const title = null;
+            const tags = null;
 
-        const post =  new Post({body, authorId, parentId, title, tags});
-        this.postService.add(post).subscribe(post =>{
-            this.postService.getRefrechPost(this.id);
-            this.postService.emitAllResponses();
-        });
+            const post =  new Post({body, authorId, parentId, title, tags});
+            this.postService.add(post).subscribe(post =>{
+                this.refrech();
+            });
+        }else{
+            this.snackBar.open(`Vous devez etre connecté pour Répondre à une question.`, 'Dismiss', { duration: 4000 });
+        }
+        
         this.responseBody = "";
     }
 

@@ -46,25 +46,24 @@ namespace Prid1920_g03.Models
                 NumVote = post.NumVote,
                 HightVote = post.HightVote,
                 NumComments = post.NumComment,
-                User = post.User.ToDTO(),
-                // PostParent = post.PostParent.ParentToDTO(),
+                User = post.User.ToDTOPU(),
+                
                 Replies = post.Responses.ToDTO(),
                 Comments = post.Comments.ToDTO(),
                 Votes = post.Votes.ToDTO(),
                 Tags = post.Tags.Select(t => t.Name).ToList()
             };
         }
-        // public static PostDTO ParentToDTO(this Post post) {
-        //     return new PostDTO {
-        //         Id = post.Id,
-        //         Title = post.Title,
-        //         Body = post.Body,
-        //         Timestamp = post.Timestamp,
 
-        //         AcceptedAnswerId = post.AcceptedAnswerId,
-        //         User = post.User.ToDTO()
-        //     };
-        // }
+        public static PostUser ToDTOPU(this User user) {
+            return new PostUser {
+                Id = user.Id,
+                Pseudo = user.Pseudo,
+                Reputation = user.Reputation,
+                PicturePath = user.PicturePath,
+                Role = user.Role
+            };
+        }
 
         public static List<PostDTO> ToDTO(this IEnumerable<Post> posts) {
             return posts.Select(p => p.ToDTO()).ToList();
@@ -75,11 +74,10 @@ namespace Prid1920_g03.Models
                 Id = comment.Id,
                 Body = comment.Body,
                 Timestamp = comment.Timestamp,
-                CommentUser = comment.User.ToDTO(),
+                CommentUser = comment.User.ToDTOPU(),
 
                 PostId = comment.PostId,
-                AuthorId = comment.AuthorId,
-
+                AuthorId = comment.AuthorId
             };
         }
 

@@ -191,7 +191,6 @@ export class PostViewComponent {
             }else{
                 this.sp.refrech();
             }
-            
         });
     }
 }

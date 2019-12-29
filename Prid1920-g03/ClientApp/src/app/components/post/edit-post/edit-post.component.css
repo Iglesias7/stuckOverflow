@@ -1,17 +1,23 @@
 .form .form {
     margin-top: 15px;
 }
+
+.form .form mat-form-field {
+    width: 100%;
+}
+
 * {
     box-sizing: border-box;
+}
+
+.ng-tag{
+    padding: 10px;
 }
 
 .add {
     height: 40px;
 }
-.delete {
-    display: grid;
-    justify-items: center;
-}
+
 .footer {
     display: grid;
     justify-items: stretch;

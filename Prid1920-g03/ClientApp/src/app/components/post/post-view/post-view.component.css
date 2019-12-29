@@ -1,12 +1,139 @@
 .example-icon {
     padding: 0 14px;
-  }
-  
-  .example-spacer {
-    flex: 1 1 auto;
-  }
+}
 
-  section {
+.body{
+    box-shadow: none; 
+    position: inherit;
+    width: 100%;
+}
+
+.body-sub1{
+    float: left; 
+    box-shadow: none;
+}
+
+.body-sub1-sub{
+    text-align: center;
+}
+
+.body-sub1-sub-up{
+    color: #008000; 
+    margin-right: 8px; 
+    cursor: pointer;
+}
+
+.body-sub1-sub-down{
+    color: red; 
+    cursor: pointer;
+}
+
+.body-sub1-done{
+    color: green; 
+    font-weight: bolder;
+}
+
+.header-chip-list{
+    display: inline-block;
+}
+
+.header-chip-list-chip{
+    margin-right: 3px; 
+    border: none; 
+    margin-right: 10px; 
+    position: inherit; 
+    color: white; 
+    background-color: orange;
+}
+
+.header-button-accept{
+    color: green;
+}
+
+.header-button-annuler{
+    color: red;
+}
+
+.body-sub2{
+    margin-left: 80%; 
+    box-shadow: none;  
+    position: inherit;
+}
+
+.body-sub2 div{
+    display: inline;
+}
+
+.body-sub2-update{
+    color: darkcyan; 
+    margin-right: 20px; 
+    cursor: pointer;
+}
+
+.body-sub2-delete{
+    color: red; 
+    cursor: pointer;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.example-button{
+    color: orange;
+    font-size: 10px;
+}
+
+.body-sub2-header-div{
+    width: 25px; 
+    height: 25px;
+}
+
+.body-sub2-header-title{
+    font-size: 10px;
+}
+
+.body-sub2-expansion-panel{
+    width: 100%;
+    box-shadow: none;
+}
+
+.body-sub2-expansion-panel-header{
+    margin: 15px;
+}
+
+.container{
+    text-align: center;
+}
+
+.color-pseudo-comment{
+    color: rgb(182, 182, 248);
+}
+
+.expansion-panel-update{
+    color: darkcyan;
+    position: inherit;
+    margin-right: 30px; 
+    font-size: 29px; 
+    cursor: pointer
+}
+
+.expansion-panel-delete{
+    color: red; 
+    position: inherit; 
+    font-size: 29px; 
+    cursor: pointer;
+}
+
+.add-comment{
+    color: darkblue;
+     position: inherit; 
+     margin: 15px; 
+     font-size: 39px; 
+     cursor: pointer;
+}
+
+section {
     padding-top: 1rem;
     padding-bottom: 1rem;
     background-color: #f1f4fa;

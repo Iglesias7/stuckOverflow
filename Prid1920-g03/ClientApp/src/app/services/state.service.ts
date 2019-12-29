@@ -4,5 +4,5 @@ import { MatListPostState } from "../helpers/matListPost.state";
 
 @Injectable({ providedIn: 'root' })
 export class StateService {
-    public postListState = new MatListPostState(4);
+    public postListState = new MatListPostState(3);
 }

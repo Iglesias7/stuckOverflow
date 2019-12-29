@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialog, MatSnackBar, MatTableDataSource, MatPaginator} from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource, MatPaginator, PageEvent} from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -24,7 +24,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
 
-    dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>(this.posts);
+    length: number = 0;
+    pageSize: number = 3;  
+    pageSizeOptions: number[] = [3, 6, 9, 12];
+
+    dataSources: MatTableDataSource<Post> = new MatTableDataSource();
+    dataSource: Post[]= [];
     filter: string;
     state: MatListPostState;
 
@@ -32,25 +37,35 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     constructor(private auth: AuthenticationService, 
                 private filterService: FilterService,
-                private route: ActivatedRoute,
                 private postService: PostService, 
                 public dialog: MatDialog,
                 public snackBar: MatSnackBar,
                 private stateService: StateService,
             ) {
                 this.currentUser = this.auth.currentUser;
-                this.state = this.stateService.postListState;
+                this.state = this.stateService.postListState;                
             }
 
     ngOnInit() {
-        
         this.postsSubsription = this.postService.postsSubject.subscribe(
           posts => {
             this.posts = posts;
             this.postsBackup = _.cloneDeep(posts);
+            
+            this.dataSources.data = this.posts.slice(0, 3);
+            this.length = this.posts.length;
           }
         );
         this.postService.getRefrechAllPosts();
+    }
+
+    OnPageChange(event: PageEvent){
+        let startIndex = event.pageIndex * event.pageSize;
+        let endIndex = startIndex + event.pageSize;
+        if(endIndex > this.length){
+          endIndex = this.length;
+        }
+        this.dataSources.data = this.posts.slice(startIndex, endIndex);
     }
 
     newest(){

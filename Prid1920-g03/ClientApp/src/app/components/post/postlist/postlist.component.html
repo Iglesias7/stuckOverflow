@@ -33,12 +33,12 @@
 </mat-accordion>
 
 <div class=" card-container" 
-     *ngFor="let question of posts" 
+     *ngFor="let question of dataSources.data" 
      style="margin-top: 20px; box-shadow: none;">
     <mat-card class="example-cad ecard">
         <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
-            <mat-card-subtitle style="text-align: center; color: darksalmon;">{{ question.hightVote }}<br> HightVote</mat-card-subtitle><br>
-            <mat-card-subtitle style="text-align: center; color: darkturquoise">{{ question.numResponse! || '&nbsp;' }}<br> answers
+            <mat-card-subtitle style="text-align: center; color: darksalmon;">{{ question.hightVote  }}<br> HightVote</mat-card-subtitle><br>
+            <mat-card-subtitle style="text-align: center; color: darkturquoise">{{ question.numResponse! || '0' }}<br> answers
             </mat-card-subtitle>
         </mat-card>
         <mat-card-header>
@@ -79,6 +79,10 @@
             </mat-card-header>
         </mat-card>
     </mat-card>
-    
 </div>
-<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<br>
+<mat-paginator  [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = OnPageChange($event)">
+</mat-paginator>

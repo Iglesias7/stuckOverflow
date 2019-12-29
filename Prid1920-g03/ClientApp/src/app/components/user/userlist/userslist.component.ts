@@ -51,14 +51,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
             this.dataSources.data = this.users.slice(0,3);
             this.length = this.users.length;
         });
-       // this.refresh();
+        this.refresh();
      }
 
     refresh() {
-        // this.userService.getAll().subscribe(users => {
-        //     this.users = users;
-        //     this.usersBackup = _.cloneDeep(users);
-        // });
         this.userService.getRefrechAllUsers();
     }
 

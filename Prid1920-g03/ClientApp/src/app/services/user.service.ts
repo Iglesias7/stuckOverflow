@@ -6,6 +6,8 @@ import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+
+  users: User[] = [];
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
   getAll() {
@@ -21,7 +23,11 @@ export class UserService {
     );
   }
 
-
+  public getRefrechAllUsers(){
+    this.getAll().subscribe(users => {
+      this.users = users;
+    });
+  }
 
   public update(m: User, id: number): Observable<boolean> {
     return this.http.put<User>(`${this.baseUrl}api/user/${id}`, m).pipe(

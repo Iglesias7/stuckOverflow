@@ -5,3 +5,42 @@
   .example-spacer {
     flex: 1 1 auto;
   }
+
+  .time{
+    color: orange; 
+    display: inline; 
+    bottom: 50px;
+  }
+
+  .title{
+    text-align: center; 
+    margin-left: 300px;
+  }
+
+  .toolbar{
+    background-color: orange; 
+    margin-top: 20px; 
+    margin-bottom: 50px;
+  }
+
+  .icon{
+    margin: 30px; 
+    color: orange; 
+    font-size: 50px; 
+    cursor: pointer;
+  }
+
+  .toolbar2{
+    background-color: darkkhaki; 
+    margin-top: 50px; 
+    margin-bottom: 50px;
+  }
+  .toolbar2 span{
+    text-align: center; 
+    margin-left: 300px;
+  }
+
+  .post{
+    background-color: skyblue; 
+    color: white;
+  }

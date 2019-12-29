@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '../components/home/home.component';
-import { UserCardComponent } from '../components/user/userlist/usersCard.component';
+import { UsersListComponent } from '../components/user/userlist/userslist.component';
 import { LoginComponent } from '../components/auth/login/login.component';
 import { SignupComponent } from '../components/auth/signup/signup.component';
 import { RestrictedComponent } from '../components/restricted/restricted.component';
@@ -14,7 +14,7 @@ import { PostListByTagComponent } from '../components/post/postlistbytag/postlis
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'users', component: UserCardComponent, canActivate: [AuthGuard] },
+  { path: 'users', component: UsersListComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent },
   { path: 'single-post/:id', component: SinglePostListComponent },
   {path: 'login', component: LoginComponent},

@@ -1,4 +1,4 @@
-<mat-toolbar style="background-color: skyblue; margin-top: 50px;">
+<mat-toolbar style="background-color: skyblue; margin-top: 50px;" >
     <mat-toolbar-row>
         <span style="text-align: center; margin-left: 300px;">All questions</span>
         <span class="example-spacer"></span>
@@ -32,7 +32,9 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<div class=" card-container" *ngFor="let question of posts" style="margin-top: 20px; box-shadow: none;">
+<div class=" card-container" 
+     *ngFor="let question of posts" 
+     style="margin-top: 20px; box-shadow: none;">
     <mat-card class="example-cad ecard">
         <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
             <mat-card-subtitle style="text-align: center; color: darksalmon;">{{ question.hightVote }}<br> HightVote</mat-card-subtitle><br>
@@ -42,27 +44,35 @@
         <mat-card-header>
             <mat-card-title><a class="nav-link text-dar" [routerLink]='["/single-post/"+question.id]'>{{ question.title || '&nbsp;' }}</a></mat-card-title>
             <mat-card-subtitle>
-                <div style="display: inline-block;position: inherit;" *ngFor="let tag of question.tags">
+                <div style="display: inline-block;position: inherit;" 
+                     *ngFor="let tag of question.tags">
                     <button  style="margin-right: 3px; border: none;  color: white; background-color: orange; position: inherit; border-radius: 25px;">{{ tag }}</button>
                 </div>
             </mat-card-subtitle>
         </mat-card-header>
-        <mat-card class="example-card" style="margin-left: 80%; box-shadow: none; position: inherit;">
+        <mat-card class="example-card" 
+                  style="margin-left: 80%; box-shadow: none; position: inherit;">
             <mat-card-subtitle>
                 <span mat-raised-button matTooltip="Date du post"
-                    matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip" style=" font-size: 10px; color: darkgreen"
-                    class="example-button">
+                     matTooltipClass="example-tooltip-red" 
+                     aria-label="Button that shows a red tooltip" 
+                     style=" font-size: 10px; color: darkgreen"
+                     class="example-button">
                     asked at {{question.timestamp | timeAgo}}
                 </span>
             </mat-card-subtitle>
             <mat-card-header>
-                <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
-                    [style.background-image]="'url(' + (question.user.picturePath || 'uploads/unknown-user.png') + ')'">
+                <div mat-card-avatar [style.background-size]="'cover'" 
+                     style="width: 25px; height: 25px;"
+                     [style.background-image]="'url(' + (question.user.picturePath || 'uploads/unknown-user.png') + ')'">
                 </div>
                 <mat-card-title style=" font-size: 10px">{{question.user.firstName!}}{{ '&nbsp;' }}{{question.user.lastName!}}</mat-card-title>
                 <mat-card-subtitle>
-                    <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
-                        aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
+                    <span mat-raised-button matTooltip="reputation score" 
+                          matTooltipClass="example-tooltip-red"
+                          aria-label="Button that shows a red tooltip" 
+                          style=" font-size: 10px" 
+                          class="example-button">
                         {{question.user.reputation }}
                     </span>
                 </mat-card-subtitle>

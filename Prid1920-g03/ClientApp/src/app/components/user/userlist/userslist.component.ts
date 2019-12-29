@@ -8,12 +8,12 @@ import { EditUserComponent } from '../edit-user/edit-user.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-    selector: 'app-userCard',
-    templateUrl: './usersCard.component.html',
-    styleUrls: ['./usersCard.component.css']
+    selector: 'app-userslist',
+    templateUrl: './userslist.component.html',
+    styleUrls: ['./userslist.component.css']
 })
 
-export class UserCardComponent implements AfterViewInit, OnDestroy {
+export class UsersListComponent implements AfterViewInit, OnDestroy {
     currentUser: User;
     users: User[] = [];
     usersBackup: User[] = [];
@@ -41,10 +41,11 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
     
     edit(user: User) {
         const dlg = this.dialog.open(EditUserComponent, { data: { user, isNew: false } });
+        const id = user.id;
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 _.assign(user, res);
-                this.userService.update(res, res.id).subscribe(res => {
+                this.userService.update(res, id).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
                         this.refresh();
@@ -58,7 +59,9 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
         const snackBarRef = this.snackBar.open(`User '${user.pseudo}' will be deleted`, 'Undo', { duration: 10000 });
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
-                this.userService.delete(user).subscribe();
+                this.userService.delete(user).subscribe(()=>{
+                    this.refresh();
+                });
         });
     }
 
@@ -70,6 +73,8 @@ export class UserCardComponent implements AfterViewInit, OnDestroy {
                 this.userService.add(res).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The member has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
+                        this.refresh();
+                    }else{
                         this.refresh();
                     }
                 });

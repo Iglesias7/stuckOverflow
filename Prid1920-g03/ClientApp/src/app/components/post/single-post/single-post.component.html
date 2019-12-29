@@ -1,23 +1,23 @@
-<mat-icon style="margin: 30px; color: orange; font-size: 50px; cursor: pointer;" [routerLink]='["/posts"]'>keyboard_return</mat-icon>
-<mat-toolbar style="background-color: orange; margin-top: 20px;  margin-bottom: 50px">
+<mat-icon class="icon" [routerLink]='["/posts"]'>keyboard_return</mat-icon>
+<mat-toolbar class="toolbar">
     <mat-toolbar-row>
-        <span style="text-align: center; margin-left: 300px;">{{ post?.title! }}</span>
+        <span class="title">{{ post?.title! }}</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
-<i style="color: orange; display: inline; margin-bottom: 50px;">asked at {{ post?.timestamp! | timeAgo }}</i>
+<i class="time">asked at {{ post?.timestamp! | timeAgo }}</i>
 
 <app-post-view [post] = "post" ></app-post-view>
 
-<mat-toolbar style="background-color: darkkhaki; margin-top: 50px; margin-bottom: 50px">
+<mat-toolbar class="toolbar2">
     <mat-toolbar-row>
-        <span style="text-align: center; margin-left: 300px;">{{ post?.numResponse }}{{ '&nbsp;' }} Answers for your</span>
+        <span >{{ post?.numResponse }}{{ '&nbsp;' }} Answers for your</span>
     </mat-toolbar-row>
 </mat-toolbar>
 
 <div class="card-container" *ngFor="let response of responses">
     <app-post-view [post] = "response"></app-post-view>
-    <mat-divider style=" margin: 30px; font-weight: bold;"></mat-divider>
+    <mat-divider></mat-divider>
 </div>
 
 <mat-toolbar style="background-color: skyblue;">
@@ -28,4 +28,4 @@
     </mat-toolbar-row>
 </mat-toolbar>
 <simplemde [(ngModel)]="responseBody"></simplemde>
-<button mat-raised-button style="background-color: skyblue; color: white;" (click)="reply()">Post Your Answer</button>
+<button mat-raised-button class="post" (click)="reply()">Post Your Answer</button>

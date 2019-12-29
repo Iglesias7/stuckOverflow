@@ -17,7 +17,7 @@ import { EditUserComponent } from '../components/user/edit-user/edit-user.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SetFocusDirective } from '../directives/setfocus.directive';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { UserCardComponent } from '../components/user/userlist/usersCard.component';
+import { UsersListComponent } from '../components/user/userlist/userslist.component';
 import { PostListComponent } from '../components/post/postlist/postlist.component';
 import { SinglePostListComponent } from '../components/post/single-post/single-post.component';
 import { PostViewComponent } from '../components/post/post-view/post-view.component';
@@ -43,7 +43,7 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     SignupComponent,
     SetFocusDirective,
     EditUserComponent,
-    UserCardComponent,
+    UsersListComponent,
     PostListComponent,
     SinglePostListComponent,
     TagListComponent,

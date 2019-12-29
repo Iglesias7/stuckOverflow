@@ -7,7 +7,6 @@ import { AppRoutes } from '../routing/app.routing';
 import { AppComponent } from '../components/app/app.component';
 import { JwtInterceptor } from '../interceptors/jwt.interceptor';
 import { NavMenuComponent } from '../components/nav-menu/nav-menu.component';
-import { MenuComponent } from '../components/nav-menu/menu.component';
 import { HomeComponent } from '../components/home/home.component';
 import { LoginComponent } from '../components/auth/login/login.component';
 import { SignupComponent } from '../components/auth/signup/signup.component';
@@ -37,7 +36,6 @@ import {TimeAgoPipe} from 'time-ago-pipe';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    MenuComponent,
     HomeComponent,
     LoginComponent,
     UnknownComponent,

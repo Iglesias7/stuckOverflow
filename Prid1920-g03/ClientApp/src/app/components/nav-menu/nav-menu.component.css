@@ -38,6 +38,19 @@ header{
   background-color: white;
 }
 
+.bg-border{
+  border-top: 7px solid orange;
+   width: 100%;
+}
+
+.ng-margin{
+  margin-right: 10px;
+}
+
+.ng-font{
+  font-weight: bolder;
+}
+
 .nav-link * {
   vertical-align: middle;
 }
@@ -61,7 +74,9 @@ header{
   font-weight: bolder;
 }
 
-
+.ng-pseudo{
+  color: orange;
+}
 
 .vertical-menu a {
   display: block;

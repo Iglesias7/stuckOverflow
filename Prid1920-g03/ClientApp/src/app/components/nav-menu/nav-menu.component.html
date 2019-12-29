@@ -1,47 +1,75 @@
 <header >
-  <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color border-bottom box-shadow mb-3' style="border-top: 7px solid orange; width: 100%;">
-      <div>
-        <button mat-button [matMenuTriggerFor]="menu" (click) = "readonly = !readonly"><mat-icon>{{ readonly ? " close " : " menu "}}</mat-icon></button>
-        <mat-menu #menu="matMenu">
-          <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/"]' [routerLinkActive]='["link-activee"]' [routerLinkActiveOptions]='{ exact: true }' class="bt-menu"><mat-icon class="bt-menu-i">home</mat-icon>Home</button>
-          <h4 style="color: orange">Public</h4>
-          <button (click) = "readonly = !readonly"  mat-menu-item [routerLink]='["/posts"]' [routerLinkActive]='["link-activee"]' class="bt-menu"><mat-icon class="bt-menu-i">public</mat-icon> Stuck overflow</button>
-          <button *ngIf="currentUser && isAdmin" (click) = "readonly = !readonly"  [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
-          <button   [routerLinkActive]='["link-activee"]' class="bt-menu" mat-menu-item [routerLink]='["/tags"]'><mat-icon class="bt-menu-i">list_alt</mat-icon> Tags</button>
-        </mat-menu>
-      </div>
-      <img style="margin-right: 10px;" src="assets/pictures/logo.PNG" width="35"/>
-      <a class="navbar-brand text-dar" [routerLink]='["/"]'>Stuck <span style="font-weight: bolder;">overflow</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-        aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="navbar-collapse collapse d-sm-inline-flex" [ngClass]='{"show": isExpanded}'>
-          <ul class="navbar-nav flex-grow mr-auto">
-             
-            </ul>
-        <ul class="navbar-nav">
-          <li class="nav-ite" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
-            <a class="nav-link text-dar" [routerLink]='["/login"]'>
-              <span [routerLinkActive]='["link-active"]' class="material-icons">exit_to_app</span>
-              <span [routerLinkActive]='["link-active"]'> Login </span>
-            </a>
-          </li>
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
-            <a class="nav-link text-dar" [routerLink]='["/signup"]'>
-              <span [routerLinkActive]='["link-active"]'><mat-icon>person_add</mat-icon></span>
-              <span [routerLinkActive]='["link-active"]'> SignUp </span>
-            </a>
-          </li>
-          <div mat-card-avatar [style.background-size]="'cover'"  *ngIf="currentUser" [style.background-image]="'url(' + (authenticationService.currentUser.picturePath || 'uploads/unknown-user.jpg') + ')'"></div>
-            <span  *ngIf="currentUser" class="nav-link text-dar" style="color: orange">{{authenticationService.currentUser.pseudo}}</span>
-          <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="currentUser">
-            <a class="nav-link text-dark" [routerLink]='' (click)='logout()'>
-              <span class="material-icons">power_settings_new</span>
-              <span> Logout </span>
-            </a>
-          </li>
-        </ul>
-      </div>
-  </nav>
-</header>
+    <nav class='navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-color bg-border border-bottom box-shadow mb-3'>
+        <div>
+          <button   mat-button [matMenuTriggerFor]="menu" 
+                    (click) = "readonly = !readonly"><mat-icon>{{ readonly ? " close " : " menu "}}</mat-icon></button>
+          <mat-menu #menu="matMenu">
+            <button (click) = "readonly = !readonly"  
+                    mat-menu-item [routerLink]='["/"]' 
+                    [routerLinkActive]='["link-activee"]' 
+                    [routerLinkActiveOptions]='{ exact: true }' class="bt-menu"><mat-icon class="bt-menu-i">home</mat-icon>Home</button>
+            <h4 style="color: orange">Public</h4>
+            <button (click) = "readonly = !readonly"  
+                    mat-menu-item [routerLink]='["/posts"]' 
+                    [routerLinkActive]='["link-activee"]' 
+                    class="bt-menu"><mat-icon class="bt-menu-i">public</mat-icon> Stuck overflow</button>
+            <button *ngIf="currentUser && isAdmin" 
+                    (click) = "readonly = !readonly"  
+                    [routerLinkActive]='["link-activee"]' 
+                    class="bt-menu" 
+                    mat-menu-item 
+                    [routerLink]='["/users"]'><mat-icon class="bt-menu-i">group</mat-icon> Users</button>
+            <button (click) = "readonly = !readonly" 
+                    [routerLinkActive]='["link-activee"]' 
+                    class="bt-menu" 
+                    mat-menu-item 
+                    [routerLink]='["/tags"]'><mat-icon class="bt-menu-i">list_alt</mat-icon> Tags</button>
+          </mat-menu>
+        </div>
+
+        <img class="ng-margin" src="assets/pictures/logo.PNG" width="35"/>
+        <a class="navbar-brand text-dar" [routerLink]='["/"]'>Stuck <span class="ng-font">overflow</span></a>
+
+        <button class="navbar-toggler" 
+                type="button" 
+                data-toggle="collapse" 
+                data-target=".navbar-collapse"
+                aria-label="Toggle navigation"
+                [attr.aria-expanded]="isExpanded" (click)="toggle()">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex" [ngClass]='{"show": isExpanded}'>
+          <ul class="navbar-nav flex-grow mr-auto"></ul>
+          <ul class="navbar-nav">
+            <li class="nav-ite" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
+              <a class="nav-link text-dar" [routerLink]='["/login"]'>
+                <span [routerLinkActive]='["link-active"]' class="material-icons">exit_to_app</span>
+                <span [routerLinkActive]='["link-active"]'> Login </span>
+              </a>
+            </li>
+            <li class="nav-item" [routerLinkActive]='["link-active"]' *ngIf="!currentUser">
+              <a class="nav-link text-dar" [routerLink]='["/signup"]'>
+                <span [routerLinkActive]='["link-active"]'><mat-icon>person_add</mat-icon></span>
+                <span [routerLinkActive]='["link-active"]'> SignUp </span>
+              </a>
+            </li>
+            <div mat-card-avatar 
+                [style.background-size]="'cover'"  
+                *ngIf="currentUser" 
+                [style.background-image]="'url(' + (authenticationService.currentUser.picturePath || 'uploads/unknown-user.jpg') + ')'"></div>
+              <span *ngIf="currentUser" 
+                    class="nav-link text-dar ng-pseudo">{{authenticationService.currentUser.pseudo}}</span>
+            <li class="nav-item" 
+                [routerLinkActive]='["link-active"]' 
+                *ngIf="currentUser">
+              <a class="nav-link text-dark" 
+                 [routerLink]='' 
+                 (click)='logout()'>
+                <span class="material-icons">power_settings_new</span>
+                <span> Logout </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+  </header>

@@ -3,10 +3,12 @@
     <mat-tab-group mat-stretch-tabs dynamicHeight>
         <mat-tab *ngIf = "isQuestion" label="Title">
             <div class="form">
-                <mat-form-field > 
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Title</mat-label>
                     <input matInput placeholder="Title" [formControl]="ctlTitle" appSetFocus required>
                     <mat-error  class="field-error" *ngIf="isQuestion && ctlTitle.hasError('required')">Required</mat-error>
-                </mat-form-field>
+                    <mat-icon matSuffix>create</mat-icon>
+                  </mat-form-field>
                 <simplemde [formControl]="ctlBody" ></simplemde>
             </div>
         </mat-tab>

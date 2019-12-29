@@ -1,9 +1,11 @@
 <form id="editCommentForm" class="form" [formGroup]="editCommentForm" novalidate>
         <h1 class="header">{{(!isNew ? 'Edit existing' : 'Add a new') + ' comment'}}</h1>
         <div class="form">
-            <mat-form-field>
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Your comment</mat-label>
                 <textarea matInput placeholder="Body" [formControl]="ctlBody" required></textarea>
                 <mat-error class="field-error" *ngIf="ctlBody.hasError('required')">Required</mat-error>
+                <mat-icon matSuffix>create</mat-icon>
             </mat-form-field>
         </div>
         

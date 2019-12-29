@@ -1,7 +1,11 @@
 .form  {
     margin-top: 15px;
-    width: 100%;
-    text-align: center;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: auto;
+    grid-row-gap: 30px;
+    margin: 3px;
 }
 
 * {
@@ -13,18 +17,6 @@
     color: navy;
 }
 
-.bg-login{
+.bg-btn{
     text-align: center;
-}
-
-.bg-login button{
-    border: none;
-    background-color: navy;
-    color: white;
-}
-
-.bg-login button:hover{
-    background-color: darkgreen;
-    color: white;
-    cursor: pointer;
 }

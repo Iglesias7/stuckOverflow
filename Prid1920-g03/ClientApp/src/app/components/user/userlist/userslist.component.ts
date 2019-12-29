@@ -1,11 +1,13 @@
-import { Component, AfterViewInit, OnDestroy } from '@angular/core';
-import {MatDialog, MatSnackBar } from '@angular/material';
+import { Component, AfterViewInit, OnDestroy, ViewChild, OnInit } from '@angular/core';
+import {MatDialog, MatSnackBar, MatTableDataSource, MatPaginator, PageEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { User, Role } from '../../../models/user';
 import { UserService } from '../../../services/user.service';
-import { StateService } from 'src/app/services/state.service';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { MatTableState } from 'src/app/helpers/mattable.state';
+import { UserStateService } from 'src/app/services/userState.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-userslist',
@@ -13,30 +15,56 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
     styleUrls: ['./userslist.component.css']
 })
 
-export class UsersListComponent implements AfterViewInit, OnDestroy {
+export class UsersListComponent implements OnInit, OnDestroy {
+    
     currentUser: User;
     users: User[] = [];
     usersBackup: User[] = [];
-    filter: string;
+    userSubscription: Subscription;
+    
 
-    constructor(private userService: UserService,
-                private auth: AuthenticationService,
-                private stateService: StateService,
+    length: number = 0;
+    pageSize: number = 3;
+    pageSizeOptions: number[] = [3, 6, 9, 12];
+
+    dataSources: MatTableDataSource<User> = new MatTableDataSource();
+    dataSource : User[] = [];
+    filter: string;
+    state: MatTableState;
+
+    @ViewChild(MatPaginator, { static: false}) paginator: MatPaginator;
+
+    constructor(private auth: AuthenticationService,
+                private userService: UserService,
+                private stateService: UserStateService,
                 public dialog: MatDialog,
                 public snackBar: MatSnackBar
         ) {
             this.currentUser = this.auth.currentUser;
+            this.state = this.stateService.UserListState;
             }
 
-    ngAfterViewInit(): void {
-        this.refresh();
-    }
-
-    refresh() {
+     ngOnInit() {
         this.userService.getAll().subscribe(users => {
             this.users = users;
             this.usersBackup = _.cloneDeep(users);
+            this.dataSources.data = this.users.slice(0,3);
+            this.length = this.users.length;
         });
+        this.refresh();
+     }
+
+    refresh() {
+        this.userService.getRefrechAllUsers();
+    }
+
+    onPageChange(event: PageEvent){
+        let startIndex = event.pageIndex * event.pageSize;
+        let endIndex = startIndex + event.pageSize;
+        if(endIndex > this.length){
+            endIndex = this.length;
+        }
+        this.dataSources.data = this.users.slice(startIndex, endIndex);
     }
     
     edit(user: User) {

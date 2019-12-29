@@ -8,13 +8,17 @@
     margin: 3px;
 }
 
+.form mat-form-field{
+    width: 100%;
+}
+
 * {
     box-sizing: border-box;
 }
 
 .header{
     text-align: center;
-    color: navy;
+    color: orange;
 }
 
 .bg-btn{

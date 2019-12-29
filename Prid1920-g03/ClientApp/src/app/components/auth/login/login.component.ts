@@ -5,8 +5,8 @@ import { AuthenticationService } from '../../../services/authentication.service'
 
 
 @Component({
-    templateUrl: 'login.component.html',
-    styleUrls: ['login.component.css']
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css']
 })
 
 

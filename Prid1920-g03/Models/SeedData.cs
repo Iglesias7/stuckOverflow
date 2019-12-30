@@ -18,7 +18,28 @@ namespace Prid1920_g03.Models {
                                 new User { Id = 2, Pseudo = "bruno", Password = TokenHelper.GetPasswordHash("bruno"), LastName = "Lacroix", FirstName = "Bruno", Email = "bruno@test.com" },
                                 new User { Id = 3, Pseudo = "admin", Password = TokenHelper.GetPasswordHash("admin"), LastName = "Administrator", FirstName = "Administrator", Email = "admin@test.com", Role = Role.Admin },
                                 new User { Id = 4, Pseudo = "boris", Password = TokenHelper.GetPasswordHash("boris"), LastName = "Verhaegen", FirstName = "Boris", Email = "boris@test.com", Role = Role.Admin },
-                                new User { Id = 5, Pseudo = "alain", Password = TokenHelper.GetPasswordHash("alain"), LastName = "Silovy", FirstName = "Alain", Email = "alain@test.com" }
+                                new User { Id = 5, Pseudo = "alain", Password = TokenHelper.GetPasswordHash("alain"), LastName = "Silovy", FirstName = "Alain", Email = "alain@test.com" },
+                                new User { Id = 6, Pseudo = "mathias", Password = TokenHelper.GetPasswordHash("mathias"), LastName = "Leroux", FirstName = "Mathias", Email = "mathias@test.com" },
+                                new User { Id = 8, Pseudo = "benjamin", Password = TokenHelper.GetPasswordHash("benjamin"), LastName = "Duboix", FirstName = "Benjamin", Email = "benjamin@test.com" },
+                                 new User { Id = 9, Pseudo = "doris", Password = TokenHelper.GetPasswordHash("doris"), LastName = "Doris", FirstName = "Bomon", Email = "doris@test.com" },
+                                  new User { Id = 10, Pseudo = "krys", Password = TokenHelper.GetPasswordHash("krys"), LastName = "Krys", FirstName = "Garcia", Email = "krys@test.com" },
+                                   new User { Id = 11, Pseudo = "julien", Password = TokenHelper.GetPasswordHash("julien"), LastName = "Couris", FirstName = "Julien", Email = "julien@test.com" },
+                                    new User { Id = 12, Pseudo = "nathan", Password = TokenHelper.GetPasswordHash("nathan"), LastName = "Dunoy", FirstName = "Nathan", Email = "nathan@test.com" },
+                                     new User { Id = 13, Pseudo = "cyryl", Password = TokenHelper.GetPasswordHash("cyryl"), LastName = "Hannou", FirstName = "Cyryl", Email = "cyril@test.com" },
+                                      new User { Id = 14, Pseudo = "jhon", Password = TokenHelper.GetPasswordHash("jhon"), LastName = "Cadim", FirstName = "Jhon", Email = "jhon@test.com" },
+                                       new User { Id = 15, Pseudo = "thomas", Password = TokenHelper.GetPasswordHash("thomas"), LastName = "Kadim", FirstName = "Thomas", Email = "thomas@test.com" },
+                                       new User { Id = 16, Pseudo = "vasilly", Password = TokenHelper.GetPasswordHash("vasilly"), LastName = "Manoux", FirstName = "Vasilly", Email = "vasilly@test.com" },
+                                        new User { Id = 17, Pseudo = "ken", Password = TokenHelper.GetPasswordHash("ken"), LastName = "Alan", FirstName = "Ken", Email = "ken@test.com" },
+                                         new User { Id = 18, Pseudo = "dan", Password = TokenHelper.GetPasswordHash("dan"), LastName = "Doni", FirstName = "Dan", Email = "dan@test.com" },
+                                          new User { Id = 19, Pseudo = "tess", Password = TokenHelper.GetPasswordHash("tess"), LastName = "Masimiliam", FirstName = "Tess", Email = "tess@test.com" },
+                                           new User { Id = 20, Pseudo = "pan", Password = TokenHelper.GetPasswordHash("pan"), LastName = "Dulmin", FirstName = "Pan", Email = "pan@test.com" },
+                                            new User { Id = 21, Pseudo = "manon", Password = TokenHelper.GetPasswordHash("manon"), LastName = "Dekou", FirstName = "Manon", Email = "manon@test.com" },
+                                             new User { Id = 22, Pseudo = "adoum", Password = TokenHelper.GetPasswordHash("adoum"), LastName = "Kandou", FirstName = "Adoum", Email = "adoum@test.com" },
+                                              new User { Id = 23, Pseudo = "aladin", Password = TokenHelper.GetPasswordHash("aladin"), LastName = "Alibaba", FirstName = "Aladin", Email = "aladin@test.com" }
+
+
+
+
                             );
                             context.SaveChanges();
                         }
@@ -291,7 +312,22 @@ After posting this I tried @Gh0sT 's solution and it worked, so I guess there is
                                 new Tag() { Id = 3, Name = "csharp" },
                                 new Tag() { Id = 4, Name = "EntityFramework Core" },
                                 new Tag() { Id = 5, Name = "dotnet core" },
-                                new Tag() { Id = 6, Name = "mysql" }
+                                new Tag() { Id = 6, Name = "mysql" },
+                                new Tag() { Id = 7, Name = "javascript" },
+                                new Tag() { Id = 8, Name = "java" },
+                                new Tag() { Id = 9, Name = "php" },
+                                new Tag() { Id = 10, Name = "python" },
+                                new Tag() { Id = 11, Name = "android" },
+                                new Tag() { Id = 12, Name = "jquery" },
+                                new Tag() { Id = 13, Name = "html" },
+                                new Tag() { Id = 14, Name = "c++" },
+                                new Tag() { Id = 15, Name = "ios" },
+                                new Tag() { Id = 16, Name = "css" },
+                                new Tag() { Id = 17, Name = "reactjs" },
+                                new Tag() { Id = 18, Name = "wordpress" },
+                                new Tag() { Id = 19, Name = "windows" },
+                                new Tag() { Id = 20, Name = "spring" }
+
                             );
                             context.SaveChanges();
                         }

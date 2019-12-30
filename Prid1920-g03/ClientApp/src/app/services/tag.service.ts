@@ -42,10 +42,8 @@ export class TagService {
         );  
     }
 
-    getTagByName(name: string) {
-        return this.http.get<Tag[]>(`${this.baseUrl}api/tag/getTagByName/${name}`).pipe(
-            map(res => res.map(m => new Tag(m)))
-        );
+    getTagByName(name: string): Observable<boolean> {
+        return this.http.get<boolean>(`${this.baseUrl}api/tag/getTagByName/${name}`);
     }
 
     public update(tg: Tag, id: number): Observable<boolean>{

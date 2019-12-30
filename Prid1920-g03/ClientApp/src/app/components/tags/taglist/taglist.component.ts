@@ -65,8 +65,10 @@ export class TagListComponent implements AfterViewInit {
         const snackBarRef = this.snackBar.open(`Tag '${tag.name}' will be deleted`, 'Undo', { duration: 10000 });
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
-                this.tagService.delete(tag).subscribe();
-                this.refresh();
+                this.tagService.delete(tag).subscribe(()=>{
+                    this.refresh();
+                });
+                
         });
     }
 

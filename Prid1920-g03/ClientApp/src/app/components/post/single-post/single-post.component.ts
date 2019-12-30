@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar, MatTableDataSource, PageEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -27,6 +27,11 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     responses: Post[];
     responsesSubsription: Subscription;
 
+    length: number = 0;
+    pageSize: number = 2;
+    pageSizeOptions: number[] = [2, 4, 6, 8];
+    dataSource: MatTableDataSource<Post> = new MatTableDataSource();
+
     constructor(private auth: AuthenticationService, 
                 private postService: PostService,
                 private route: ActivatedRoute,
@@ -42,8 +47,19 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
         });
         this.responsesSubsription = this.postService.responsesSubject.subscribe(responses => {
             this.responses = responses;
+            this.dataSource.data = responses.slice(0,2);
+            this.length = responses.length;
         });
         this.refrech();
+    }
+
+    onPageChange(event: PageEvent){
+        let startIndex = event.pageIndex * event.pageSize;
+        let endIndex = startIndex + event.pageSize;
+        if(endIndex > this.length){
+            endIndex = this.length;
+        }
+        this.dataSource.data = this.responses.slice(startIndex, endIndex);
     }
 
     public refrech(){
@@ -70,8 +86,9 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
         this.responseBody = "";
     }
 
-    public ngOnDestroy(){
+    public ngOnDestroy(): void {
         this.postSubsription.unsubscribe();
         this.responsesSubsription.unsubscribe();
+        this.snackBar.dismiss();
     }
 }

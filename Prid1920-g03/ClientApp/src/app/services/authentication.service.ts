@@ -40,7 +40,7 @@ export class AuthenticationService {
       );
     }
 
-    public signup(pseudo: string, password: string, email: string,firstname: string, lastname: string, birthdate: string): Observable<User>{
+    public signup(pseudo: string, password: string, email: string, firstname: string, lastname: string, birthdate: string): Observable<User>{
       return this.http.post<User>(`${this.baseUrl}api/user/signup`, { pseudo: pseudo, password: password, email: email, firstName: firstname, lastName: lastname, reputation: 0, birthDate: birthdate}).pipe(
         flatMap(res => this.login(pseudo, password))
       );

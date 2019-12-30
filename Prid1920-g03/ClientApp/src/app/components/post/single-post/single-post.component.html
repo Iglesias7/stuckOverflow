@@ -7,7 +7,7 @@
 
 <i class="time">asked at {{ post?.timestamp! | timeAgo }}</i>
 
-<app-post-view [post] = "post" ></app-post-view>
+<app-post-view [post] = "post"></app-post-view>
 
 <mat-toolbar class="toolbar2">
     <mat-toolbar-row>
@@ -15,10 +15,13 @@
     </mat-toolbar-row>
 </mat-toolbar>
 
-<div class="card-container" *ngFor="let response of responses">
+<div class="card-container" *ngFor="let response of dataSource.data">
     <app-post-view [post] = "response"></app-post-view>
     <mat-divider></mat-divider>
-</div>
+</div><br>
+<div class="row mt-3">
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = onPageChange($event)"></mat-paginator>
+</div><br>
 
 <mat-toolbar style="background-color: skyblue;">
     <mat-toolbar-row>

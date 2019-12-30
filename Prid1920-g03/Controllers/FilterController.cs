@@ -60,7 +60,7 @@ namespace Prid1920_g03.Controllers
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnanswered (string filter = "") {
 
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (from r in p.Responses where r.AcceptedAnswerId == null select r).Count() == (from r in p.Responses select r).Count()
+                        where p.Title != (null) && p.AcceptedAnswerId == null 
                          && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)) 
                         orderby p.Timestamp descending
                         select p;

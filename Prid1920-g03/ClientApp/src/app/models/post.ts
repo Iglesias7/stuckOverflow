@@ -19,7 +19,7 @@ import { Vote } from "./vote";
       voteState: number;
       hightVote: number;
       
-      comments: (string | Comment)[];
+      comments: Comment[];
       responses: (string | Post)[];
       tags: string[];
       votes: Vote[];

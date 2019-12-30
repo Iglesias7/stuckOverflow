@@ -123,11 +123,9 @@ export class SignupComponent {
 
 
     signup() {
-        this.loading = true;
-        this.authenticationService.signup(this.ctlPseudo.value, this.ctlPassword.value, this.ctlFirstName.value, this.ctlLastName.value, this.ctlEmail.value, this.ctlBirthDate.value).subscribe(() => {
+        this.authenticationService.signup(this.ctlPseudo.value, this.ctlPassword.value, this.ctlEmail.value, this.ctlFirstName.value, this.ctlLastName.value, this.ctlBirthDate.value).subscribe(() => {
             if (this.authenticationService.currentUser) {
-                // Redirect the user
-                this.router.navigate(['/']);
+                this.router.navigate(['/posts']);
             }
         });
     }

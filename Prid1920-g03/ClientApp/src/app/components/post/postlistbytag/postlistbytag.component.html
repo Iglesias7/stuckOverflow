@@ -32,7 +32,7 @@
     </mat-expansion-panel>
 </mat-accordion>
 
-<div class=" card-container" *ngFor="let question of posts" style="margin-top: 20px; box-shadow: none;">
+<div class=" card-container" *ngFor="let question of dataSources.data" style="margin-top: 20px; box-shadow: none;">
     <mat-card class="example-cad ecard">
         <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
             <mat-card-subtitle style="text-align: center;">
@@ -62,7 +62,7 @@
                 <div mat-card-avatar [style.background-size]="'cover'" style="width: 25px; height: 25px;"
                     [style.background-image]="'url(' + (question?.postUser?.picturePath || 'uploads/unknown-user.png') + ')'">
                 </div>
-                <mat-card-title style=" font-size: 10px">{{question.postUser?.firstName!}}{{ '&nbsp;' }}{{question.postUser?.lastName!}}</mat-card-title>
+                <mat-card-title style=" font-size: 10px">{{question.postUser?.pseudo!}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" matTooltipClass="example-tooltip-red"
                         aria-label="Button that shows a red tooltip" style=" font-size: 10px" class="example-button">
@@ -73,3 +73,9 @@
         </mat-card>
     </mat-card>
 </div>
+<br>
+<mat-paginator  [length]="length"
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = OnPageChange($event)">
+</mat-paginator>

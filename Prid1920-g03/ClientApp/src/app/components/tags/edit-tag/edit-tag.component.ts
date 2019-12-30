@@ -27,7 +27,7 @@ export class EditTagComponent {
         private formbuilder: FormBuilder,
         private tagService: TagService
         ){
-            this.ctlTagName = this.formbuilder.control('', [this.tagAlreadyExist]);
+            this.ctlTagName = this.formbuilder.control('', [Validators.required], [this.tagAlreadyExist()]);
             this.editForm = this.formbuilder.group({
                 name: this.ctlTagName
             });
@@ -47,7 +47,7 @@ export class EditTagComponent {
                         resolve(null);
                     } else{
                         this.tagService.getTagByName(name).subscribe(tag => {
-                            resolve(!(tag) ? { tagUsed: true } : null);
+                            resolve(tag ? null : { tagUsed: true } );
                         });
                     }
                 }, 300);

@@ -18,12 +18,28 @@
                     <mat-error class="field-error" *ngIf="ctlPassword.hasError('minlength')">Minimum length is
                         {{ctlPassword.errors['minlength'].requiredLength}}</mat-error>
                 </mat-form-field>
+                
                 <mat-form-field>
-                    <input matInput placeholder="FirstName" [formControl]="ctlFirstName">
+                    <input matInput placeholder="Firstname" [formControl]="ctlFirstName" >
+                    <mat-error class="field-error" *ngIf="ctlFirstName.hasError('minlength')">Minimum length is
+                        {{ctlFirstName.errors['minlength'].requiredLength}}</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlFirstName.hasError('maxlength')">Maximum length is
+                            {{ctlFirstName.errors['maxlength'].requiredLength}}</mat-error>
                 </mat-form-field>
+                <div *ngIf="editForm.errors">
+                    <mat-error class="float-left" *ngIf="editForm.hasError('firstNameRequired')">firstname is required</mat-error><br>
+                </div>
+
                 <mat-form-field>
-                    <input matInput placeholder="LastName" [formControl]="ctlLastName">
+                    <input matInput placeholder="Lastname" [formControl]="ctlLastName" >
+                    <mat-error class="field-error" *ngIf="ctlLastName.hasError('minlength')">Minimum length is
+                        {{ctlLastName.errors['minlength'].requiredLength}}</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlLastName.hasError('maxlength')">Maximum length is
+                        {{ctlLastName.errors['maxlength'].requiredLength}}</mat-error>
                 </mat-form-field>
+                <div *ngIf="editForm.errors">
+                    <mat-error class="float-left" *ngIf="editForm.hasError('lastNameRequired')">lastname is required</mat-error><br>
+                </div>
                 
             </div>
         </mat-tab>
@@ -61,8 +77,8 @@
     </mat-tab-group>
     <div class="footer">
         <button type="submit" mat-button form="editForm"
-            [disabled]="editForm.pristine || editForm.invalid || editForm.pending"
-            (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
+                [disabled]="editForm.invalid"
+                (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
         <button type="reset" mat-button (click)="cancel()">Cancel</button>
     </div>
 </form>

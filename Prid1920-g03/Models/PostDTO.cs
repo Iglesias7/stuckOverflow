@@ -16,7 +16,7 @@ namespace Prid1920_g03.Models
         public int AuthorId { get; set; }
         public int? ParentId { get; set; }
 
-        public UserDTO User { get; set; }
+        public PostUser User { get; set; }
         public PostDTO PostParent { get; set; }
         public int NumResponse { get; set; }
         public int NumVote { get; set; }

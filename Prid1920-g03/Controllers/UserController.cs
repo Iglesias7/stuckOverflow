@@ -61,7 +61,9 @@ namespace Prid1920_g03.Controllers
                 return BadRequest(err);
             }
 
-            if(!User.IsInRole(Role.Admin.ToString()))
+            var currentUser = await _context.Users.SingleOrDefaultAsync(u => u.Pseudo == User.Identity.Name);
+
+            if(currentUser != null && !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
 
             var newUser = new User()

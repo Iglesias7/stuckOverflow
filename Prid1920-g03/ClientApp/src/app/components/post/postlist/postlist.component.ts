@@ -29,7 +29,6 @@ export class PostListComponent implements OnInit, OnDestroy {
     pageSizeOptions: number[] = [3, 6, 9, 12];
 
     dataSources: MatTableDataSource<Post> = new MatTableDataSource();
-    dataSource: Post[]= [];
     filter: string;
     state: MatListPostState;
 
@@ -99,6 +98,7 @@ export class PostListComponent implements OnInit, OnDestroy {
             const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
+        this.dataSources.data = this.posts.slice(0, 3);
     }
 
     public addQuestion() {

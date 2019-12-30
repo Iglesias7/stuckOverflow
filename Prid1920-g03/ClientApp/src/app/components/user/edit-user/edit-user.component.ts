@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Inject } from '@angular/core';
 import { UserService } from '../../../services/user.service';
-import { FormGroup, FormControl, AsyncValidatorFn } from '@angular/forms';
+import { FormGroup, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import * as _ from 'lodash';
@@ -41,8 +41,8 @@ export class EditUserComponent implements OnDestroy {
     ) {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', data.isNew ? [Validators.required, Validators.minLength(3)] : []);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlLastName = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlLastName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
         this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
         if(!this.ctlBirthDate){
@@ -59,7 +59,7 @@ export class EditUserComponent implements OnDestroy {
             email: this.ctlEmail,
             birthDate: this.ctlBirthDate,
             role: this.ctlRole
-        });
+        }, { validator: this.validateName});
 
         this.isNew = data.isNew;
         this.editForm.patchValue(data.user);
@@ -120,6 +120,17 @@ export class EditUserComponent implements OnDestroy {
         };
     }
 
+    validateName(group: FormGroup) : ValidationErrors {
+        if(!group.value) {return null;}
+        let firstname: string = group.value.firstName;
+        let lastname: string = group.value.lastName;
+        if(lastname === "" && firstname !== "")
+            return {lastNameRequired: true};
+
+        if(lastname !== "" && firstname === "")
+            return {firstNameRequired: true};
+
+    }
 
     public update() {
         const data = this.editForm.value;

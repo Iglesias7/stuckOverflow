@@ -120,5 +120,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
             const str = (m.pseudo + ' ' + m.firstName).toLowerCase();
             return str.includes(lFilter);
         });
+        this.dataSources.data = this.users.slice(0,3);
     }
 }

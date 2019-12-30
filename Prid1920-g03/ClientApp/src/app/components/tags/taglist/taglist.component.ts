@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from "@angular/core"
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from "@angular/core"
 import * as _ from 'lodash';
 import { Tag } from "src/app/models/tag";
 import { TagService } from "src/app/services/tag.service";
 import { UserService } from "src/app/services/user.service";
 import { StatementVisitor } from "@angular/compiler";
-import { StateService } from "src/app/services/state.service";
-import { MatDialog, MatSnackBar } from "@angular/material";
+import { MatDialog, MatSnackBar, MatTableDataSource, MatPaginator, PageEvent } from "@angular/material";
 import { EditTagComponent } from "../edit-tag/edit-tag.component";
 import { AuthenticationService } from "src/app/services/authentication.service";
 import { Role } from "src/app/models/user";
+import { Subscription } from "rxjs";
+import { MatTableState } from "src/app/helpers/mattable.state";
+import { TagStateService } from "src/app/services/tagState.service";
 
 
 @Component({
@@ -17,32 +19,55 @@ import { Role } from "src/app/models/user";
     styleUrls: ['./taglist.component.css'],
 })
 
-export class TagListComponent implements AfterViewInit {
+export class TagListComponent implements OnInit, OnDestroy {
     
-    ngAfterViewInit(): void {
-        this.refresh();
-    }
     
+        
     tags: Tag[] = [];
     tagsBackup: Tag[] = [];
+    tagSubscription: Subscription;
 
+    length: number = 0;
+    pageSize: number = 3;
+    pageSizeOptions: number[] = [3, 6, 9, 12];
+
+    dataSources: MatTableDataSource<Tag> = new MatTableDataSource();
+    dataSource: Tag[] = [];
     filter: string;
-   
-    constructor(private tagService: TagService, private userService: UserService,
-        private stateService: StateService,
+    state: MatTableState;
+
+    @ViewChild(MatPaginator, { static: false}) paginator: MatPaginator;
+
+    constructor(private tagService: TagService, 
+        private userService: UserService,
+        private stateService: TagStateService,
         public dialog: MatDialog,
         public snackBar: MatSnackBar,
         public auth: AuthenticationService
-        ){}
+        ){
+            this.state = this.stateService.TagListState;
+    }
 
-    refresh() {
+    ngOnInit(): void {
         this.tagService.getAllTags().subscribe(tags => {
             this.tags = tags;
-            tags.forEach(element => {
-               console.log(element.body); 
-            });
             this.tagsBackup = _.cloneDeep(tags);
-        });
+            this.dataSources.data = this.tags.slice(0,3);
+            this.length = this.tags.length;
+        }); 
+        this.refresh();
+    }
+
+    refresh() {
+        this.tagService.getRefreshAllTags();
+    }
+    onPageChange(event: PageEvent){
+        let startIndex = event.pageIndex * event.pageSize;
+        let endIndex = startIndex + event.pageSize;
+        if(endIndex > this.length){
+            endIndex = this.length;
+        }
+        this.dataSources.data = this.tags.slice(startIndex, endIndex);
     }
 
     edit(tag: Tag) {
@@ -92,6 +117,7 @@ export class TagListComponent implements AfterViewInit {
             const str = (tg.name).toLowerCase();
             return str.includes(lFilter);
         });
+        this.dataSources.data = this.tags.slice(0,3);
     }
 
     get currentUser() {
@@ -107,10 +133,9 @@ export class TagListComponent implements AfterViewInit {
     popularfilter(){
         this.tagService.getByNbPosts().subscribe(tags => {
             this.tags = tags;
-            tags.forEach(element => {
-               console.log(element.body); 
-            });
             this.tagsBackup = _.cloneDeep(tags);
+            this.dataSources.data = this.tags;
+
         });
     }
 
@@ -123,10 +148,12 @@ export class TagListComponent implements AfterViewInit {
     newfilter(){
         this.tagService.getByTimestamp().subscribe(tags => {
             this.tags = tags;
-            tags.forEach(element => {
-               console.log(element.body); 
-            });
             this.tagsBackup = _.cloneDeep(tags);
+            this.dataSources.data = this.tags;
         });
+    }
+
+    ngOnDestroy(): void {
+        this.snackBar.dismiss();
     }
 }

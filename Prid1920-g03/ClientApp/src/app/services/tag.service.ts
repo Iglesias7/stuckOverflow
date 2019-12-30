@@ -58,6 +58,13 @@ export class TagService {
         );
     }
 
+    public getRefreshAllTags(){
+        this.getAllTags().subscribe(tags => {
+            this.tags = tags;
+        });
+    }
+
+
     public delete(tg: Tag): Observable<boolean> {
         return this.http.delete<boolean>(`${this.baseUrl}api/tag/${tg.id}`).pipe(
           map(res => true),

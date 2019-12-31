@@ -43,6 +43,14 @@ namespace Prid1920_g03.Controllers
             return  (await tags.ToListAsync()).ToDTO();
         }
         
+        [HttpGet("getbyname")]
+        public async Task<ActionResult<IEnumerable<TagDTO>>> GetByName(){
+            var tags = from tg in model.Tags
+            orderby tg.Name ascending
+            select tg;
+            return  (await tags.ToListAsync()).ToDTO();
+        }
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<TagDTO>> GetOne(int id)
         {

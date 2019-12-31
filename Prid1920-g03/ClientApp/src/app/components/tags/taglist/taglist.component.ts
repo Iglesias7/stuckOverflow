@@ -144,7 +144,11 @@ export class TagListComponent implements OnInit, OnDestroy {
 
 
     namefilter(){
-        this.refresh();
+        this.tagService.getByName().subscribe(tags => {
+            this.tags = tags;
+            this.tagsBackup = _.cloneDeep(tags);
+            this.dataSources.data = this.tags;
+        })
     }
 
     newfilter(){

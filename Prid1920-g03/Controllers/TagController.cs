@@ -38,7 +38,7 @@ namespace Prid1920_g03.Controllers
         [HttpGet("getbytimestamp")]
         public async Task<ActionResult<IEnumerable<TagDTO>>> GetByTimestamp(){
             var tags = from tg in model.Tags
-            orderby tg.Timestamp.Year descending
+            orderby tg.Timestamp descending
             select tg;
             return  (await tags.ToListAsync()).ToDTO();
         }

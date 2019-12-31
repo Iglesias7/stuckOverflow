@@ -41,6 +41,9 @@
         <mat-card-content class="card-content" >
             Tagged on {{tag.nbXPosts}} posts
         </mat-card-content>
+        <mat-card-content class="card-content">
+            Created on {{tag.timestamp}}
+        </mat-card-content>
          <mat-card-actions> 
             <button mat-icon-button>
                 <mat-icon *ngIf="currentUser && isAdmin" style="color: green" (click)="edit(tag)">edit</mat-icon>

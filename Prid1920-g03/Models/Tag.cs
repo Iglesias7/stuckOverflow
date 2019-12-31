@@ -100,23 +100,65 @@ namespace Prid1920_g03.Models {
         {
             var date = new DateTime();
             if(Name == "angular"){
-                date = new DateTime(2019,4,18,9,0,0);
+                date = new DateTime(2019,4,18);
             }
             else if(Name == "typescript"){
-                date = new DateTime(2019,7,28,15,35,30);
+                date = new DateTime(1994,7,28);
             }
             else if(Name == "csharp"){
-                date = new DateTime(2019,9,20,11,45,20);
+                date = new DateTime(1993,9,20);
 
             }
             else if(Name == "EntityFramework Core"){
-                date = new DateTime(2019,5,15,19,55,11);
+                date = new DateTime(1995,5,15);
             }
             else if(Name == "dotnet core"){
-                date = new DateTime(2019,11,30,6,0,0);
+                date = new DateTime(1996,11,30);
             }
             else if(Name ==  "mysql"){
-                date = new DateTime(2009,12,18,1,52,0);
+                date = new DateTime(2010,12,18);
+            }
+            else if(Name ==  "javascript"){
+                date = new DateTime(2011,1,8);
+            }
+            else if(Name ==  "java"){
+                date = new DateTime(2009,2,15);
+            }
+             else if(Name ==  "php"){
+                date = new DateTime(2003,3,10);
+            }
+            else if(Name ==  "python"){
+                date = new DateTime(2016,4,13);
+            }
+            else if(Name ==  "android"){
+                date = new DateTime(2015,5,29);
+            }
+            else if(Name ==  "jquery"){
+                date = new DateTime(2014,8,29);
+            }
+            else if(Name ==  "html"){
+                date = new DateTime(2001,11,29);
+            }
+            else if(Name ==  "c++"){
+                date = new DateTime(2004,9,23);
+            }
+             else if(Name ==  "ios"){
+                date = new DateTime(1998,9,5);
+            }
+            else if(Name ==  "css"){
+                date = new DateTime(2000,12,15);
+            }
+            else if(Name ==  "reactjs"){
+                date = new DateTime(2018,10,25);
+            }
+            else if(Name ==  "wordpress"){
+                date = new DateTime(1990,3,15);
+            }
+            else if(Name ==  "windows"){
+                date = new DateTime(2015,12,29);
+            }
+            else if(Name ==  "spring"){
+                date = new DateTime(2014,1,16);
             }
             else {
                 date = DateTime.Now;

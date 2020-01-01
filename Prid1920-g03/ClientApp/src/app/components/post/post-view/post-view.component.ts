@@ -1,5 +1,5 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { Component, OnInit, Input, AfterViewInit, OnDestroy} from '@angular/core';
+import { MatDialog, MatSnackBar, MatTableDataSource, PageEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -19,7 +19,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
     styleUrls: ['./post-view.component.css'],
 })
 
-export class PostViewComponent {
+export class PostViewComponent implements OnDestroy{
     currentUser: User;
     id = this.route.snapshot.params['id'];
     @Input() post: Post;
@@ -191,7 +191,10 @@ export class PostViewComponent {
             }else{
                 this.sp.refrech();
             }
-            
         });
+    }
+
+    public ngOnDestroy(): void {
+        this.snackBar.dismiss();
     }
 }

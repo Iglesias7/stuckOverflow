@@ -24,7 +24,7 @@
 
 <div class="tag-container">
 
-    <mat-card matSort *ngFor="let tag of tags" >
+    <mat-card matSort *ngFor="let tag of dataSources.data" >
         <mat-card-header>
             <mat-card-title>
                 <p class="card_title">
@@ -41,6 +41,9 @@
         <mat-card-content class="card-content" >
             Tagged on {{tag.nbXPosts}} posts
         </mat-card-content>
+        <mat-card-content class="card-content">
+            Created on {{tag.timestamp}}
+        </mat-card-content>
          <mat-card-actions> 
             <button mat-icon-button>
                 <mat-icon *ngIf="currentUser && isAdmin" style="color: green" (click)="edit(tag)">edit</mat-icon>
@@ -51,9 +54,12 @@
         </mat-card-actions>  
     </mat-card>
 </div>
+<div class="row mt-3">
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = onPageChange($event)"></mat-paginator>
+</div>
 
 <div class="add_tag" *ngIf="currentUser && isAdmin">
-    <div class="col-12">
+    <div class="col-5">
         <button class="add_btn" mat-raised-button (click)="create()">Add a New Tag</button>
     </div>
 </div>

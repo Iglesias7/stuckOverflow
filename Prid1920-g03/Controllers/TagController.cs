@@ -1,4 +1,3 @@
-using System;
 using PRID_Framework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,13 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Prid1920_g03.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using System.Text;
-using System.Security.Claims;
 using Prid1920_g03.Helpers;
 
 namespace Prid1920_g03.Controllers
@@ -46,7 +38,15 @@ namespace Prid1920_g03.Controllers
         [HttpGet("getbytimestamp")]
         public async Task<ActionResult<IEnumerable<TagDTO>>> GetByTimestamp(){
             var tags = from tg in model.Tags
-            orderby tg.Timestamp.Month descending
+            orderby tg.Timestamp descending
+            select tg;
+            return  (await tags.ToListAsync()).ToDTO();
+        }
+        
+        [HttpGet("getbyname")]
+        public async Task<ActionResult<IEnumerable<TagDTO>>> GetByName(){
+            var tags = from tg in model.Tags
+            orderby tg.Name ascending
             select tg;
             return  (await tags.ToListAsync()).ToDTO();
         }
@@ -58,6 +58,13 @@ namespace Prid1920_g03.Controllers
             if(tag == null)
                 return NotFound();
             return tag.ToDTO();
+        }
+
+        [HttpGet("getTagByName/{name}")]
+        public async Task<ActionResult<bool>> GetTagByName(string  name)
+        {
+            var tag = await model.Tags.SingleOrDefaultAsync(tg => tg.Name == name);
+            return tag == null;
         }
      
         [Authorized(Role.Admin)]

@@ -42,10 +42,14 @@ export class TagService {
         );  
     }
 
-    getTagByName(name: string) {
-        return this.http.get<Tag[]>(`${this.baseUrl}api/tag/getTagByName/${name}`).pipe(
+    getByName() {
+        return this.http.get<Tag[]>(`${this.baseUrl}api/tag/getbyname`).pipe(
             map(res => res.map(m => new Tag(m)))
         );
+    }
+
+    getTagByName(name: string): Observable<boolean> {
+        return this.http.get<boolean>(`${this.baseUrl}api/tag/getTagByName/${name}`);
     }
 
     public update(tg: Tag, id: number): Observable<boolean>{
@@ -57,6 +61,13 @@ export class TagService {
             })
         );
     }
+
+    public getRefreshAllTags(){
+        this.getAllTags().subscribe(tags => {
+            this.tags = tags;
+        });
+    }
+
 
     public delete(tg: Tag): Observable<boolean> {
         return this.http.delete<boolean>(`${this.baseUrl}api/tag/${tg.id}`).pipe(

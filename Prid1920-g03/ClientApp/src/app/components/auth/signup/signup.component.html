@@ -39,8 +39,7 @@
                 <mat-form-field>
                     <input matInput type="text" placeholder="Email" [formControl]="ctlEmail" required>
                     <mat-error class="field-error" *ngIf="ctlEmail.hasError('required')">Required</mat-error>
-                    <mat-error class="field-error" *ngIf="ctlEmail.hasError('email')">Email is not valid</mat-error>
-                    <mat-error class="field-error" *ngIf="ctlEmail.hasError('pattern')">Email is not valid</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlEmail.hasError('pattern') || ctlEmail.hasError('email')">Email is not valid</mat-error>
                     <mat-error class="field-error" *ngIf="ctlEmail.hasError('emailUsed')">This email adress is already
                         used!
                     </mat-error>
@@ -48,8 +47,7 @@
                 <mat-form-field>
                     <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate">
                     <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('tooYoung')">you young</mat-error>
-                    <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('futureBorn')">this Birthdate is bad
-                    </mat-error>
+                    <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('futureBorn')">this Birthdate is bad</mat-error>
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" [formControl]="ctlPassword" required
@@ -77,7 +75,9 @@
                 </div>
             </div><br>
             <div class="bg-btn">
-                <button class="btn-warning" mat-stroked-button (click)="signup()" [disabled]="signupForm.invalid">Signup</button>
+                <button class="btn-warning" 
+                        mat-stroked-button 
+                        (click)="signup()" >Signup</button>
             </div>
         </form>
     </div>

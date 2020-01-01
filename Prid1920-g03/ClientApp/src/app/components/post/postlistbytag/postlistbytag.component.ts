@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog, MatSnackBar, MatTableDataSource} from '@angular/material';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MatDialog, MatSnackBar, MatTableDataSource, MatPaginator, PageEvent} from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -27,9 +27,16 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     postsSubsription: Subscription;
     researchByTag: boolean = false;
 
-    dataSource: MatTableDataSource<Post> = new MatTableDataSource<Post>(this.posts);
+    length: number = 0;
+    pageSize: number = 3;  
+    pageSizeOptions: number[] = [3, 6, 9, 12, 15, 18, 21];
+
+    dataSources: MatTableDataSource<Post> = new MatTableDataSource();
     filter: string;
     state: MatListPostState;
+
+    @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+
     
     constructor(private auth: AuthenticationService,
         private filterService: FilterService,
@@ -47,34 +54,28 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
 
     
     ngOnInit(): void  {
-        this.getElem();
-    }
-
-    
-
-    public getElem(){
         const name = this.route.snapshot.params['name'];
-        // this.postService.getPostsByTagName(name).subscribe(posts => {
-        //     this.posts = posts;
-        //     this.postsBackup = _.cloneDeep(posts);
-        //     console.log(posts);         
-        //     if(!posts){
-        //         this.researchByTag = true;
-        //     }
-        // });
-        // this.postService.emitPost();
-
         this.postsSubsription = this.postService.postsSubject.subscribe(
             posts => {
               this.posts = posts;
               this.postsBackup = _.cloneDeep(posts);
+
+              this.dataSources.data = this.posts.slice(0, 3);
+              this.length = this.posts.length
             }
         );
         this.postService.getRefrechPostsByTagName(name);
 
-
     }
 
+    onPageChange(event: PageEvent){
+        let startIndex = event.pageIndex * event.pageSize;
+        let endIndex = startIndex + event.pageSize;
+        if(endIndex > this.length){
+          endIndex = this.length;
+        }
+        this.dataSources.data = this.posts.slice(startIndex, endIndex);
+    }
 
     
 
@@ -104,6 +105,8 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
             const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
+        this.dataSources.data = this.posts.slice(0, 3);
+
     }
 
     public addQuestion() {

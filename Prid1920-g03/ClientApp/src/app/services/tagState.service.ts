@@ -3,6 +3,6 @@ import { MatTableState } from "../helpers/mattable.state";
 
 
 @Injectable({ providedIn: 'root' })
-export class UserStateService {
-   public UserListState = new MatTableState(9);
+export class TagStateService {
+   public TagListState = new MatTableState(9);
 }

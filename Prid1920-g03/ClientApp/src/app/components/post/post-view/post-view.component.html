@@ -55,7 +55,7 @@
                      class="body-sub2-header-div"
                      [style.background-image]="'url(' + (post?.user.picturePath || 'uploads/unknown-user.png') + ')'">
                 </div>
-                <mat-card-title class="body-sub2-header-title">{{post?.user.firstName!}}{{ '&nbsp;' }}{{post?.user.lastName!}}</mat-card-title>
+                <mat-card-title class="body-sub2-header-title">{{post?.user.pseudo!}}</mat-card-title>
                 <mat-card-subtitle>
                     <span mat-raised-button matTooltip="reputation score" 
                                             matTooltipClass="example-tooltip-red"
@@ -78,11 +78,11 @@
             <div class="body-sub2-expansion-panel-header" >
                 <section>
                     <div class="container">
-                        <div class="row" >
+                        <div class="row">
                             <div class="col-lg-12" *ngFor="let comment of post?.comments">
                                 <div class="wrap">
                                     <div >
-                                        <h5><span class="color-pseudo-comment">*****{{ comment.commentUser.firstName }}{{ '&nbsp;' }}{{ comment.commentUser.lastName }}*****</span></h5>
+                                        <h5><span class="color-pseudo-comment">*****{{ comment.commentUser.pseudo }}*****</span></h5>
                                         <h6> <span>comment at {{ comment.timestamp | timeAgo }}</span></h6>
                                         <p>
                                             <i>{{ comment.body }}</i>
@@ -102,7 +102,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div><br>
+                            <div class="row mt-3">
+                                <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = onPageChange($event)"></mat-paginator>
+                            </div><br>
                         </div>
                         <div class="row">
                             <mat-icon matTooltip="Add your comment"

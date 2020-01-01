@@ -28,7 +28,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
     pageSizeOptions: number[] = [3, 6, 9, 12];
 
     dataSources: MatTableDataSource<User> = new MatTableDataSource();
-    dataSource : User[] = [];
     filter: string;
     state: MatTableState;
 
@@ -48,14 +47,13 @@ export class UsersListComponent implements OnInit, OnDestroy {
         this.userService.getAll().subscribe(users => {
             this.users = users;
             this.usersBackup = _.cloneDeep(users);
-            this.dataSources.data = this.users.slice(0,3);
-            this.length = this.users.length;
+            this.dataSources.data = users.slice(0,3);
+            this.length = users.length;
         });
-       this.refresh();
+        this.refresh();
      }
 
     refresh() {
-        
         this.userService.getRefrechAllUsers();
     }
 
@@ -88,9 +86,14 @@ export class UsersListComponent implements OnInit, OnDestroy {
         const snackBarRef = this.snackBar.open(`User '${user.pseudo}' will be deleted`, 'Undo', { duration: 10000 });
         snackBarRef.afterDismissed().subscribe(res => {
             if (!res.dismissedByAction)
-                this.userService.delete(user).subscribe(()=>{
+                this.userService.delete(user).subscribe(user => {
                     this.refresh();
+                    this.dataSources.data = this.users.slice(0,3);
+
                 });
+            this.refresh();
+            this.dataSources.data = this.users.slice(0,3);
+            this.length = this.users.length;
         });
     }
 
@@ -100,12 +103,11 @@ export class UsersListComponent implements OnInit, OnDestroy {
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 this.userService.add(res).subscribe(res => {
-                    if (!res) {
+                    if (!res) 
                         this.snackBar.open(`There was an error at the server. The member has not been created! Please try again.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
-                    }else{
-                        this.refresh();
-                    }
+                    this.refresh();
+                    this.dataSources.data = this.users.slice(0,3);
+                    this.length = this.users.length;     
                 });
             }
         });
@@ -121,5 +123,6 @@ export class UsersListComponent implements OnInit, OnDestroy {
             const str = (m.pseudo + ' ' + m.firstName).toLowerCase();
             return str.includes(lFilter);
         });
+        this.dataSources.data = this.users.slice(0, 3);
     }
 }

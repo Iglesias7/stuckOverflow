@@ -29,7 +29,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
 
     length: number = 0;
     pageSize: number = 3;  
-    pageSizeOptions: number[] = [3, 6, 9, 12];
+    pageSizeOptions: number[] = [3, 6, 9, 12, 15, 18, 21];
 
     dataSources: MatTableDataSource<Post> = new MatTableDataSource();
     filter: string;

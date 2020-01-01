@@ -29,5 +29,21 @@
   position: inherit;
 }
 
+.footer {
+  font-size: 11px;
+  height: 100px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: darkslategray;
+  color: white;
+  text-align: center;
+}
+
+.ng-margin{
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
 
   

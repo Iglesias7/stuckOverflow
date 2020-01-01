@@ -4,5 +4,5 @@ import { MatTableState } from "../helpers/mattable.state";
 
 @Injectable({ providedIn: 'root' })
 export class UserStateService {
-   public UserListState = new MatTableState(3);
+   public UserListState = new MatTableState(9);
 }

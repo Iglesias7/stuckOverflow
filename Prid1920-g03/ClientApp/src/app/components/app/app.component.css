@@ -11,8 +11,8 @@
 }
 .body {
   padding-top: 100px;
- 
   z-index: 2;
+  
 }
 
 .containerr{
@@ -27,6 +27,7 @@
 .bg{
   padding: 20px;
   position: inherit;
+  
 }
 
 .footer {
@@ -44,6 +45,8 @@
   margin-right: 10px;
   margin-top: 5px;
 }
+
+
 
 
   

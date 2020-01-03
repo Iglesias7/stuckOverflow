@@ -21,6 +21,10 @@
     color: orange;
 }
 
+.col-md-4 {
+    margin-bottom: 100px;
+}
+
 .bg-btn{
     text-align: center;
 }

@@ -46,7 +46,7 @@
                 </mat-form-field>
                 <mat-form-field>
                     <input matInput type="date" placeholder="Birthdate" [formControl]="ctlBirthDate">
-                    <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('tooYoung')">you young</mat-error>
+                    <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('tooYoung')">you re' too young </mat-error>
                     <mat-error class="field-error" *ngIf="ctlBirthDate.hasError('futureBorn')">this Birthdate is bad</mat-error>
                 </mat-form-field>
                 <mat-form-field>

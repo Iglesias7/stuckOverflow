@@ -68,6 +68,23 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
+        [HttpGet("unansweredbytag/{tagname}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtUnansweredByTag (string tagname) {
+            var tag = (from t in model.Tags where t.Name == tagname select t).FirstOrDefault();
+
+            var itemList = from p in model.Posts
+                         join ptg in model.PostTags on p.Id equals ptg.PostId
+                        where ptg.TagId == tag.Id && (p.Title != (null) && p.AcceptedAnswerId == null 
+                         && (p.Title.Contains("") || p.User.Pseudo.Contains("")) )
+                        orderby p.Timestamp descending
+                        select p;
+
+            return (await itemList.ToListAsync()).ToDTO();
+        }
+
+
+
+
         [HttpGet("getall")]
         [HttpGet("getall/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtAll (string filter = "") {

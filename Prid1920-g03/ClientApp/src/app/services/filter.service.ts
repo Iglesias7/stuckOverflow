@@ -19,6 +19,16 @@ export class FilterService {
     });
   }
 
+  public getNewestByTag(tagname: string){
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/newestbytag/${tagname}`).pipe(
+      map(res => res.map(m => new Post(m)))
+    ).subscribe(posts => {
+      this.postService.posts = posts;
+      this.postService.emitAllPosts();
+    });
+  }
+  
+
   public getTagfilter(filter: string = "") {
     this.http.get<Post[]>(`${this.baseUrl}api/filter/tagfilter/${filter}`).pipe(
       map(res => res.map(m => new Post(m)))
@@ -30,6 +40,14 @@ export class FilterService {
 
   public getUnanswered(filter: string = "") {
     this.http.get<Post[]>(`${this.baseUrl}api/filter/unanswered/${filter}`).pipe(
+      map(res => res.map(m => new Post(m)))
+    ).subscribe(posts => {
+      this.postService.posts = posts;
+      this.postService.emitAllPosts();
+    });
+  }
+  public getUnansweredByTag(tagname: string) {
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/unansweredbytag/${tagname}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;
@@ -48,6 +66,15 @@ export class FilterService {
 
   public getHightVote(filter: string = "") {
     this.http.get<Post[]>(`${this.baseUrl}api/filter/votefilter/${filter}`).pipe(
+      map(res => res.map(m => new Post(m)))
+    ).subscribe(posts => {
+      this.postService.posts = posts;
+      this.postService.emitAllPosts();
+    });
+  }
+
+  public getHightVoteByTag(tagname: string) {
+    this.http.get<Post[]>(`${this.baseUrl}api/filter/votefilterbytag/${tagname}`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;

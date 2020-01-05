@@ -42,6 +42,18 @@ namespace Prid1920_g03.Controllers
             return (await itemList.ToListAsync()).ToDTO();
         }
 
+        [HttpGet("newestbytag/{tagname}")]
+        public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewestByTag(string tagname) {
+           var tag = (from t in model.Tags where t.Name == tagname select t).FirstOrDefault();
+           var itemList = from p in model.Posts
+                         join ptg in model.PostTags on p.Id equals ptg.PostId
+                        where ptg.TagId == tag.Id && p.Title != (null) 
+                        orderby p.Timestamp descending
+                        select p;
+
+            return (await itemList.ToListAsync()).ToDTO();
+        }
+
         [HttpGet("tagfilter")]
         [HttpGet("tagfilter/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter(string filter = "") {
@@ -104,6 +116,24 @@ namespace Prid1920_g03.Controllers
                   
             return query.ToDTO();
         }
+
+
+        [HttpGet("votefilterbytag/{tagname}")]
+        public ActionResult<IEnumerable<PostDTO>> GEtVotefilterByTag (string tagname) {
+            
+
+            var tag = (from t in model.Tags where t.Name == tagname select t).FirstOrDefault();
+            var itemList = from p in model.Posts
+                         join ptg in model.PostTags on p.Id equals ptg.PostId
+                          where ptg.TagId == tag.Id && ( p.ParentId == null && (p.Title.Contains("") || p.User.Pseudo.Contains("")))
+                          select p;
+            var items = itemList.AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
+
+            return items.ToDTO();
+        }
+
+
+
 
     }
 }

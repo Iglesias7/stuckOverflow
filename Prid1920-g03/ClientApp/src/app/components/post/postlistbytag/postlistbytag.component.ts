@@ -80,22 +80,21 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     
 
     newest(){
-        this.filterService.getNewest(this.filter);
+        const name = this.route.snapshot.params['name'];
+        this.filterService.getNewestByTag(name);
         this.postService.emitPost();
     }
 
-    tagfilter(){
-        this.filterService.getTagfilter(this.filter);
-        this.postService.emitPost();
-    }
-
+    
     tagunanswered(){
-        this.filterService.getUnanswered(this.filter);
+        const name = this.route.snapshot.params['name'];
+        this.filterService.getUnansweredByTag(name);
         this.postService.emitPost();
     }
 
     votefilter(){
-        this.filterService.getHightVote(this.filter);
+        const name = this.route.snapshot.params['name'];
+        this.filterService.getHightVoteByTag(name);
         this.postService.emitPost();
     }
 
@@ -107,6 +106,20 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
         });
         this.dataSources.data = this.posts.slice(0, 3);
 
+    }
+
+    clear(){
+        const name = this.route.snapshot.params['name'];
+        this.postsSubsription = this.postService.postsSubject.subscribe(
+            posts => {
+              this.posts = posts;
+              this.postsBackup = _.cloneDeep(posts);
+
+              this.dataSources.data = this.posts.slice(0, 3);
+              this.length = this.posts.length
+            }
+        );
+        this.postService.getRefrechPostsByTagName(name);
     }
 
     public addQuestion() {

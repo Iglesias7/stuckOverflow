@@ -101,6 +101,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.dataSources.data = this.posts.slice(0, 3);
     }
 
+    
     public addQuestion() {
         if(this.currentUser){
             const post = new Post({});

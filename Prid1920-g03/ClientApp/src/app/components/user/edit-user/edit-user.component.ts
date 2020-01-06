@@ -41,10 +41,10 @@ export class EditUserComponent implements OnDestroy {
     ) {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern("^[A-Za-z][A-Za-z0-9_]{2,9}$")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', data.isNew ? [Validators.required, Validators.minLength(3)] : []);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
-        this.ctlLastName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(10)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(50)]);
+        this.ctlLastName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(50)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email], [this.emailUsed()]);
-        this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
+        this.ctlBirthDate = this.formBuilder.control('',[], [this.validateBirthDate()]);
         if(!this.ctlBirthDate){
             this.ctlBirthDate = null;
         }
@@ -68,16 +68,24 @@ export class EditUserComponent implements OnDestroy {
         this.pictureChanged = false;
     }
 
-    validateBirthDate(): any {
+    validateBirthDate(): AsyncValidatorFn {
+        let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {
+            clearTimeout(timeout);
             const date = new Date(ctl.value);
             const diff = Date.now() - date.getTime();
-            if (diff < 0)
-                return { futureBorn: true } 
             var age = new Date(diff).getUTCFullYear() - 1970;
-            if (age < 18) 
-                return { tooYoung: true };
-            return null;
+            return new Promise(resolve => {
+                timeout = setTimeout(() => {
+                    if (ctl.pristine) {
+                        resolve(null);
+                    } else if(diff < 0) {
+                        resolve (!(diff < 0) ? null : { futureBorn: true } );
+                    }else {
+                        resolve (age >= 18 ? null : { tooYoung: true });
+                    }
+                }, 300);
+            });
         };
     }
 

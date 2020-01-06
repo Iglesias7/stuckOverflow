@@ -4,7 +4,7 @@
         <mat-tab label="First Data">
             <div class="form"  >
                 <mat-form-field>
-                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required >
+                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required [readonly] = "!isNew">
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is
                         {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>

@@ -35,7 +35,7 @@ export class SignupComponent {
         this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
         this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")], [this.emailUsed()]);
-        this.ctlBirthDate = this.formBuilder.control('', [this.validateBirthDate()]);
+        this.ctlBirthDate = this.formBuilder.control('', [],[this.validateBirthDate()]);
 
         this.signupForm = this.formBuilder.group({
             pseudo: this.ctlPseudo,

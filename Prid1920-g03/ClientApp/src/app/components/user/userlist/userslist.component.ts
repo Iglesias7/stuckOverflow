@@ -50,10 +50,17 @@ export class UsersListComponent implements OnInit, OnDestroy {
             this.dataSources.data = users.slice(0,3);
             this.length = users.length;
         });
-        this.refresh();
+        this.userService.getRefrechAllUsers();
+
      }
 
     refresh() {
+        this.userService.getAll().subscribe(users => {
+            this.users = users;
+            this.usersBackup = _.cloneDeep(users);
+            this.dataSources.data = users.slice(0,3);
+            this.length = users.length;
+        });
         this.userService.getRefrechAllUsers();
     }
 
@@ -75,7 +82,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
                 this.userService.update(res, id).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
+                       // this.refresh();
+                       this.userService.getRefrechAllUsers();
                     }
                 });
             }
@@ -91,7 +99,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
                     this.dataSources.data = this.users.slice(0,3);
 
                 });
-            this.refresh();
+           this.refresh();
+           this.userService.getRefrechAllUsers();
             this.dataSources.data = this.users.slice(0,3);
             this.length = this.users.length;
         });

@@ -35,6 +35,7 @@ export class TagListComponent implements OnInit, OnDestroy {
     dataSource: Tag[] = [];
     filter: string;
     state: MatTableState;
+    
 
     @ViewChild(MatPaginator, { static: false}) paginator: MatPaginator;
 
@@ -55,10 +56,16 @@ export class TagListComponent implements OnInit, OnDestroy {
             this.dataSources.data = this.tags.slice(0,3);
             this.length = this.tags.length;
         }); 
-        this.refresh();
+        this.tagService.getRefreshAllTags();
     }
 
     refresh() {
+        this.tagService.getAllTags().subscribe(tags => {
+            this.tags = tags;
+            this.tagsBackup = _.cloneDeep(tags);
+            this.dataSources.data = this.tags.slice(0,3);
+            this.length = this.tags.length;
+        }); 
         this.tagService.getRefreshAllTags();
     }
     onPageChange(event: PageEvent){
@@ -79,7 +86,7 @@ export class TagListComponent implements OnInit, OnDestroy {
                 this.tagService.update(res, tagId).subscribe(res => {
                     if (!res) {
                         this.snackBar.open(`There was an error at the server. The update has not been done! Please try again.`, 'Dismiss', { duration: 10000 });
-                        this.refresh();
+                        this.tagService.getRefreshAllTags();
                     }
                 });
             }

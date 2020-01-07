@@ -16,6 +16,5 @@ namespace Prid1920_g03.Models {
         public Role Role { get; set; }
         public string Token {get;set;}
         public string RefreshToken { get; set; }
-
     }
 }

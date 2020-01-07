@@ -29,14 +29,14 @@ export class EditPostComponent {
 
 
     visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+    selectable = true;
+    removable = true;
+    addOnBlur = true;
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+    fruitCtrl = new FormControl();
+    filteredFruits: Observable<string[]>;
+    fruits: string[] = ['Lemon'];
+    allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
   @ViewChild('fruitInput', {static: false}) fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', {static: false}) matAutocomplete: MatAutocomplete;
@@ -97,8 +97,6 @@ export class EditPostComponent {
     cancel() {
         this.dialogRef.close();
     }
-
-
 
     add(event: MatChipInputEvent): void {
         // Add fruit only when MatAutocomplete is not open

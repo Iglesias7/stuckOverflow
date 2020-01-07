@@ -40,7 +40,7 @@ namespace Prid1920_g03.Controllers
             return (await _context.Users.ToListAsync()).ToDTO();
         }
 
-        [Authorized(Role.Admin)]
+        //[Authorized(Role.Admin)]
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetOne(int id)
         {

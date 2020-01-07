@@ -27,10 +27,10 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     responses: Post[];
     responsesSubsription: Subscription;
 
-    length: number = 0;
-    pageSize: number = 2;
-    pageSizeOptions: number[] = [2, 4, 6, 8];
-    dataSource: MatTableDataSource<Post> = new MatTableDataSource();
+    // length: number = 0;
+    // pageSize: number = 2;
+    // pageSizeOptions: number[] = [2, 4, 6, 8];
+    // dataSource: MatTableDataSource<Post> = new MatTableDataSource();
 
     constructor(private auth: AuthenticationService, 
                 private postService: PostService,
@@ -47,20 +47,20 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
         });
         this.responsesSubsription = this.postService.responsesSubject.subscribe(responses => {
             this.responses = responses;
-            this.dataSource.data = responses.slice(0,2);
-            this.length = responses.length;
+            // this.dataSource.data = responses.slice(0,2);
+            // this.length = responses.length;
         });
         this.refrech();
     }
 
-    onPageChange(event: PageEvent){
-        let startIndex = event.pageIndex * event.pageSize;
-        let endIndex = startIndex + event.pageSize;
-        if(endIndex > this.length){
-            endIndex = this.length;
-        }
-        this.dataSource.data = this.responses.slice(startIndex, endIndex);
-    }
+    // onPageChange(event: PageEvent){
+    //     let startIndex = event.pageIndex * event.pageSize;
+    //     let endIndex = startIndex + event.pageSize;
+    //     if(endIndex > this.length){
+    //         endIndex = this.length;
+    //     }
+    //     this.dataSource.data = this.responses.slice(startIndex, endIndex);
+    // }
 
     public refrech(){
         this.postService.getRefrechPost(this.id);

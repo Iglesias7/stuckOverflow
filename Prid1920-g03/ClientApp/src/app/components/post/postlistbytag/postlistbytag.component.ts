@@ -27,13 +27,13 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     postsSubsription: Subscription;
     researchByTag: boolean = false;
 
-    length: number = 0;
-    pageSize: number = 3;  
-    pageSizeOptions: number[] = [3, 6, 9, 12, 15, 18, 21];
+    // length: number = 0;
+    // pageSize: number = 3;  
+    // pageSizeOptions: number[] = [3, 6, 9, 12, 15, 18, 21];
 
-    dataSources: MatTableDataSource<Post> = new MatTableDataSource();
+    // dataSources: MatTableDataSource<Post> = new MatTableDataSource();
     filter: string;
-    state: MatListPostState;
+    // state: MatListPostState;
 
     @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
@@ -47,7 +47,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
         private stateService: StateService,
         ) {
             this.currentUser = this.auth.currentUser;
-            this.state = this.stateService.postListState;
+            // this.state = this.stateService.postListState;
         }
 
 
@@ -60,22 +60,22 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
               this.posts = posts;
               this.postsBackup = _.cloneDeep(posts);
 
-              this.dataSources.data = this.posts.slice(0, 3);
-              this.length = this.posts.length
+            //   this.dataSources.data = this.posts.slice(0, 3);
+            //   this.length = this.posts.length
             }
         );
         this.postService.getRefrechPostsByTagName(name);
 
     }
 
-    onPageChange(event: PageEvent){
-        let startIndex = event.pageIndex * event.pageSize;
-        let endIndex = startIndex + event.pageSize;
-        if(endIndex > this.length){
-          endIndex = this.length;
-        }
-        this.dataSources.data = this.posts.slice(startIndex, endIndex);
-    }
+    // onPageChange(event: PageEvent){
+    //     let startIndex = event.pageIndex * event.pageSize;
+    //     let endIndex = startIndex + event.pageSize;
+    //     if(endIndex > this.length){
+    //       endIndex = this.length;
+    //     }
+    //     this.dataSources.data = this.posts.slice(startIndex, endIndex);
+    // }
 
     
 
@@ -104,7 +104,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
             const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
-        this.dataSources.data = this.posts.slice(0, 3);
+        // this.dataSources.data = this.posts.slice(0, 3);
 
     }
 
@@ -115,8 +115,8 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
               this.posts = posts;
               this.postsBackup = _.cloneDeep(posts);
 
-              this.dataSources.data = this.posts.slice(0, 3);
-              this.length = this.posts.length
+            //   this.dataSources.data = this.posts.slice(0, 3);
+            //   this.length = this.posts.length
             }
         );
         this.postService.getRefrechPostsByTagName(name);
@@ -144,10 +144,4 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void{
         this.postsSubsription.unsubscribe();
     }
-
-
-
-
-
-
 }

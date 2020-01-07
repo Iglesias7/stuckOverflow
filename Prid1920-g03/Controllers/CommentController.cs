@@ -39,7 +39,7 @@ namespace Prid1920_g03.Controllers
         }
 
         [Authorize]
-        [HttpPost("{id}")]
+        [HttpPost("{id}")]//return commentDTO
         public async Task<ActionResult<PostDTO>> AddComment(int id, CommentDTO data)
         {
 

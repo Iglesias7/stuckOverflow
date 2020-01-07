@@ -33,7 +33,7 @@
 </mat-accordion>
 
 <div class=" card-container" 
-     *ngFor="let question of dataSources.data" 
+     *ngFor="let question of posts" 
      style="margin-top: 20px; box-shadow: none;">
     <mat-card class="example-cad ecard">
         <mat-card class="example-card" style="float: left; box-shadow: none; position: inherit;">
@@ -81,8 +81,8 @@
     </mat-card>
 </div>
 <br>
-<mat-paginator  [length]="length"
+<!-- <mat-paginator  [length]="length"
                 [pageSize]="pageSize"
                 [pageSizeOptions]="pageSizeOptions"
                 (page)="pageEvent = OnPageChange($event)">
-</mat-paginator>
+</mat-paginator> -->

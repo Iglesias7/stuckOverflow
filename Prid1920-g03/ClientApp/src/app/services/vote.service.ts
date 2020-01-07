@@ -12,7 +12,6 @@ export class VoteService {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {}
 
   public upDown(v: Vote): Observable<boolean>{
-    console.log("not new: authorId " + v.authorId + " postId: " + v.postId + " updodn: " + v.updown)
     return this.http.post<Post>(`${this.baseUrl}api/vote`, v).pipe(
       map(res => true),
       catchError(err => {

@@ -24,15 +24,12 @@ export class PostListComponent implements OnInit, OnDestroy {
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
 
-    length: number = 0;
-    pageSize: number = 3;  
-    pageSizeOptions: number[] = [3, 6, 9, 12];
+    // length: number = 0;
+    // pageSize: number = 3;  
+    // pageSizeOptions: number[] = [3, 6, 9, 12];
 
-    dataSources: MatTableDataSource<Post> = new MatTableDataSource();
+    // dataSources: MatTableDataSource<Post> = new MatTableDataSource();
     filter: string;
-    state: MatListPostState;
-
-    @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
     constructor(private auth: AuthenticationService, 
                 private filterService: FilterService,
@@ -42,7 +39,6 @@ export class PostListComponent implements OnInit, OnDestroy {
                 private stateService: StateService,
             ) {
                 this.currentUser = this.auth.currentUser;
-                this.state = this.stateService.postListState;                
             }
 
     ngOnInit() {
@@ -51,21 +47,21 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.posts = posts;
             this.postsBackup = _.cloneDeep(posts);
             
-            this.dataSources.data = this.posts.slice(0, 3);
-            this.length = this.posts.length;
+            // this.dataSources.data = this.posts.slice(0, 3);
+            // this.length = this.posts.length;
           }
         );
         this.postService.getRefrechAllPosts();
     }
 
-    OnPageChange(event: PageEvent){
-        let startIndex = event.pageIndex * event.pageSize;
-        let endIndex = startIndex + event.pageSize;
-        if(endIndex > this.length){
-          endIndex = this.length;
-        }
-        this.dataSources.data = this.posts.slice(startIndex, endIndex);
-    }
+    // OnPageChange(event: PageEvent){
+    //     let startIndex = event.pageIndex * event.pageSize;
+    //     let endIndex = startIndex + event.pageSize;
+    //     if(endIndex > this.length){
+    //       endIndex = this.length;
+    //     }
+    //     this.dataSources.data = this.posts.slice(startIndex, endIndex);
+    // }
 
     newest(){
         this.filterService.getNewest(this.filter);
@@ -98,7 +94,7 @@ export class PostListComponent implements OnInit, OnDestroy {
             const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
-        this.dataSources.data = this.posts.slice(0, 3);
+        // this.dataSources.data = this.posts.slice(0, 3);
     }
 
     
@@ -128,5 +124,6 @@ export class PostListComponent implements OnInit, OnDestroy {
 
     public ngOnDestroy(){
         this.postsSubsription.unsubscribe();
+        this.snackBar.dismiss();
     }
 }

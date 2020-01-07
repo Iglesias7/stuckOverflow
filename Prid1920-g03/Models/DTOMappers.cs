@@ -20,8 +20,7 @@ namespace Prid1920_g03.Models
                 PicturePath = user.PicturePath,
                 Role = user.Role,
                 Token = user.Token,
-
-
+                RefreshToken = user.RefreshToken
             };
         }
 

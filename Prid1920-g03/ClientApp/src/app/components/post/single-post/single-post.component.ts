@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
     selector: 'app-userCard',
@@ -18,6 +19,7 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     currentUser: User;
     numComments: number;
     responseBody = "";
+    user: User;
     
     id = this.route.snapshot.params['id'];
 
@@ -35,6 +37,7 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     constructor(private auth: AuthenticationService, 
                 private postService: PostService,
                 private route: ActivatedRoute,
+                private userService: UserService,
                 public dialog: MatDialog, 
                 public snackBar: MatSnackBar
          ) {
@@ -65,6 +68,10 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
     public refrech(){
         this.postService.getRefrechPost(this.id);
         this.postService.emitAllResponses();
+        if (this.currentUser)
+            this.userService.getById(this.currentUser.id).subscribe(user => {
+                this.user = user;
+            })
     }
 
     public reply(){

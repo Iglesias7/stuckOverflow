@@ -25,14 +25,12 @@ export class PostViewComponent implements OnDestroy {
     id = this.route.snapshot.params['id'];
     @Input() post: Post;
     postParent: Post;
-    user: User;
 
     constructor(private auth: AuthenticationService,
         private sp: SinglePostListComponent,
         private commentService: CommentService,
         private voteService: VoteService,
         private postService: PostService,
-        private userService: UserService,
         private route: ActivatedRoute,
         public dialog: MatDialog,
         public snackBar: MatSnackBar,
@@ -42,15 +40,12 @@ export class PostViewComponent implements OnDestroy {
         this.postService.getPostById(this.id).subscribe(post => {
             this.postParent = post;
         })
-        if (this.currentUser)
-            this.userService.getById(this.currentUser.id).subscribe(user => {
-                this.user = user;
-            })
+        
     }
 
     public upDown(postId: number, upDown: number) {
         if (this.currentUser) {
-            const reputation = this.user.reputation;
+            const reputation = this.sp.user.reputation;
             const authorId = this.currentUser.id;
             const newVote = new Vote({ upDown, authorId, postId });
 

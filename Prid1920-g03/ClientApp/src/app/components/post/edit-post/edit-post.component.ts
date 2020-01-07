@@ -61,22 +61,23 @@ export class EditPostComponent {
     this.isQuestion = data.isQuestion;
     this.editPostForm.patchValue(data.post);
 
-    if (this.isQuestion == true)
+    if (this.isQuestion)
       this.tagService.getAllTags().subscribe(tags => {
         this.tags = tags;
         this.tagsName = tags.map(t=>t.name)
 
-        this.tagsName.forEach((tag) => {
-          if(this.data.tags.find(t => t == tag) ){
-            this.lsTag.push(tag)
-            var pos = this.tags.indexOf(tag);
-            this.tags.splice(pos, 1)
-          }
-        })
+        if(!this.isNew)
+          this.tagsName.forEach((tag) => {
+            if(this.data.tags.find(t => t == tag) ){
+              this.lsTag.push(tag)
+              var pos = this.tagsName.indexOf(tag);
+              this.tagsName.splice(pos, 1)
+            }
+          })
 
         this.filteredtags = this.tagsCtrl.valueChanges.pipe(
           startWith(null),
-          map((tag: string | null) => tag ? this._filter(tag) : this.tags.map(t=>t.name).slice())
+          map((tag: string | null) => tag ? this._filter(tag) : this.tagsName.slice())
         );
       });
   }
@@ -107,11 +108,7 @@ export class EditPostComponent {
       const value = event.value;
       // Add our tag
       if ((value || '').trim()) {
-        console.log("toto")
         this.lsTag.push(value.trim());
-        var pos = this.tagsName.indexOf(value.trim());
-        this.tagsName.splice(pos, 1)
-        console.log(this.tagsName)
       }
 
       // Reset the input value
@@ -128,12 +125,14 @@ export class EditPostComponent {
 
     if (index >= 0) {
       this.lsTag.splice(index, 1);
-      this.tagsName.push(tag)
     }
+    this.tagsName.push(tag)
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.lsTag.push(event.option.viewValue);
+    var pos = this.tagsName.indexOf(event.option.viewValue);
+    this.tagsName.splice(pos, 1)
     this.tagsInput.nativeElement.value = '';
     this.tagsCtrl.setValue(null);
   }

@@ -36,7 +36,7 @@ export class EditPostComponent {
   tagsCtrl = new FormControl();
   filteredtags: Observable<string[]>;
   lsTag: string[] = [];
-  // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  tagsName: string[];
 
   @ViewChild('tagsInput', { static: false }) tagsInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
@@ -55,8 +55,6 @@ export class EditPostComponent {
     this.editPostForm = this.formBuilder.group({
       title: this.ctlTitle,
       body: this.ctlBody
-      // tags: this.lsTag
-      // tagForms: new FormArray([])
     });
 
     this.isNew = data.isNew;
@@ -66,16 +64,15 @@ export class EditPostComponent {
     if (this.isQuestion == true)
       this.tagService.getAllTags().subscribe(tags => {
         this.tags = tags;
+        this.tagsName = tags.map(t=>t.name)
 
-        // this.tags.forEach((o, i) => {
-        //   if (this.isNew == true) {
-        //     const control = new FormControl();
-        //     (this.editPostForm.controls.tagForms as FormArray).push(control)
-        //   } else {
-        //     const control = new FormControl(this.data.tags.find(t => t == o.name) ? true : false);
-        //     (this.editPostForm.controls.tagForms as FormArray).push(control)
-        //   }
-        // })
+        this.tagsName.forEach((tag) => {
+          if(this.data.tags.find(t => t == tag) ){
+            this.lsTag.push(tag)
+            var pos = this.tags.indexOf(tag);
+            this.tags.splice(pos, 1)
+          }
+        })
 
         this.filteredtags = this.tagsCtrl.valueChanges.pipe(
           startWith(null),
@@ -112,9 +109,9 @@ export class EditPostComponent {
       if ((value || '').trim()) {
         console.log("toto")
         this.lsTag.push(value.trim());
-        var pos = this.tags.indexOf(value.trim());
-        this.tags.splice(pos, 1)
-        console.log(this.tags.map(t=>t.name))
+        var pos = this.tagsName.indexOf(value.trim());
+        this.tagsName.splice(pos, 1)
+        console.log(this.tagsName)
       }
 
       // Reset the input value
@@ -131,7 +128,7 @@ export class EditPostComponent {
 
     if (index >= 0) {
       this.lsTag.splice(index, 1);
-      this.tags.push(tag)
+      this.tagsName.push(tag)
     }
   }
 
@@ -143,6 +140,6 @@ export class EditPostComponent {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.tags.map(t=>t.name).filter(tag => tag.toLowerCase().indexOf(filterValue) === 0);
+    return this.tagsName.filter(tag => tag.toLowerCase().indexOf(filterValue) === 0);
   }
 }

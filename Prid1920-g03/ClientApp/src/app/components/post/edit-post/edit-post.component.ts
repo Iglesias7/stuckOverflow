@@ -6,7 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, FormArray, AsyncValidatorFn } from '@angular/forms';
 import { Post } from 'src/app/models/post';
 import { TagService } from 'src/app/services/tag.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -22,11 +22,10 @@ export class EditPostComponent {
   public editPostForm: FormGroup;
   public ctlTitle: FormControl;
   public ctlBody: FormControl;
-  // d = this.ctlBody;
+  
   public isNew: boolean;
   public isQuestion: boolean;
   public tags: any[];
-
 
   visible = true;
   selectable = true;
@@ -54,7 +53,8 @@ export class EditPostComponent {
 
     this.editPostForm = this.formBuilder.group({
       title: this.ctlTitle,
-      body: this.ctlBody
+      body: this.ctlBody,
+      tags: this.tagsCtrl
     });
 
     this.isNew = data.isNew;
@@ -85,10 +85,9 @@ export class EditPostComponent {
   update() {
     const data = this.editPostForm.value;
     data.authorId = this.auth.currentUser.id;
-    // if (this.isQuestion == true)
-    //   data.tags = this.editPostForm.value.tagForms.map((tf, i) => tf ? this.tags[i] : null).filter(tf => tf != null).map(t => t.name);
     if (this.isQuestion == true)
       data.tags = this.lsTag;
+
     this.dialogRef.close(data);
   }
 
@@ -96,7 +95,7 @@ export class EditPostComponent {
     this.dialogRef.close();
   }
 
-  cancel() {
+  public cancel() {
     this.dialogRef.close();
   }
 

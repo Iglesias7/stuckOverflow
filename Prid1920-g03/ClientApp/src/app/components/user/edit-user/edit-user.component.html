@@ -3,14 +3,15 @@
     <mat-tab-group mat-stretch-tabs dynamicHeight>
         <mat-tab label="First Data">
             <div class="form"  >
-                <mat-form-field>
-                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required [readonly] = "!isNew">
+                <mat-form-field >
+                    <input matInput placeholder="Pseudo" [formControl]="ctlPseudo" required [readonly] = "!isNew && isOwner">
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('required')">Required</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('minlength')">Minimum length is
                         {{ctlPseudo.errors['minlength'].requiredLength}}</mat-error>
                     <mat-error class="field-error" *ngIf="ctlPseudo.hasError('pseudoUsed')">Pseudo already in use
                     </mat-error>
                 </mat-form-field>
+
                 <mat-form-field>
                     <input matInput [placeholder]="'Password ' + (isNew ? '' : ' (leave blank if no change)')"
                         [formControl]="ctlPassword" type="password" [required]="isNew" autocomplete="new-password">

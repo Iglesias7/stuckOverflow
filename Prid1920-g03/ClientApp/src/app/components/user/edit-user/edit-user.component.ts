@@ -68,6 +68,14 @@ export class EditUserComponent implements OnDestroy {
         this.pictureChanged = false;
     }
 
+    get currentUser() {
+        return this.auth.currentUser;
+      }
+
+    get isOwner() {
+        return this.currentUser.pseudo == this.ctlPseudo.value;
+    }
+
     validateBirthDate(): AsyncValidatorFn {
         let timeout: NodeJS.Timer;
         return (ctl: FormControl) => {

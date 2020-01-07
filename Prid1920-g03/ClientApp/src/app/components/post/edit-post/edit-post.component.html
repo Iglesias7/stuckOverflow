@@ -44,11 +44,11 @@
             <simplemde [formControl]="ctlBody" ></simplemde>
         </mat-tab>
 
-        <mat-tab *ngIf = "isQuestion" label="Choice tag(s)">
+        <!-- <mat-tab *ngIf = "isQuestion" label="Choice tag(s)">
             <div *ngFor="let tag of editPostForm.controls.tagForms.controls; let i = index" class="ng-tag" formArrayName = "tagForms">
                 <mat-checkbox [formControlName] = "i" >{{ tags[i].name }}</mat-checkbox>
             </div>
-        </mat-tab>
+        </mat-tab> -->
         
           
     </mat-tab-group>

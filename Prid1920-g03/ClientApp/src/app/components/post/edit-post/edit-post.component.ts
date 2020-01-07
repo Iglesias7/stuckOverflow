@@ -54,8 +54,9 @@ export class EditPostComponent {
 
     this.editPostForm = this.formBuilder.group({
       title: this.ctlTitle,
-      body: this.ctlBody,
-      tagForms: new FormArray([])
+      body: this.ctlBody
+      // tags: this.lsTag
+      // tagForms: new FormArray([])
     });
 
     this.isNew = data.isNew;
@@ -66,15 +67,15 @@ export class EditPostComponent {
       this.tagService.getAllTags().subscribe(tags => {
         this.tags = tags;
 
-        this.tags.forEach((o, i) => {
-          if (this.isNew == true) {
-            const control = new FormControl();
-            (this.editPostForm.controls.tagForms as FormArray).push(control)
-          } else {
-            const control = new FormControl(this.data.tags.find(t => t == o.name) ? true : false);
-            (this.editPostForm.controls.tagForms as FormArray).push(control)
-          }
-        })
+        // this.tags.forEach((o, i) => {
+        //   if (this.isNew == true) {
+        //     const control = new FormControl();
+        //     (this.editPostForm.controls.tagForms as FormArray).push(control)
+        //   } else {
+        //     const control = new FormControl(this.data.tags.find(t => t == o.name) ? true : false);
+        //     (this.editPostForm.controls.tagForms as FormArray).push(control)
+        //   }
+        // })
 
         this.filteredtags = this.tagsCtrl.valueChanges.pipe(
           startWith(null),
@@ -86,8 +87,10 @@ export class EditPostComponent {
   update() {
     const data = this.editPostForm.value;
     data.authorId = this.auth.currentUser.id;
+    // if (this.isQuestion == true)
+    //   data.tags = this.editPostForm.value.tagForms.map((tf, i) => tf ? this.tags[i] : null).filter(tf => tf != null).map(t => t.name);
     if (this.isQuestion == true)
-      data.tags = this.editPostForm.value.tagForms.map((tf, i) => tf ? this.tags[i] : null).filter(tf => tf != null).map(t => t.name);
+      data.tags = this.lsTag;
     this.dialogRef.close(data);
   }
 
@@ -105,10 +108,13 @@ export class EditPostComponent {
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
-
       // Add our tag
       if ((value || '').trim()) {
+        console.log("toto")
         this.lsTag.push(value.trim());
+        var pos = this.tags.indexOf(value.trim());
+        this.tags.splice(pos, 1)
+        console.log(this.tags.map(t=>t.name))
       }
 
       // Reset the input value
@@ -120,11 +126,12 @@ export class EditPostComponent {
     }
   }
 
-  remove(fruit: string): void {
-    const index = this.lsTag.indexOf(fruit);
+  remove(tag: string): void {
+    const index = this.lsTag.indexOf(tag);
 
     if (index >= 0) {
       this.lsTag.splice(index, 1);
+      this.tags.push(tag)
     }
   }
 

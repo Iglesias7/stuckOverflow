@@ -83,7 +83,6 @@ namespace Prid1920_g03.Controllers
            
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<PostDTO>> AddPost(PostDTO data){
 

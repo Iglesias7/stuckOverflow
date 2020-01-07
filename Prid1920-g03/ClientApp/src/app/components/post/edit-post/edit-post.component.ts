@@ -35,10 +35,10 @@ export class EditPostComponent {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagsCtrl = new FormControl();
   filteredtags: Observable<string[]>;
-  lsTag: string[];
+  lsTag: string[] = [];
   // allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
 
-  @ViewChild('fruitInput', { static: false }) fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('tagsInput', { static: false }) tagsInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto', { static: false }) matAutocomplete: MatAutocomplete;
 
   constructor(public dialogRef: MatDialogRef<EditPostComponent>,
@@ -48,8 +48,6 @@ export class EditPostComponent {
     private auth: AuthenticationService
 
   ) {
-
-    
 
     this.ctlTitle = this.formBuilder.control('', [Validators.required]);
     this.ctlBody = this.formBuilder.control('', [Validators.required]);
@@ -68,11 +66,6 @@ export class EditPostComponent {
       this.tagService.getAllTags().subscribe(tags => {
         this.tags = tags;
 
-        this.filteredtags = this.tagsCtrl.valueChanges.pipe(
-          startWith(null),
-          map((fruit: string | null) => fruit ? this._filter(fruit) : this.tags.map(t=>t.name).slice())
-        );
-
         this.tags.forEach((o, i) => {
           if (this.isNew == true) {
             const control = new FormControl();
@@ -82,6 +75,11 @@ export class EditPostComponent {
             (this.editPostForm.controls.tagForms as FormArray).push(control)
           }
         })
+
+        this.filteredtags = this.tagsCtrl.valueChanges.pipe(
+          startWith(null),
+          map((tag: string | null) => tag ? this._filter(tag) : this.tags.map(t=>t.name).slice())
+        );
       });
   }
 
@@ -102,13 +100,13 @@ export class EditPostComponent {
   }
 
   add(event: MatChipInputEvent): void {
-    // Add fruit only when MatAutocomplete is not open
+    // Add tag only when MatAutocomplete is not open
     // To make sure this does not conflict with OptionSelected Event
     if (!this.matAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      // Add our fruit
+      // Add our tag
       if ((value || '').trim()) {
         this.lsTag.push(value.trim());
       }
@@ -132,7 +130,7 @@ export class EditPostComponent {
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.lsTag.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
+    this.tagsInput.nativeElement.value = '';
     this.tagsCtrl.setValue(null);
   }
 

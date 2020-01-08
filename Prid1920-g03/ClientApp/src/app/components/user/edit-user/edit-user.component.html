@@ -78,7 +78,7 @@
     </mat-tab-group>
     <div class="footer">
         <button type="submit" mat-button form="editForm"
-                [disabled]="editForm.invalid"
+                [disabled]="editForm.pristine || editForm.invalid || editForm.pending"
                 (click)="update()">{{!isNew ? 'Update' : 'Add'}}</button>
         <button type="reset" mat-button (click)="cancel()">Cancel</button>
     </div>

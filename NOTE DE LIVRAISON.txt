@@ -1,0 +1,42 @@
+----------------------------------------------------------
+---------------Fonctionnalités supplémentaires------------
+----------------------------------------------------------
+
+------------ Back-end ---------------
+
+1) Ajout d'une entité Picturepath dans User.cs
+
+2) Ajout un peut arbitraire de la description des tags dans Tag.cs
+
+------------- Frond-end --------------
+
+1) Design soigné
+
+2) Pagination sans state ajouté dans userslist et dans taglist
+
+3) Ajout des tris pour la liste de tags dans taglist.
+    a) Tri par Name: trié par ordre aphabétique.
+    b) Tri par Popular: trié par tags qui ont le plus de posts.
+    c) Trie par Newest: trié comme dans newest de la liste de posts.
+
+------------------------Full Stack----------------------------------
+
+1) RefreshToken
+
+Remarque: HightVote dans postlist représente le meilleur score de la question et de ses réponses: Nous l'avons mis pour vite voir le tri par vote.
+--------
+
+
+-----------------------------------------------------------------
+---------------Commprendre l'implémentation des votes------------
+-----------------------------------------------------------------
+
+1) Click sur l'icone du pouce vert pour voter positivement.
+2) Click sur l'icone du pouce rouge pour voter négativement.
+
+Remarque: Un utilisateur qui a déjà voté positivement ou négativement, 
+--------            
+            a) Peut aussi voté respectivement négativement ou positivement et dans ce cas l'ancien vote est annulé.
+            b) Peut également voté la meme chose qu'il a fait précédement pour annuler son vote 
+                (disposant de 4 minutes pour annuler l'annulation du vote en cliquant sur 'undo' du snackbar qui sera affiché).
+

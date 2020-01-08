@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -32,8 +32,8 @@ export class SignupComponent {
         this.ctlPseudo = this.formBuilder.control('', [Validators.required, Validators.minLength(3), Validators.maxLength(20), Validators.pattern("^[A-Za-z][A-Za-z0-9_]*")], [this.pseudoUsed()]);
         this.ctlPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
         this.ctlConfirmPassword = this.formBuilder.control('', [Validators.required, Validators.minLength(3)]);
-        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
-        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(20)]);
+        this.ctlFirstName = this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(50)]);
+        this.ctlLastName =  this.formBuilder.control('', [Validators.minLength(3), Validators.maxLength(50)]);
         this.ctlEmail = this.formBuilder.control('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")], [this.emailUsed()]);
         this.ctlBirthDate = this.formBuilder.control('', [],[this.validateBirthDate()]);
 

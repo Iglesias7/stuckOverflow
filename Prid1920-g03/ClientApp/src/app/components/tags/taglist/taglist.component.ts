@@ -144,7 +144,7 @@ export class TagListComponent implements OnInit, OnDestroy {
             this.tags = tags;
             this.tagsBackup = _.cloneDeep(tags);
             this.dataSources.data = this.tags;
-
+            this.dataSources.data = this.tags.slice(0,3);
         });
     }
 
@@ -155,6 +155,7 @@ export class TagListComponent implements OnInit, OnDestroy {
             this.tags = tags;
             this.tagsBackup = _.cloneDeep(tags);
             this.dataSources.data = this.tags;
+            this.dataSources.data = this.tags.slice(0,3);
         })
     }
 
@@ -163,6 +164,7 @@ export class TagListComponent implements OnInit, OnDestroy {
             this.tags = tags;
             this.tagsBackup = _.cloneDeep(tags);
             this.dataSources.data = this.tags;
+            this.dataSources.data = this.tags.slice(0,3);
         });
     }
 

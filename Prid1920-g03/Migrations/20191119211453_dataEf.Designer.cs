@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Prid1920_g03.Models;
 
 namespace Prid1920_g03.Migrations
 {
     [DbContext(typeof(Prid1920_g03Context))]
-    partial class Prid1920_g03ContextModelSnapshot : ModelSnapshot
+    [Migration("20191119211453_dataEf")]
+    partial class dataEf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,15 +183,20 @@ namespace Prid1920_g03.Migrations
 
             modelBuilder.Entity("Prid1920_g03.Models.Vote", b =>
                 {
-                    b.Property<int>("PostId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("PostId");
 
                     b.Property<DateTime>("Timestamp");
 
                     b.Property<int>("UpDown");
 
-                    b.HasKey("PostId", "UserId");
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("UserId");
 
@@ -222,13 +229,11 @@ namespace Prid1920_g03.Migrations
                 {
                     b.HasOne("Prid1920_g03.Models.Post", "Post")
                         .WithMany("Votes")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Prid1920_g03.Models.User", "User")
                         .WithMany("Votes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

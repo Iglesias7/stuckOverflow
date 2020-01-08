@@ -39,10 +39,10 @@
                 </mat-card-title>
         </mat-card-header> 
         <mat-card-content class="card-content" >
-            Tagged on {{tag.nbXPosts}} posts
+            Tagged on <span style="color: darkmagenta">{{tag.nbXPosts}}</span> posts
         </mat-card-content>
-        <mat-card-content class="card-content">
-            Created on {{tag.timestamp}}
+        <mat-card-content class="card-content" style="color:  darkgreen">
+            Created on {{tag.timestamp | timeAgo}}
         </mat-card-content>
          <mat-card-actions> 
             <button mat-icon-button>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialog, MatSnackBar, MatTableDataSource, MatPaginator, PageEvent} from '@angular/material';
+import { MatDialog, MatSnackBar} from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
 import { Post } from 'src/app/models/post';
@@ -8,7 +8,6 @@ import { EditPostComponent } from '../edit-post/edit-post.component';
 import { FilterService } from 'src/app/services/filter.service';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/models/user';
-import { MatListPostState } from 'src/app/helpers/matListPost.state';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { StateService } from 'src/app/services/state.service';
 
@@ -26,17 +25,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
     researchByTag: boolean = false;
-
-    // length: number = 0;
-    // pageSize: number = 3;  
-    // pageSizeOptions: number[] = [3, 6, 9, 12, 15, 18, 21];
-
-    // dataSources: MatTableDataSource<Post> = new MatTableDataSource();
     filter: string;
-    // state: MatListPostState;
-
-    @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-
     
     constructor(private auth: AuthenticationService,
         private filterService: FilterService,
@@ -47,7 +36,6 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
         private stateService: StateService,
         ) {
             this.currentUser = this.auth.currentUser;
-            // this.state = this.stateService.postListState;
         }
 
 
@@ -59,25 +47,11 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
             posts => {
               this.posts = posts;
               this.postsBackup = _.cloneDeep(posts);
-
-            //   this.dataSources.data = this.posts.slice(0, 3);
-            //   this.length = this.posts.length
             }
         );
         this.postService.getRefrechPostsByTagName(name);
 
     }
-
-    // onPageChange(event: PageEvent){
-    //     let startIndex = event.pageIndex * event.pageSize;
-    //     let endIndex = startIndex + event.pageSize;
-    //     if(endIndex > this.length){
-    //       endIndex = this.length;
-    //     }
-    //     this.dataSources.data = this.posts.slice(startIndex, endIndex);
-    // }
-
-    
 
     newest(){
         const name = this.route.snapshot.params['name'];
@@ -104,8 +78,6 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
             const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
             return str.includes(lFilter);
         });
-        // this.dataSources.data = this.posts.slice(0, 3);
-
     }
 
     clear(){
@@ -114,9 +86,6 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
             posts => {
               this.posts = posts;
               this.postsBackup = _.cloneDeep(posts);
-
-            //   this.dataSources.data = this.posts.slice(0, 3);
-            //   this.length = this.posts.length
             }
         );
         this.postService.getRefrechPostsByTagName(name);
@@ -124,7 +93,7 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
 
     public addQuestion() {
         const post = new Post({});
-        const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true } });
+        const dlg = this.dialog.open(EditPostComponent, { data: { post, isNew: true, isQuestion: true }, height: "500px" });
         dlg.beforeClose().subscribe(res => {
             if (res) {
                 console.log(" ici res: " + res.body)

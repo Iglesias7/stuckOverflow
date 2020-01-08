@@ -33,8 +33,7 @@ namespace Prid1920_g03.Controllers
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest(string filter = "") {
             var itemList = from p in model.Posts
                         where p.Title != null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)
-                        // || (from t in p.Tags where t.Name.Contains(filter) select t).SingleOrDefault() 
-                        // || (from c in p.Comments where c.Body.Contains(filter) select c)
+                        //  || p.Tags.Any(t => t.Name == filter) || p.Comments.Any(t => t.Body == filter)
                         )
                         orderby p.Timestamp descending
                         select p;
@@ -86,8 +85,7 @@ namespace Prid1920_g03.Controllers
 
             var itemList = from p in model.Posts
                          join ptg in model.PostTags on p.Id equals ptg.PostId
-                        where ptg.TagId == tag.Id && (p.Title != (null) && p.AcceptedAnswerId == null 
-                         && (p.Title.Contains("") || p.User.Pseudo.Contains("")) )
+                        where ptg.TagId == tag.Id && (p.Title != (null) && p.AcceptedAnswerId == null )
                         orderby p.Timestamp descending
                         select p;
 
@@ -125,7 +123,7 @@ namespace Prid1920_g03.Controllers
             var tag = (from t in model.Tags where t.Name == tagname select t).FirstOrDefault();
             var itemList = from p in model.Posts
                          join ptg in model.PostTags on p.Id equals ptg.PostId
-                          where ptg.TagId == tag.Id && ( p.ParentId == null && (p.Title.Contains("") || p.User.Pseudo.Contains("")))
+                          where ptg.TagId == tag.Id && ( p.ParentId == null)
                           select p;
             var items = itemList.AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
 

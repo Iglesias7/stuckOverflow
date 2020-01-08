@@ -6,7 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 import { Component, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup, Validators, FormControl, FormArray, AsyncValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Post } from 'src/app/models/post';
 import { TagService } from 'src/app/services/tag.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';

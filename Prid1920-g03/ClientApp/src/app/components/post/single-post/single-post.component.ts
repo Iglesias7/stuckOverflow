@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog, MatSnackBar, MatTableDataSource, PageEvent } from '@angular/material';
 import * as _ from 'lodash';
 import { PostService } from 'src/app/services/post.service';
@@ -15,34 +15,29 @@ import { UserService } from 'src/app/services/user.service';
     styleUrls: ['./single-post.component.css'],
 })
 
-export class SinglePostListComponent implements OnInit, OnDestroy  {
+export class SinglePostListComponent implements OnInit, OnDestroy {
     currentUser: User;
     numComments: number;
     responseBody = "";
     user: User;
-    
+
     id = this.route.snapshot.params['id'];
 
     post: Post;
     postSubsription: Subscription;
-    
+
     responses: Post[];
     responsesSubsription: Subscription;
 
-    // length: number = 0;
-    // pageSize: number = 2;
-    // pageSizeOptions: number[] = [2, 4, 6, 8];
-    // dataSource: MatTableDataSource<Post> = new MatTableDataSource();
-
-    constructor(private auth: AuthenticationService, 
-                private postService: PostService,
-                private route: ActivatedRoute,
-                private userService: UserService,
-                public dialog: MatDialog, 
-                public snackBar: MatSnackBar
-         ) {
-            this.currentUser = this.auth.currentUser;
-        }
+    constructor(private auth: AuthenticationService,
+        private postService: PostService,
+        private route: ActivatedRoute,
+        private userService: UserService,
+        public dialog: MatDialog,
+        public snackBar: MatSnackBar
+    ) {
+        this.currentUser = this.auth.currentUser;
+    }
 
     public ngOnInit() {
         this.postSubsription = this.postService.postSubject.subscribe(post => {
@@ -50,22 +45,11 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
         });
         this.responsesSubsription = this.postService.responsesSubject.subscribe(responses => {
             this.responses = responses;
-            // this.dataSource.data = responses.slice(0,2);
-            // this.length = responses.length;
         });
         this.refrech();
     }
 
-    // onPageChange(event: PageEvent){
-    //     let startIndex = event.pageIndex * event.pageSize;
-    //     let endIndex = startIndex + event.pageSize;
-    //     if(endIndex > this.length){
-    //         endIndex = this.length;
-    //     }
-    //     this.dataSource.data = this.responses.slice(startIndex, endIndex);
-    // }
-
-    public refrech(){
+    public refrech() {
         this.postService.getRefrechPost(this.id);
         this.postService.emitAllResponses();
         if (this.currentUser)
@@ -74,22 +58,27 @@ export class SinglePostListComponent implements OnInit, OnDestroy  {
             })
     }
 
-    public reply(){
-        if(this.currentUser){
-            const body = this.responseBody;
-            const parentId = this.post.id;
-            const authorId = this.currentUser.id;
-            const title = null;
-            const tags = null;
+    public reply() {
+        if (this.currentUser) {
+            if (this.responseBody == "") {
+                this.snackBar.open(`Oups! rien à ajouter!`, 'Dismiss', { duration: 4000 });
+            } else {
+                const body = this.responseBody;
+                const parentId = this.post.id;
+                const authorId = this.currentUser.id;
+                const title = null;
+                const tags = null;
 
-            const post =  new Post({body, authorId, parentId, title, tags});
-            this.postService.add(post).subscribe(post =>{
-                this.refrech();
-            });
-        }else{
+                const post = new Post({ body, authorId, parentId, title, tags });
+                this.postService.add(post).subscribe(post => {
+                    this.refrech();
+                });
+            }
+
+        } else {
             this.snackBar.open(`Vous devez etre connecté pour Répondre à une question.`, 'Dismiss', { duration: 4000 });
         }
-        
+
         this.responseBody = "";
     }
 

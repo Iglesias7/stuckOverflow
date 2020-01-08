@@ -55,8 +55,8 @@ export class FilterService {
     });
   }
 
-  public getall(filter: string = "") {
-    this.http.get<Post[]>(`${this.baseUrl}api/filter/getall/${filter}`).pipe(
+  public getall() {
+    this.http.get<Post[]>(`${this.baseUrl}api/post`).pipe(
       map(res => res.map(m => new Post(m)))
     ).subscribe(posts => {
       this.postService.posts = posts;

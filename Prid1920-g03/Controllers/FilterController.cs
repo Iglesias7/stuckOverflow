@@ -32,7 +32,9 @@ namespace Prid1920_g03.Controllers
         [HttpGet("newest/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtNewest(string filter = "") {
             var itemList = from p in model.Posts
-                        where p.Title != null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)
+                        where p.Title != null && (p.User.Pseudo.Contains(filter) || 
+                        (from r in p.Comments where r.Body.Contains(filter) select r).Count() > 0 || 
+                        (from r in p.PostTags where r.Tag.Name.Contains(filter) select r).Count() > 0
                         //  || p.Tags.Any(t => t.Name == filter) || p.Comments.Any(t => t.Body == filter)
                         )
                         orderby p.Timestamp descending
@@ -57,7 +59,10 @@ namespace Prid1920_g03.Controllers
         [HttpGet("tagfilter/{filter}")]
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtTagFilter(string filter = "") {
             var itemList = from p in model.Posts
-                        where p.Title != null && p.PostTags.Count() > 0  && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter))
+                        where p.Title != null && p.PostTags.Count() > 0  && (p.User.Pseudo.Contains(filter) || 
+                        (from r in p.Comments where r.Body.Contains(filter) select r).Count() > 0 || 
+                        (from t in p.PostTags where t.Tag.Name.Contains(filter) select t).Count() > 0
+                        )
                         // (from i in p.PostTags where i.PostId == p.Id  select i).Count() != 0 
                         
                         orderby p.Timestamp descending
@@ -72,7 +77,9 @@ namespace Prid1920_g03.Controllers
 
             var itemList = from p in model.Posts
                         where p.Title != (null) && p.AcceptedAnswerId == null 
-                         && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)) 
+                         && (p.User.Pseudo.Contains(filter) || 
+                        (from r in p.Comments where r.Body.Contains(filter) select r).Count() > 0 || 
+                        (from r in p.PostTags where r.Tag.Name.Contains(filter) select r).Count() > 0) 
                         orderby p.Timestamp descending
                         select p;
 
@@ -100,7 +107,9 @@ namespace Prid1920_g03.Controllers
         public async Task<ActionResult<IEnumerable<PostDTO>>> GEtAll (string filter = "") {
 
             var itemList = from p in model.Posts
-                        where p.Title != (null) && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter)) 
+                        where p.Title != (null) && (p.User.Pseudo.Contains(filter) || 
+                        (from r in p.Comments where r.Body.Contains(filter) select r).Count() > 0 || 
+                        (from r in p.PostTags where r.Tag.Name.Contains(filter) select r).Count() > 0) 
                         orderby p.Timestamp descending
                         select p;
 
@@ -110,7 +119,9 @@ namespace Prid1920_g03.Controllers
         [HttpGet("votefilter")]
         [HttpGet("votefilter/{filter}")]
         public ActionResult<IEnumerable<PostDTO>> GEtVotefilter (string filter = "") {
-            var query = model.Posts.Where(p => p.ParentId == null && (p.Title.Contains(filter) || p.User.Pseudo.Contains(filter))).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
+            var query = model.Posts.Where(p => p.ParentId == null && (p.User.Pseudo.Contains(filter) || 
+                        (from r in p.Comments where r.Body.Contains(filter) select r).Count() > 0 || 
+                        (from r in p.PostTags where r.Tag.Name.Contains(filter) select r).Count() > 0)).AsEnumerable().OrderByDescending(p => p.HightVote).ToList();
                   
             return query.ToDTO();
         }

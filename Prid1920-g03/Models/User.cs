@@ -35,12 +35,12 @@ namespace Prid1920_g03.Models
         [RegularExpression("^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$")]
         public string Email { get; set; }
 
-        // [MinLength(3, ErrorMessage = "Minimum 3 characters")]
-        // [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
+        [MinLength(3, ErrorMessage = "Minimum 3 characters")]
+        [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
         public string LastName { get; set; }
 
-        // [MinLength(3, ErrorMessage = "Minimum 3 characters")]
-        // [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
+        [MinLength(3, ErrorMessage = "Minimum 3 characters")]
+        [MaxLength(50, ErrorMessage = "Maximum 10 characters")]
         public string FirstName { get; set; }
 
         public DateTime? BirthDate { get; set; }
@@ -95,10 +95,10 @@ namespace Prid1920_g03.Models
                 yield return new ValidationResult("The LastName cannot be null, if the FirstName isn't", new[] { nameof(LastName) });
             if (Reputation < 0)
                 yield return new ValidationResult("The Reputation must be >= 0 ", new[] { nameof(Reputation) });
-            // if (user_pseudo != null)
-            //     yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
-            // else if (user_email != null)
-            //     yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
+            if (user_pseudo != null)
+                yield return new ValidationResult("This pseudo is already used ", new[] { nameof(Pseudo) });
+            else if (user_email != null)
+                yield return new ValidationResult("this email is already used ", new[] { nameof(Email) });
         }
     }
 }

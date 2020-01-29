@@ -1,4 +1,3 @@
-import { User } from "./user";
 import { Vote } from "./vote";
 
   export class Post {
@@ -19,7 +18,7 @@ import { Vote } from "./vote";
       voteState: number;
       hightVote: number;
       
-      comments: Comment[];
+      comments: any[];
       responses: (string | Post)[];
       tags: string[];
       votes: Vote[];

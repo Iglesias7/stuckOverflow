@@ -1,0 +1,9 @@
+H:\prid1920-g03\PRID_Framework\bin\Debug\netcoreapp2.2\PRID_Framework.deps.json
+H:\prid1920-g03\PRID_Framework\bin\Debug\netcoreapp2.2\PRID_Framework.dll
+H:\prid1920-g03\PRID_Framework\bin\Debug\netcoreapp2.2\PRID_Framework.pdb
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.csprojAssemblyReference.cache
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.csproj.CoreCompileInputs.cache
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.AssemblyInfoInputs.cache
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.AssemblyInfo.cs
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.dll
+H:\prid1920-g03\PRID_Framework\obj\Debug\netcoreapp2.2\PRID_Framework.pdb

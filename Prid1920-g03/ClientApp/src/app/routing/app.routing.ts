@@ -20,6 +20,7 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent}, 
   {path: 'posts/tagged/:name', component: PostListByTagComponent},
+  {path: 'posts/:name', component: PostListComponent},
   { path: 'tags', component: TagListComponent},
   { path: 'restricted', component: RestrictedComponent },
   { path: '**', component: UnknownComponent }

@@ -66,6 +66,11 @@ namespace Prid1920_g03.Controllers
             if(currentUser != null && !User.IsInRole(Role.Admin.ToString()))
                 return NotFound();
 
+                if(data.FirstName == "")
+                    data.FirstName = null;
+                if(data.LastName == "")
+                    data.LastName = null;
+
             var newUser = new User()
             {
                 Pseudo = data.Pseudo,

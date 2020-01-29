@@ -6,7 +6,6 @@
     authorId: number;
     postId: number;
     commentUser: any;
-    
 
       constructor(data: any) {
         if(data){

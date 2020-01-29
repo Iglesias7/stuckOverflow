@@ -9,6 +9,7 @@ import { FilterService } from 'src/app/services/filter.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { User } from 'src/app/models/user';
 import { StateService } from 'src/app/services/state.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-userCard',
@@ -21,12 +22,13 @@ export class PostListComponent implements OnInit, OnDestroy {
     posts: Post[] = [];
     postsBackup: Post[] = [];
     postsSubsription: Subscription;
-    filter: string;
+    filter: string = this.route.snapshot.params['name'];
 
     constructor(private auth: AuthenticationService, 
                 private filterService: FilterService,
                 private postService: PostService, 
                 public dialog: MatDialog,
+                private route: ActivatedRoute,
                 public snackBar: MatSnackBar,
                 private stateService: StateService,
             ) {
@@ -40,7 +42,11 @@ export class PostListComponent implements OnInit, OnDestroy {
             this.postsBackup = _.cloneDeep(posts);
           }
         );
-        this.postService.getRefrechAllPosts();
+        // this.postService.getRefrechAllPosts();
+        if(this.route.snapshot.params['name'])
+            this.postService.getRefrechPostsByTagName(this.filter);
+        else
+            this.postService.getRefrechAllPosts();
     }
 
     newest(){
@@ -72,7 +78,16 @@ export class PostListComponent implements OnInit, OnDestroy {
     filterChanged(filter: string) {
         const lFilter = filter.toLowerCase();
         this.posts = _.filter(this.postsBackup, m => {
-            const str = (m.user.pseudo + ' ' + m.tags + ' ' + m.title + ' ' + m.comments).toLowerCase();
+            let comments;
+            m.comments.forEach(comment=>{
+                comments += comment.body + " ";
+            })
+
+            let tags;
+            m.tags.forEach(tag=>{
+                tags += tag + " ";
+            })
+            const str = (m.user.pseudo + ' ' + tags + ' ' + comments).toLowerCase();
             return str.includes(lFilter);
         });
     }

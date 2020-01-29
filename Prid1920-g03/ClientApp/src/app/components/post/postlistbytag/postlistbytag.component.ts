@@ -26,6 +26,8 @@ export class PostListByTagComponent implements OnInit, OnDestroy {
     postsSubsription: Subscription;
     researchByTag: boolean = false;
     filter: string;
+    demo: string = this.route.snapshot.params['name'];
+
     
     constructor(private auth: AuthenticationService,
         private filterService: FilterService,
